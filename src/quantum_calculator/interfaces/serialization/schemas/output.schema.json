@@ -803,7 +803,9 @@
         "category": {
           "enum": [
             "invalid_input",
-            "unsupported_problem"
+            "unsupported_problem",
+            "ambiguous_input",
+            "budget_exceeded"
           ]
         },
         "code": {
@@ -830,7 +832,38 @@
             "unknown_problem",
             "unsupported_hypothesis",
             "unsupported_quantity",
-            "unsupported_covariance"
+            "unsupported_covariance",
+            "unexpected_character",
+            "syntax_error",
+            "unexpected_end",
+            "undeclared_symbol",
+            "reserved_name",
+            "invalid_symbol_name",
+            "unknown_option",
+            "not_a_variable",
+            "not_a_function",
+            "bound_variable_misuse",
+            "dimensional_argument",
+            "undefined_expression",
+            "card_mismatch",
+            "malformed_condition",
+            "malformed_candidate",
+            "ambiguous_division",
+            "ambiguous_power",
+            "ambiguous_application",
+            "ambiguous_argument",
+            "ambiguous_juxtaposition",
+            "ambiguous_derivative",
+            "ambiguous_problem",
+            "unsupported_operation",
+            "no_compatible_card",
+            "outside_coverage",
+            "singularity_in_interval",
+            "statement_too_long",
+            "expression_too_deep",
+            "expression_too_large",
+            "time_budget_exceeded",
+            "memory_budget_exceeded"
           ]
         },
         "pointer": {
@@ -971,7 +1004,9 @@
         "category": {
           "enum": [
             "invalid_input",
-            "unsupported_problem"
+            "unsupported_problem",
+            "ambiguous_input",
+            "budget_exceeded"
           ]
         },
         "diagnostics": {

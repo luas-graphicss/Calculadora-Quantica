@@ -28,12 +28,17 @@ def _imports_of(package: str) -> set[str]:
     return imports
 
 
-def test_domain_imports_only_the_standard_library_and_itself() -> None:
+@pytest.mark.parametrize(
+    ("package", "allowed"), [("domain", ("domain",)), ("notation", ("domain", "notation"))]
+)
+def test_pure_package_imports_only_the_standard_library_and_its_allowed_packages(
+    package: str, allowed: tuple[str, ...]
+) -> None:
+    prefixes = tuple(f"{PACKAGE}.{name}" for name in allowed)
     foreign = {
         module
-        for module in _imports_of("domain")
-        if module.split(".")[0] not in sys.stdlib_module_names
-        and not module.startswith(f"{PACKAGE}.domain")
+        for module in _imports_of(package)
+        if module.split(".")[0] not in sys.stdlib_module_names and not module.startswith(prefixes)
     }
 
     assert foreign == set()
