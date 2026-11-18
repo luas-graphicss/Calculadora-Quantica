@@ -1,0 +1,820 @@
+{
+  "description": "Corpus rotulado da notação: cada item traz a entrada, a interpretação pretendida e a classificação esperada. Os rótulos foram escritos à mão, não gerados pelo leitor que eles conferem.",
+  "classifications": [
+    "accepted",
+    "ambiguous_input",
+    "invalid_input",
+    "unsupported_problem",
+    "budget_exceeded"
+  ],
+  "symbol_sets": {
+    "calculus": {
+      "x": {
+        "role": "variable",
+        "domain": "real",
+        "unit": "1"
+      },
+      "y": {
+        "role": "variable",
+        "domain": "real",
+        "unit": "1"
+      },
+      "a": {
+        "role": "parameter",
+        "domain": "real",
+        "unit": "1"
+      },
+      "b": {
+        "role": "parameter",
+        "domain": "positive",
+        "unit": "1"
+      },
+      "lambda": {
+        "role": "parameter",
+        "domain": "positive",
+        "unit": "1"
+      }
+    },
+    "decay": {
+      "t": {
+        "role": "variable",
+        "domain": "real",
+        "unit": "s"
+      },
+      "k": {
+        "role": "parameter",
+        "domain": "positive",
+        "unit": "1/s"
+      },
+      "y_0": {
+        "role": "parameter",
+        "domain": "positive",
+        "unit": "1"
+      },
+      "y": {
+        "role": "function",
+        "domain": "real",
+        "unit": "1",
+        "argument": "t"
+      }
+    },
+    "relaxation": {
+      "t": {
+        "role": "variable",
+        "domain": "real",
+        "unit": "s"
+      },
+      "tau": {
+        "role": "parameter",
+        "domain": "positive",
+        "unit": "s"
+      },
+      "y": {
+        "role": "function",
+        "domain": "real",
+        "unit": "1",
+        "argument": "t"
+      }
+    },
+    "kinematics": {
+      "t": {
+        "role": "variable",
+        "domain": "real",
+        "unit": "s"
+      },
+      "h": {
+        "role": "parameter",
+        "domain": "positive",
+        "unit": "m"
+      },
+      "v": {
+        "role": "parameter",
+        "domain": "real",
+        "unit": "m/s"
+      },
+      "g": {
+        "role": "parameter",
+        "domain": "positive",
+        "unit": "m/s^2"
+      }
+    }
+  },
+  "items": [
+    {
+      "id": "polynomial-derivative",
+      "notation": "text",
+      "statement": "diff(3 x^4 - 2 x + 7, x)",
+      "symbols": "calculus",
+      "intent": "derivada de um polinômio em x",
+      "expected": {
+        "classification": "accepted",
+        "card": "calculus.derivative",
+        "structure": "(derivative ordinary x 1 (add (subtract (multiply (number 3) (power (symbol x) (number 4))) (multiply (number 2) (symbol x))) (number 7)))"
+      }
+    },
+    {
+      "id": "product-rule",
+      "notation": "text",
+      "statement": "diff(x^2*sin(x), x)",
+      "symbols": "calculus",
+      "intent": "derivada de x² sen x em relação a x",
+      "expected": {
+        "classification": "accepted",
+        "card": "calculus.derivative",
+        "structure": "(derivative ordinary x 1 (multiply (power (symbol x) (number 2)) (sin (symbol x))))"
+      }
+    },
+    {
+      "id": "product-rule-latex",
+      "notation": "latex",
+      "statement": "\\frac{d}{dx}\\left(x^{2} \\sin(x)\\right)",
+      "symbols": "calculus",
+      "intent": "a mesma derivada, digitada em LaTeX",
+      "same_problem_as": "product-rule",
+      "expected": {
+        "classification": "accepted",
+        "card": "calculus.derivative"
+      }
+    },
+    {
+      "id": "product-rule-unicode",
+      "notation": "text",
+      "statement": "diff(x²·sin(x), x)",
+      "symbols": "calculus",
+      "intent": "a mesma derivada, com expoente sobrescrito e ponto médio",
+      "same_problem_as": "product-rule",
+      "expected": {
+        "classification": "accepted",
+        "card": "calculus.derivative"
+      }
+    },
+    {
+      "id": "chain-rule",
+      "notation": "text",
+      "statement": "diff(sin(x^2), x)",
+      "symbols": "calculus",
+      "intent": "derivada de uma função composta",
+      "expected": {
+        "classification": "accepted",
+        "card": "calculus.derivative",
+        "structure": "(derivative ordinary x 1 (sin (power (symbol x) (number 2))))"
+      }
+    },
+    {
+      "id": "partial-derivative",
+      "notation": "text",
+      "statement": "partial(x^2 y + a y^3, x)",
+      "symbols": "calculus",
+      "intent": "derivada parcial em x, com y fixo",
+      "expected": {
+        "classification": "accepted",
+        "card": "calculus.derivative",
+        "structure": "(derivative partial x 1 (add (multiply (power (symbol x) (number 2)) (symbol y)) (multiply (symbol a) (power (symbol y) (number 3)))))"
+      }
+    },
+    {
+      "id": "partial-derivative-latex",
+      "notation": "latex",
+      "statement": "\\frac{\\partial}{\\partial x}\\left(x^{2} y + a y^{3}\\right)",
+      "symbols": "calculus",
+      "intent": "a mesma derivada parcial, em LaTeX",
+      "same_problem_as": "partial-derivative",
+      "expected": {
+        "classification": "accepted",
+        "card": "calculus.derivative"
+      }
+    },
+    {
+      "id": "removable-factor",
+      "notation": "text",
+      "statement": "diff((x^2 - 1)/(x - 1), x)",
+      "symbols": "calculus",
+      "intent": "derivada de um quociente com fator cancelável",
+      "expected": {
+        "classification": "accepted",
+        "card": "calculus.derivative",
+        "structure": "(derivative ordinary x 1 (divide (subtract (power (symbol x) (number 2)) (number 1)) (subtract (symbol x) (number 1))))"
+      }
+    },
+    {
+      "id": "root-of-square",
+      "notation": "text",
+      "statement": "diff(sqrt(x^2), x)",
+      "symbols": "calculus",
+      "intent": "derivada da raiz do quadrado de uma variável real",
+      "expected": {
+        "classification": "accepted",
+        "card": "calculus.derivative",
+        "structure": "(derivative ordinary x 1 (sqrt (power (symbol x) (number 2))))"
+      }
+    },
+    {
+      "id": "greek-parameter",
+      "notation": "text",
+      "statement": "diff(exp(-lambda x), x)",
+      "symbols": "calculus",
+      "intent": "derivada de uma exponencial com taxa lambda",
+      "expected": {
+        "classification": "accepted",
+        "card": "calculus.derivative",
+        "structure": "(derivative ordinary x 1 (exp (negate (multiply (symbol λ) (symbol x)))))"
+      }
+    },
+    {
+      "id": "greek-parameter-unicode",
+      "notation": "text",
+      "statement": "diff(exp(−λ x), x)",
+      "symbols": "calculus",
+      "intent": "a mesma exponencial, com a letra grega e o sinal de menos Unicode",
+      "same_problem_as": "greek-parameter",
+      "expected": {
+        "classification": "accepted",
+        "card": "calculus.derivative"
+      }
+    },
+    {
+      "id": "greek-parameter-latex",
+      "notation": "latex",
+      "statement": "\\frac{d}{dx}\\left(\\exp(-\\lambda x)\\right)",
+      "symbols": "calculus",
+      "intent": "a mesma exponencial, em LaTeX",
+      "same_problem_as": "greek-parameter",
+      "expected": {
+        "classification": "accepted",
+        "card": "calculus.derivative"
+      }
+    },
+    {
+      "id": "free-fall-velocity",
+      "notation": "text",
+      "statement": "diff(h - g t^2/2, t)",
+      "symbols": "kinematics",
+      "intent": "velocidade na queda livre, com unidades declaradas",
+      "expected": {
+        "classification": "accepted",
+        "card": "calculus.derivative",
+        "structure": "(derivative ordinary t 1 (subtract (symbol h) (divide (multiply (symbol g) (power (symbol t) (number 2))) (number 2))))"
+      }
+    },
+    {
+      "id": "reciprocal-primitive",
+      "notation": "text",
+      "statement": "integral(1/x, x)",
+      "symbols": "calculus",
+      "intent": "primitiva de 1/x",
+      "expected": {
+        "classification": "accepted",
+        "card": "calculus.antiderivative",
+        "structure": "(integral x (divide (number 1) (symbol x)))"
+      }
+    },
+    {
+      "id": "reciprocal-primitive-latex",
+      "notation": "latex",
+      "statement": "\\int \\frac{1}{x} \\, dx",
+      "symbols": "calculus",
+      "intent": "a mesma primitiva, em LaTeX",
+      "same_problem_as": "reciprocal-primitive",
+      "expected": {
+        "classification": "accepted",
+        "card": "calculus.antiderivative"
+      }
+    },
+    {
+      "id": "parabola-area",
+      "notation": "text",
+      "statement": "integral(x^2, x, 0, 1)",
+      "symbols": "calculus",
+      "intent": "área sob a parábola entre 0 e 1",
+      "expected": {
+        "classification": "accepted",
+        "card": "calculus.definite_integral",
+        "structure": "(integral x (power (symbol x) (number 2)) (number 0) (number 1))"
+      }
+    },
+    {
+      "id": "parabola-area-latex",
+      "notation": "latex",
+      "statement": "\\int_{0}^{1} x^{2} \\, dx",
+      "symbols": "calculus",
+      "intent": "a mesma integral definida, em LaTeX",
+      "same_problem_as": "parabola-area",
+      "expected": {
+        "classification": "accepted",
+        "card": "calculus.definite_integral"
+      }
+    },
+    {
+      "id": "decay-general-solution",
+      "notation": "text",
+      "statement": "y' = -k y",
+      "symbols": "decay",
+      "intent": "solução geral do decaimento exponencial",
+      "expected": {
+        "classification": "accepted",
+        "card": "ode.first_order_linear.general_solution",
+        "structure": "(equation (unknown y 1 (symbol t)) (negate (multiply (symbol k) (unknown y 0 (symbol t)))))"
+      }
+    },
+    {
+      "id": "decay-general-solution-latex",
+      "notation": "latex",
+      "statement": "\\frac{dy}{dt} = -k y(t)",
+      "symbols": "decay",
+      "intent": "o mesmo decaimento, em LaTeX",
+      "same_problem_as": "decay-general-solution",
+      "expected": {
+        "classification": "accepted",
+        "card": "ode.first_order_linear.general_solution"
+      }
+    },
+    {
+      "id": "decay-initial-value",
+      "notation": "text",
+      "statement": "y' = -k y",
+      "symbols": "decay",
+      "conditions": [
+        "y(0) = y_0"
+      ],
+      "intent": "decaimento com condição inicial",
+      "expected": {
+        "classification": "accepted",
+        "card": "ode.first_order_linear.initial_value",
+        "structure": "(equation (unknown y 1 (symbol t)) (negate (multiply (symbol k) (unknown y 0 (symbol t)))))"
+      }
+    },
+    {
+      "id": "decay-candidate-review",
+      "notation": "text",
+      "statement": "y' = -k y",
+      "symbols": "decay",
+      "conditions": [
+        "y(0) = y_0"
+      ],
+      "candidate": "y(t) = y_0*exp(-k*t)",
+      "intent": "revisão de uma candidata para o decaimento",
+      "expected": {
+        "classification": "accepted",
+        "card": "ode.first_order_linear.candidate_review",
+        "structure": "(equation (unknown y 1 (symbol t)) (negate (multiply (symbol k) (unknown y 0 (symbol t)))))"
+      }
+    },
+    {
+      "id": "relaxation-time",
+      "notation": "text",
+      "statement": "y' = -y/tau",
+      "symbols": "relaxation",
+      "intent": "relaxação com tempo característico tau",
+      "expected": {
+        "classification": "accepted",
+        "card": "ode.first_order_linear.general_solution",
+        "structure": "(equation (unknown y 1 (symbol t)) (negate (divide (unknown y 0 (symbol t)) (symbol τ))))"
+      }
+    },
+    {
+      "id": "half-x",
+      "notation": "text",
+      "statement": "diff(1/2x, x)",
+      "symbols": "calculus",
+      "intent": "metade de x, ou um sobre dois x",
+      "expected": {
+        "classification": "ambiguous_input",
+        "code": "ambiguous_division",
+        "pointer": "/statement",
+        "excerpt": "1/2x"
+      },
+      "reason": "1/2x pode ser (1/2)*x ou 1/(2*x); a leitura muda a derivada."
+    },
+    {
+      "id": "chained-division",
+      "notation": "text",
+      "statement": "diff(a/b/x, x)",
+      "symbols": "calculus",
+      "intent": "divisões em cadeia",
+      "expected": {
+        "classification": "ambiguous_input",
+        "code": "ambiguous_division",
+        "pointer": "/statement",
+        "excerpt": "a/b/"
+      },
+      "reason": "a/b/x pode ser (a/b)/x ou a/(b/x)."
+    },
+    {
+      "id": "power-tower",
+      "notation": "text",
+      "statement": "diff(x^y^a, x)",
+      "symbols": "calculus",
+      "intent": "torre de potências",
+      "expected": {
+        "classification": "ambiguous_input",
+        "code": "ambiguous_power",
+        "pointer": "/statement",
+        "excerpt": "x^y^"
+      },
+      "reason": "x^y^a pode ser (x^y)^a ou x^(y^a)."
+    },
+    {
+      "id": "product-or-application",
+      "notation": "text",
+      "statement": "diff(a(x + 1), x)",
+      "symbols": "calculus",
+      "intent": "a vezes (x + 1), ou a aplicada a x + 1",
+      "expected": {
+        "classification": "ambiguous_input",
+        "code": "ambiguous_application",
+        "pointer": "/statement",
+        "excerpt": "a("
+      },
+      "reason": "a foi declarado como parâmetro, mas a escrita é a de uma aplicação de função."
+    },
+    {
+      "id": "undelimited-argument",
+      "notation": "latex",
+      "statement": "\\frac{d}{dx}\\left(\\sin x\\right)",
+      "symbols": "calculus",
+      "intent": "seno sem parênteses no argumento",
+      "expected": {
+        "classification": "ambiguous_input",
+        "code": "ambiguous_argument",
+        "pointer": "/statement",
+        "excerpt": "\\sin x"
+      },
+      "reason": "Sem delimitador não se sabe onde o argumento do seno termina."
+    },
+    {
+      "id": "undelimited-operand",
+      "notation": "latex",
+      "statement": "\\frac{d}{dx} x^{2} + 1",
+      "symbols": "calculus",
+      "intent": "operador de derivada sem parênteses no operando",
+      "expected": {
+        "classification": "ambiguous_input",
+        "code": "ambiguous_argument",
+        "pointer": "/statement",
+        "excerpt": "\\frac{d}{dx} x"
+      },
+      "reason": "A derivada pode valer só para x² ou para x² + 1."
+    },
+    {
+      "id": "number-after-symbol",
+      "notation": "text",
+      "statement": "diff(x 2, x)",
+      "symbols": "calculus",
+      "intent": "número logo depois de um símbolo",
+      "expected": {
+        "classification": "ambiguous_input",
+        "code": "ambiguous_juxtaposition",
+        "pointer": "/statement",
+        "excerpt": "2"
+      },
+      "reason": "x 2 pode ser x*2, x^2 ou x_2."
+    },
+    {
+      "id": "two-variables",
+      "notation": "text",
+      "statement": "diff(x^2 y, x)",
+      "symbols": "calculus",
+      "intent": "derivada ordinária de expressão com duas variáveis",
+      "expected": {
+        "classification": "ambiguous_input",
+        "code": "ambiguous_derivative",
+        "pointer": "/statement"
+      },
+      "reason": "y também é variável: a derivada ordinária não diz se y fica fixo ou depende de x."
+    },
+    {
+      "id": "bare-expression",
+      "notation": "text",
+      "statement": "x^2 sin(x)",
+      "symbols": "calculus",
+      "intent": "expressão sem operação",
+      "expected": {
+        "classification": "ambiguous_input",
+        "code": "ambiguous_problem",
+        "pointer": "/statement"
+      },
+      "reason": "A expressão não diz se é para derivar ou integrar."
+    },
+    {
+      "id": "candidate-without-condition",
+      "notation": "text",
+      "statement": "y' = -k y",
+      "symbols": "decay",
+      "candidate": "y(t) = y_0*exp(-k*t)",
+      "intent": "candidata sem condição inicial e sem ficha confirmada",
+      "expected": {
+        "classification": "ambiguous_input",
+        "code": "ambiguous_problem",
+        "pointer": "/problem"
+      },
+      "reason": "Com candidata e sem condição, nenhuma ficha é escolhida sozinha: a revisão exige a condição e a solução geral não usa a candidata."
+    },
+    {
+      "id": "undeclared-variable",
+      "notation": "text",
+      "statement": "diff(x^2 + z, x)",
+      "symbols": "calculus",
+      "intent": "símbolo que não foi declarado",
+      "expected": {
+        "classification": "invalid_input",
+        "code": "undeclared_symbol",
+        "pointer": "/statement",
+        "excerpt": "z"
+      },
+      "reason": "z aparece no enunciado sem papel, domínio nem unidade."
+    },
+    {
+      "id": "truncated",
+      "notation": "text",
+      "statement": "diff(x^2*sin(x",
+      "symbols": "calculus",
+      "intent": "enunciado cortado no meio",
+      "expected": {
+        "classification": "invalid_input",
+        "code": "unexpected_end",
+        "pointer": "/statement"
+      },
+      "reason": "Faltam os parênteses de fechamento e a variável de derivação."
+    },
+    {
+      "id": "truncated-latex",
+      "notation": "latex",
+      "statement": "\\frac{d}{dx}\\left(x^{2}",
+      "symbols": "calculus",
+      "intent": "LaTeX cortado no meio",
+      "expected": {
+        "classification": "invalid_input",
+        "code": "unexpected_end",
+        "pointer": "/statement"
+      },
+      "reason": "O parêntese aberto por \\left( não fecha."
+    },
+    {
+      "id": "decimal-comma",
+      "notation": "text",
+      "statement": "diff(1,5 x, x)",
+      "symbols": "calculus",
+      "intent": "vírgula como separador decimal",
+      "expected": {
+        "classification": "invalid_input",
+        "code": "syntax_error",
+        "pointer": "/statement",
+        "excerpt": "5"
+      },
+      "reason": "A vírgula separa argumentos; o separador decimal é o ponto."
+    },
+    {
+      "id": "malformed-number",
+      "notation": "text",
+      "statement": "diff(1.2.3 x, x)",
+      "symbols": "calculus",
+      "intent": "número com dois pontos decimais",
+      "expected": {
+        "classification": "invalid_input",
+        "code": "malformed_number",
+        "pointer": "/statement",
+        "excerpt": "1.2."
+      },
+      "reason": "1.2.3 não é um número."
+    },
+    {
+      "id": "stray-character",
+      "notation": "text",
+      "statement": "diff(x^2 $ 3, x)",
+      "symbols": "calculus",
+      "intent": "caractere fora da notação",
+      "expected": {
+        "classification": "invalid_input",
+        "code": "unexpected_character",
+        "pointer": "/statement",
+        "excerpt": "$"
+      },
+      "reason": "$ não é operador nem parte de um nome."
+    },
+    {
+      "id": "dimensional-argument",
+      "notation": "text",
+      "statement": "diff(exp(t), t)",
+      "symbols": "kinematics",
+      "intent": "exponencial de um tempo em segundos",
+      "expected": {
+        "classification": "invalid_input",
+        "code": "dimensional_argument",
+        "pointer": "/statement",
+        "excerpt": "t"
+      },
+      "reason": "O argumento de uma função transcendental precisa ser adimensional; t está em segundos."
+    },
+    {
+      "id": "dimension-mismatch",
+      "notation": "text",
+      "statement": "diff(h + t, t)",
+      "symbols": "kinematics",
+      "intent": "soma de comprimento com tempo",
+      "expected": {
+        "classification": "invalid_input",
+        "code": "dimension_mismatch",
+        "pointer": "/statement",
+        "excerpt": "h + t"
+      },
+      "reason": "h está em metros e t em segundos."
+    },
+    {
+      "id": "missing-condition",
+      "notation": "text",
+      "statement": "y' = -k y",
+      "symbols": "decay",
+      "problem": "ode.first_order_linear.initial_value",
+      "intent": "problema de valor inicial sem a condição",
+      "expected": {
+        "classification": "invalid_input",
+        "code": "missing_field",
+        "pointer": "/conditions"
+      },
+      "reason": "A ficha confirmada exige a condição inicial."
+    },
+    {
+      "id": "derivative-in-parameter",
+      "notation": "text",
+      "statement": "diff(a x^2, a)",
+      "symbols": "calculus",
+      "intent": "derivada em relação a um parâmetro",
+      "expected": {
+        "classification": "invalid_input",
+        "code": "not_a_variable",
+        "pointer": "/statement"
+      },
+      "reason": "a foi declarado como parâmetro, não como variável."
+    },
+    {
+      "id": "bound-variable-in-limit",
+      "notation": "text",
+      "statement": "integral(x^2, x, 0, x)",
+      "symbols": "calculus",
+      "intent": "variável de integração no limite superior",
+      "expected": {
+        "classification": "invalid_input",
+        "code": "bound_variable_misuse",
+        "pointer": "/statement",
+        "excerpt": "x"
+      },
+      "reason": "A variável de integração é ligada e não existe fora da integral."
+    },
+    {
+      "id": "card-mismatch",
+      "notation": "text",
+      "statement": "integral(x^2, x)",
+      "symbols": "calculus",
+      "problem": "calculus.derivative",
+      "intent": "primitiva enviada à ficha de derivada",
+      "expected": {
+        "classification": "invalid_input",
+        "code": "card_mismatch",
+        "pointer": "/problem"
+      },
+      "reason": "A ficha confirmada cobre derivadas, não primitivas."
+    },
+    {
+      "id": "malformed-condition",
+      "notation": "text",
+      "statement": "y' = -k y",
+      "symbols": "decay",
+      "conditions": [
+        "y(t) = y_0"
+      ],
+      "intent": "condição que não fixa um ponto",
+      "expected": {
+        "classification": "invalid_input",
+        "code": "malformed_condition",
+        "pointer": "/conditions/0"
+      },
+      "reason": "y(t) = y_0 vale para todo t; não é uma condição inicial."
+    },
+    {
+      "id": "implicit-candidate",
+      "notation": "text",
+      "statement": "y' = -k y",
+      "symbols": "decay",
+      "conditions": [
+        "y(0) = y_0"
+      ],
+      "candidate": "y(t) = 2*y(t)",
+      "intent": "candidata que usa a própria incógnita",
+      "expected": {
+        "classification": "invalid_input",
+        "code": "malformed_candidate",
+        "pointer": "/candidate"
+      },
+      "reason": "A candidata precisa dar y(t) como expressão explícita."
+    },
+    {
+      "id": "hyperbolic-function",
+      "notation": "text",
+      "statement": "diff(sinh(x), x)",
+      "symbols": "calculus",
+      "intent": "função fora da lista registrada",
+      "expected": {
+        "classification": "unsupported_problem",
+        "code": "unsupported_operation",
+        "pointer": "/statement",
+        "excerpt": "sinh"
+      },
+      "reason": "sinh não está entre as funções registradas."
+    },
+    {
+      "id": "latex-sum",
+      "notation": "latex",
+      "statement": "\\sum x",
+      "symbols": "calculus",
+      "intent": "comando LaTeX fora do subconjunto",
+      "expected": {
+        "classification": "unsupported_problem",
+        "code": "unsupported_operation",
+        "pointer": "/statement",
+        "excerpt": "\\sum"
+      },
+      "reason": "\\sum não faz parte do subconjunto de LaTeX aceito."
+    },
+    {
+      "id": "algebraic-equation",
+      "notation": "text",
+      "statement": "x^2 = 4",
+      "symbols": "calculus",
+      "intent": "equação algébrica",
+      "expected": {
+        "classification": "unsupported_problem",
+        "code": "no_compatible_card",
+        "pointer": "/statement"
+      },
+      "reason": "Nenhuma ficha homologada resolve equações algébricas."
+    },
+    {
+      "id": "second-order-equation",
+      "notation": "text",
+      "statement": "y'' = -y/tau^2",
+      "symbols": "relaxation",
+      "intent": "equação de segunda ordem",
+      "expected": {
+        "classification": "unsupported_problem",
+        "code": "outside_coverage",
+        "pointer": "/statement",
+        "excerpt": "y''"
+      },
+      "reason": "A ficha cobre só equações de primeira ordem."
+    },
+    {
+      "id": "nested-derivative",
+      "notation": "text",
+      "statement": "diff(diff(x^3, x), x)",
+      "symbols": "calculus",
+      "intent": "derivada de uma derivada",
+      "expected": {
+        "classification": "unsupported_problem",
+        "code": "outside_coverage",
+        "pointer": "/statement",
+        "excerpt": "diff(x^3, x)"
+      },
+      "reason": "O operando precisa ser explícito; para a segunda derivada use a ordem: diff(x^3, x, 2)."
+    },
+    {
+      "id": "unknown-card",
+      "notation": "text",
+      "statement": "diff(x^2, x)",
+      "symbols": "calculus",
+      "problem": "calculus.limit",
+      "intent": "ficha que não existe no catálogo",
+      "expected": {
+        "classification": "unsupported_problem",
+        "code": "unknown_problem",
+        "pointer": "/problem"
+      },
+      "reason": "calculus.limit não é uma ficha homologada."
+    },
+    {
+      "id": "too-deep",
+      "notation": "text",
+      "statement": "diff(((((((((((((((((((((((((((((((((((((((((x)))))))))))))))))))))))))))))))))))))))), x)",
+      "symbols": "calculus",
+      "intent": "quarenta níveis de parênteses",
+      "expected": {
+        "classification": "budget_exceeded",
+        "code": "expression_too_deep",
+        "pointer": "/statement"
+      },
+      "reason": "O limite é de 32 níveis de aninhamento."
+    },
+    {
+      "id": "too-long",
+      "notation": "text",
+      "statement": "diff(x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x + x, x)",
+      "symbols": "calculus",
+      "intent": "enunciado com mais de 512 caracteres",
+      "expected": {
+        "classification": "budget_exceeded",
+        "code": "statement_too_long",
+        "pointer": "/statement"
+      },
+      "reason": "O limite é de 512 caracteres."
+    }
+  ]
+}

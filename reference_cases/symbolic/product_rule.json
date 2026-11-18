@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "problem": "calculus.derivative",
+  "description": "Regra do produto: derivada de x² sen x.",
+  "notation": "text",
+  "statement": "diff(x^2*sin(x), x)",
+  "symbols": {
+    "x": {
+      "role": "variable",
+      "domain": "real",
+      "unit": "1"
+    }
+  }
+}

@@ -16,7 +16,12 @@ INFINITE_SQUARE_WELL_ENERGY_LEVEL = ProblemCard(
     identifier="quantum.infinite_square_well.energy_level",
     version="1.0.0",
     area="stationary_schrodinger_1d",
+    problem_type="energy_level",
     title="Nível de energia de uma partícula em um poço infinito unidimensional",
+    domain=(
+        "Massa e largura estritamente positivas e índice de nível inteiro positivo.",
+        "Posição no intervalo aberto 0 < x < L.",
+    ),
     scope=(
         "Partícula única, não relativística e sem spin, em uma dimensão espacial.",
         "Equação de Schrödinger independente do tempo no intervalo 0 < x < L.",

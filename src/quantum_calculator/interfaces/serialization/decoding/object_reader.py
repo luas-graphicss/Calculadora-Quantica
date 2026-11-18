@@ -16,6 +16,7 @@ from quantum_calculator.interfaces.serialization.decoding.number_literals import
 )
 
 MAX_TEXT_LENGTH = 256
+MAX_LIST_LENGTH = 8
 
 _MISSING = object()
 _PLACEHOLDER_NUMBER = ExactNumber(Fraction(0), "0")
@@ -44,12 +45,33 @@ class ObjectReader:
     def report(self, code: DiagnosticCode, key: str, message: str, expected: str) -> None:
         self._diagnostics.append(Diagnostic(code, self._pointer_to(key), message, expected))
 
-    def text(self, key: str, expected: str) -> str:
-        return self._as_text(key, self._required(key, expected), expected)
+    def text(self, key: str, expected: str, max_length: int = MAX_TEXT_LENGTH) -> str:
+        return self._as_text(key, self._required(key, expected), expected, max_length)
 
-    def optional_text(self, key: str, expected: str) -> str | None:
+    def optional_text(
+        self, key: str, expected: str, max_length: int = MAX_TEXT_LENGTH
+    ) -> str | None:
         value = self._optional(key)
-        return None if value is None else self._as_text(key, value, expected)
+        return None if value is None else self._as_text(key, value, expected, max_length)
+
+    def optional_texts(self, key: str, expected: str, max_length: int) -> tuple[str, ...]:
+        value = self._optional(key)
+        if value is None:
+            return ()
+        if not isinstance(value, list) or len(value) > MAX_LIST_LENGTH:
+            self.report(
+                DiagnosticCode.INVALID_TYPE,
+                key,
+                f"O campo deve ser uma lista de até {MAX_LIST_LENGTH} textos.",
+                expected,
+            )
+            return ()
+        items = type(self)(
+            {str(index): item for index, item in enumerate(value)},
+            self._pointer_to(key),
+            self._diagnostics,
+        )
+        return tuple(items.text(index, expected, max_length) for index in items.keys)
 
     def number(self, key: str, expected: str) -> ExactNumber:
         return self._as_number(key, self._required(key, expected), expected)
@@ -92,14 +114,14 @@ class ObjectReader:
         self._read.add(key)
         return self._content.get(key)
 
-    def _as_text(self, key: str, value: object, expected: str) -> str:
+    def _as_text(self, key: str, value: object, expected: str, max_length: int) -> str:
         if value is _MISSING:
             return ""
-        if not isinstance(value, str) or not value or len(value) > MAX_TEXT_LENGTH:
+        if not isinstance(value, str) or not value or len(value) > max_length:
             self.report(
                 DiagnosticCode.INVALID_TYPE,
                 key,
-                f"O campo deve ser um texto não vazio de até {MAX_TEXT_LENGTH} caracteres.",
+                f"O campo deve ser um texto não vazio de até {max_length} caracteres.",
                 expected,
             )
             return ""

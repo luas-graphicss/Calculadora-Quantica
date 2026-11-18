@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Protocol
 
 from quantum_calculator.domain.dimensions import Dimension
 from quantum_calculator.domain.methods import MethodDescription
@@ -39,7 +40,9 @@ class ProblemCard:
     identifier: str
     version: str
     area: str
+    problem_type: str
     title: str
+    domain: tuple[str, ...]
     scope: tuple[str, ...]
     quantities: tuple[PositiveQuantityRule, ...]
     counts: tuple[PositiveIntegerRule, ...]
@@ -48,3 +51,32 @@ class ProblemCard:
     method: MethodDescription
     limitations: tuple[str, ...]
     example: str
+
+
+class CatalogEntry(Protocol):
+    @property
+    def identifier(self) -> str: ...
+
+    @property
+    def version(self) -> str: ...
+
+    @property
+    def area(self) -> str: ...
+
+    @property
+    def problem_type(self) -> str: ...
+
+    @property
+    def title(self) -> str: ...
+
+    @property
+    def domain(self) -> tuple[str, ...]: ...
+
+    @property
+    def method(self) -> MethodDescription: ...
+
+    @property
+    def limitations(self) -> tuple[str, ...]: ...
+
+    @property
+    def example(self) -> str: ...

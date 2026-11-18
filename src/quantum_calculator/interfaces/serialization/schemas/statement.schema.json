@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:quantum-calculator:schema:statement:1.0",
+  "title": "Enunciado digitado de um problema simbólico da Calculadora Quântica",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "notation",
+    "statement",
+    "symbols"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "notation": {
+      "enum": [
+        "text",
+        "latex"
+      ]
+    },
+    "statement": {
+      "$ref": "#/$defs/notated"
+    },
+    "symbols": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/symbol"
+      }
+    },
+    "problem": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/text"
+        }
+      ]
+    },
+    "conditions": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "array",
+          "maxItems": 8,
+          "items": {
+            "$ref": "#/$defs/notated"
+          }
+        }
+      ]
+    },
+    "candidate": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/notated"
+        }
+      ]
+    },
+    "description": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/text"
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "notated": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "symbol": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "role",
+        "domain",
+        "unit"
+      ],
+      "properties": {
+        "role": {
+          "enum": [
+            "variable",
+            "parameter",
+            "function"
+          ]
+        },
+        "domain": {
+          "enum": [
+            "real",
+            "positive",
+            "negative",
+            "nonnegative",
+            "nonzero"
+          ]
+        },
+        "unit": {
+          "$ref": "#/$defs/text"
+        },
+        "argument": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/text"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

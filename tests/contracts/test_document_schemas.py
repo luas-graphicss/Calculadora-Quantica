@@ -13,6 +13,14 @@ from support.cli import CliRunner
 
 ACCEPTED_CASES = ["electron_box_1nm.json", "electron_box_1nm_uncertainty.json"]
 STRUCTURALLY_DEFECTIVE_CASES = ["non_finite_width.json", "undeclared_covariance.json"]
+STATEMENT_CASES = [
+    "product_rule.json",
+    "reciprocal_primitive.json",
+    "parabola_area.json",
+    "decay_general_solution.json",
+    "decay_initial_value.json",
+    "decay_candidate_correct.json",
+]
 
 
 def _validator(name: str) -> Draft202012Validator:
@@ -55,6 +63,33 @@ def test_input_the_decoder_refuses_for_its_form_also_fails_the_problem_schema(
     document = json.loads((reference_cases / "rejected" / case).read_text("utf-8"))
 
     assert _violations("problem", document) != []
+
+
+@pytest.mark.parametrize("case", STATEMENT_CASES)
+def test_statement_reference_input_conforms_to_the_statement_schema(
+    symbolic_cases: Path, case: str
+) -> None:
+    document = json.loads((symbolic_cases / case).read_text("utf-8"))
+
+    assert _violations("statement", document) == []
+
+
+@pytest.mark.parametrize(
+    "defect",
+    [
+        {"notation": "mathml"},
+        {"statement": ""},
+        {"symbols": {"x": {"role": "variable", "domain": "real"}}},
+        {"conditions": "y(0) = y_0"},
+        {"assume": "x > 0"},
+    ],
+)
+def test_statement_the_decoder_refuses_for_its_form_also_fails_the_statement_schema(
+    symbolic_cases: Path, defect: dict[str, object]
+) -> None:
+    document = json.loads((symbolic_cases / "decay_initial_value.json").read_text("utf-8"))
+
+    assert _violations("statement", {**document, **defect}) != []
 
 
 @pytest.mark.parametrize("command", ["validate", "solve"])

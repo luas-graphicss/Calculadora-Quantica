@@ -41,6 +41,7 @@ class Dimension:
         return " ".join(factors) if factors else "1"
 
 
+DIMENSIONLESS = Dimension()
 MASS = Dimension(mass=1)
 LENGTH = Dimension(length=1)
 TIME = Dimension(time=1)

@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "problem": "calculus.definite_integral",
+  "description": "Área sob a parábola x² entre 0 e 1.",
+  "notation": "latex",
+  "statement": "\\int_{0}^{1} x^{2} \\, dx",
+  "symbols": {
+    "x": {
+      "role": "variable",
+      "domain": "real",
+      "unit": "1"
+    }
+  }
+}
