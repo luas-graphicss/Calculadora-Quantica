@@ -39,3 +39,10 @@ class Verifier(Protocol):
 
 class EnvironmentProbe(Protocol):
     def describe(self) -> EnvironmentManifest: ...
+
+
+def require_constant(constants: ConstantsEdition, identifier: str) -> PhysicalConstant:
+    constant = constants.find(identifier)
+    if constant is None:
+        raise LookupError(f"constants edition {constants.label} has no {identifier}")
+    return constant

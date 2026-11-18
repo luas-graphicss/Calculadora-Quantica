@@ -4,6 +4,10 @@ from fractions import Fraction
 
 from quantum_calculator.domain.quantities import Quantity
 
+PLANCK_CONSTANT = "planck_constant"
+ELECTRON_VOLT = "electron_volt"
+ELECTRON_MASS = "electron_mass"
+
 
 class ConstantExactness(StrEnum):
     EXACT = "exact"
