@@ -1,0 +1,65 @@
+{
+  "description": "Cada entrada difere de um caso aceito por um único defeito. O CLI deve recusar com esta categoria, este código e este campo, sem imprimir resultado.",
+  "cases": [
+    {
+      "file": "ambiguous_division.json",
+      "category": "ambiguous_input",
+      "code": "ambiguous_division",
+      "pointer": "/statement",
+      "excerpt": "1/2x",
+      "reason": "1/2x pode ser (1/2)*x ou 1/(2*x); a calculadora não escolhe."
+    },
+    {
+      "file": "unconfirmed_card.json",
+      "category": "ambiguous_input",
+      "code": "ambiguous_problem",
+      "pointer": "/problem",
+      "reason": "Uma candidata sem condição inicial não escolhe entre as três fichas da equação; a ficha precisa ser confirmada."
+    },
+    {
+      "file": "undeclared_symbol.json",
+      "category": "invalid_input",
+      "code": "undeclared_symbol",
+      "pointer": "/statement",
+      "excerpt": "z",
+      "reason": "Todo símbolo do enunciado precisa de papel, domínio e unidade declarados."
+    },
+    {
+      "file": "dimensional_argument.json",
+      "category": "invalid_input",
+      "code": "dimensional_argument",
+      "pointer": "/statement",
+      "excerpt": "x",
+      "reason": "A exponencial só aceita argumento adimensional, e x foi declarado em segundos."
+    },
+    {
+      "file": "missing_initial_condition.json",
+      "category": "invalid_input",
+      "code": "missing_field",
+      "pointer": "/conditions",
+      "reason": "A ficha de valor inicial exige a condição antes de qualquer cálculo."
+    },
+    {
+      "file": "singularity_in_interval.json",
+      "category": "unsupported_problem",
+      "code": "singularity_in_interval",
+      "pointer": "/statement",
+      "reason": "1/x não é integrável através de x = 0; a diferença da primitiva nos extremos daria zero, um valor sem sentido."
+    },
+    {
+      "file": "no_closed_primitive.json",
+      "category": "unsupported_problem",
+      "code": "outside_coverage",
+      "pointer": "/statement",
+      "reason": "A primitiva de exp(-x^2) pede a função erro, que não está registrada, e nenhum método numérico está homologado."
+    },
+    {
+      "file": "expression_too_deep.json",
+      "category": "budget_exceeded",
+      "code": "expression_too_deep",
+      "pointer": "/statement",
+      "excerpt": "(",
+      "reason": "Quarenta parênteses aninhados passam do limite de 32 níveis."
+    }
+  ]
+}

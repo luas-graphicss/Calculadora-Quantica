@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "problem": "calculus.derivative",
+  "description": "Exponencial de um tempo em segundos.",
+  "notation": "text",
+  "statement": "diff(exp(x), x)",
+  "symbols": {
+    "x": {
+      "role": "variable",
+      "domain": "real",
+      "unit": "s"
+    }
+  }
+}

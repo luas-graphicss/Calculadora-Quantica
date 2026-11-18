@@ -1,6 +1,6 @@
 {
   "document": "run_record",
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "input": {
     "sha256": "359bed25ad0841ada4f08b544b8ec609a8306f159dde9e54d97768e4eaaadb01",
     "schema_version": "1.0",
@@ -377,7 +377,7 @@
   "environment": {
     "package": {
       "name": "quantum-calculator",
-      "version": "0.1.0"
+      "version": "0.2.0"
     },
     "python": {
       "implementation": "CPython",

@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "problem": "calculus.derivative",
+  "description": "O símbolo z aparece no enunciado sem declaração.",
+  "notation": "text",
+  "statement": "diff(z^2*sin(x), x)",
+  "symbols": {
+    "x": {
+      "role": "variable",
+      "domain": "real",
+      "unit": "1"
+    }
+  }
+}

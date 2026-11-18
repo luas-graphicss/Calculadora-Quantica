@@ -80,3 +80,9 @@ class CatalogEntry(Protocol):
 
     @property
     def example(self) -> str: ...
+
+
+@dataclass(frozen=True, slots=True)
+class CatalogListing:
+    version: str
+    entries: tuple[CatalogEntry, ...]

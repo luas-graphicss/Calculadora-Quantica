@@ -66,38 +66,3 @@ def uncertainty_section(record: RunRecord, numbers: QuantityFormatter) -> list[s
         for item in evaluation.contributions
     )
     return section("Incerteza", lines)
-
-
-def verification_section(record: RunRecord) -> list[str]:
-    report = record.verification
-    lines = []
-    for check in report.checks:
-        lines.append(f"{check.status.value} [{check.kind.value}] {check.identifier}")
-        lines.append(f"  {check.statement}")
-        lines.append(f"  observado: {check.observed}")
-    lines.extend(
-        f"não realizada: {skipped.identifier}. {skipped.reason}" for skipped in report.not_performed
-    )
-    lines.extend(f"referência: {reference}" for reference in report.references)
-    return section(f"Verificação: {report.status.value}", lines)
-
-
-def limitations_section(record: RunRecord) -> list[str]:
-    return section("Limitações", list(record.problem.card.limitations))
-
-
-def environment_section(record: RunRecord) -> list[str]:
-    environment = record.environment
-    dependencies = "; ".join(
-        f"{dependency.name} {dependency.version}" for dependency in environment.dependencies
-    )
-    return section(
-        "Ambiente",
-        [
-            f"{environment.package_name} {environment.package_version}; "
-            f"{environment.python_implementation} {environment.python_version}; "
-            f"{environment.platform}",
-            dependencies,
-            f"registro de unidades {record.unit_registry_version}",
-        ],
-    )

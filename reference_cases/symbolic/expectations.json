@@ -1,0 +1,95 @@
+{
+  "description": "Oráculo dos casos simbólicos. Cada resposta foi derivada à mão, com a conta em derivation; nenhuma veio da saída do método que ela confere. A comparação é por equivalência matemática, não pela forma do texto.",
+  "cases": [
+    {
+      "file": "product_rule.json",
+      "card": "calculus.derivative",
+      "answer": "x^2*cos(x) + 2*x*sin(x)",
+      "derivation": "Regra do produto: (x^2)' sin(x) + x^2 (sin(x))' = 2 x sin(x) + x^2 cos(x).",
+      "verification": "passed",
+      "failed_checks": [],
+      "validity": [],
+      "arbitrary_constants": []
+    },
+    {
+      "file": "reciprocal_primitive.json",
+      "card": "calculus.antiderivative",
+      "answer": "ln(abs(x)) + C",
+      "derivation": "Para x > 0, (ln x)' = 1/x; para x < 0, (ln(-x))' = -1/(-x) = 1/x. As duas se escrevem ln|x|, fora de x = 0.",
+      "verification": "passed",
+      "failed_checks": [],
+      "validity": [
+        "x ≠ 0"
+      ],
+      "arbitrary_constants": [
+        "C"
+      ]
+    },
+    {
+      "file": "parabola_area.json",
+      "card": "calculus.definite_integral",
+      "answer": "1/3",
+      "derivation": "A primitiva de x^2 é x^3/3, contínua em [0, 1]; a diferença entre os extremos é 1/3 - 0.",
+      "verification": "passed",
+      "failed_checks": [],
+      "validity": [],
+      "arbitrary_constants": []
+    },
+    {
+      "file": "decay_general_solution.json",
+      "card": "ode.first_order_linear.general_solution",
+      "answer": "C*exp(-k*t)",
+      "derivation": "Separando variáveis em y' = -k y: dy/y = -k dt, ln|y| = -k t + c, y = C exp(-k t); C real cobre também a solução nula.",
+      "verification": "passed",
+      "failed_checks": [],
+      "validity": [],
+      "arbitrary_constants": [
+        "C"
+      ]
+    },
+    {
+      "file": "decay_initial_value.json",
+      "card": "ode.first_order_linear.initial_value",
+      "answer": "y_0*exp(-k*t)",
+      "derivation": "Da solução geral y = C exp(-k t), a condição y(0) = y_0 dá C = y_0.",
+      "verification": "passed",
+      "failed_checks": [],
+      "validity": [],
+      "arbitrary_constants": []
+    },
+    {
+      "file": "decay_candidate_correct.json",
+      "card": "ode.first_order_linear.candidate_review",
+      "answer": "y_0*exp(-k*t)",
+      "derivation": "y' = -k y_0 exp(-k t) = -k y e y(0) = y_0: a equação e a condição inicial valem.",
+      "verification": "passed",
+      "failed_checks": [],
+      "validity": [],
+      "arbitrary_constants": []
+    },
+    {
+      "file": "decay_candidate_wrong_initial_value.json",
+      "card": "ode.first_order_linear.candidate_review",
+      "answer": "2*y_0*exp(-k*t)",
+      "derivation": "y' = -2 k y_0 exp(-k t) = -k y, então a equação vale; mas y(0) = 2 y_0, diferente de y_0 porque y_0 > 0.",
+      "verification": "failed",
+      "failed_checks": [
+        "initial_condition"
+      ],
+      "validity": [],
+      "arbitrary_constants": []
+    },
+    {
+      "file": "decay_candidate_wrong_sign.json",
+      "card": "ode.first_order_linear.candidate_review",
+      "answer": "y_0*exp(k*t)",
+      "derivation": "y(0) = y_0, então a condição inicial vale; mas y' = k y, e y' + k y = 2 k y_0 exp(k t) não se anula com k > 0 e y_0 > 0.",
+      "verification": "failed",
+      "failed_checks": [
+        "equation_residual"
+      ],
+      "validity": [],
+      "arbitrary_constants": []
+    }
+  ]
+}

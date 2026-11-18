@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:quantum-calculator:schema:output:1.0",
+  "$id": "urn:quantum-calculator:schema:output:1.1",
   "title": "Documentos de saída da Calculadora Quântica",
   "oneOf": [
     {
@@ -8,6 +8,15 @@
     },
     {
       "$ref": "#/$defs/run_record"
+    },
+    {
+      "$ref": "#/$defs/statement_validation"
+    },
+    {
+      "$ref": "#/$defs/statement_run_record"
+    },
+    {
+      "$ref": "#/$defs/catalog"
     },
     {
       "$ref": "#/$defs/rejection"
@@ -790,6 +799,433 @@
         }
       }
     },
+    "notated": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "text",
+        "latex",
+        "structure"
+      ],
+      "properties": {
+        "text": {
+          "$ref": "#/$defs/text"
+        },
+        "latex": {
+          "$ref": "#/$defs/text"
+        },
+        "structure": {
+          "$ref": "#/$defs/text"
+        }
+      }
+    },
+    "read_statement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "text",
+        "latex",
+        "structure"
+      ],
+      "properties": {
+        "source": {
+          "$ref": "#/$defs/text"
+        },
+        "text": {
+          "$ref": "#/$defs/text"
+        },
+        "latex": {
+          "$ref": "#/$defs/text"
+        },
+        "structure": {
+          "$ref": "#/$defs/text"
+        }
+      }
+    },
+    "domain_condition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "relation",
+        "scope",
+        "expression",
+        "text"
+      ],
+      "properties": {
+        "relation": {
+          "enum": [
+            "nonzero",
+            "positive",
+            "nonnegative"
+          ]
+        },
+        "scope": {
+          "enum": [
+            "pointwise",
+            "integration_interval"
+          ]
+        },
+        "expression": {
+          "$ref": "#/$defs/notated"
+        },
+        "text": {
+          "$ref": "#/$defs/text"
+        }
+      }
+    },
+    "statement_symbol": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "role",
+        "domain",
+        "unit",
+        "argument"
+      ],
+      "properties": {
+        "name": {
+          "$ref": "#/$defs/text"
+        },
+        "role": {
+          "enum": [
+            "variable",
+            "parameter",
+            "function"
+          ]
+        },
+        "domain": {
+          "enum": [
+            "real",
+            "positive",
+            "negative",
+            "nonnegative",
+            "nonzero"
+          ]
+        },
+        "unit": {
+          "$ref": "#/$defs/text"
+        },
+        "argument": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/text"
+            }
+          ]
+        }
+      }
+    },
+    "statement_problem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "card",
+        "domain",
+        "notation",
+        "statement",
+        "symbols",
+        "conditions",
+        "candidate",
+        "result_unit"
+      ],
+      "properties": {
+        "card": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "identifier",
+            "version",
+            "area",
+            "problem_type",
+            "title",
+            "selection"
+          ],
+          "properties": {
+            "identifier": {
+              "$ref": "#/$defs/text"
+            },
+            "version": {
+              "type": "string",
+              "pattern": "^\\d+\\.\\d+\\.\\d+$"
+            },
+            "area": {
+              "$ref": "#/$defs/text"
+            },
+            "problem_type": {
+              "$ref": "#/$defs/text"
+            },
+            "title": {
+              "$ref": "#/$defs/text"
+            },
+            "selection": {
+              "enum": [
+                "confirmed",
+                "suggested"
+              ]
+            }
+          }
+        },
+        "domain": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/text"
+          }
+        },
+        "notation": {
+          "enum": [
+            "text",
+            "latex"
+          ]
+        },
+        "statement": {
+          "$ref": "#/$defs/read_statement"
+        },
+        "symbols": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/statement_symbol"
+          }
+        },
+        "conditions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/read_statement"
+          }
+        },
+        "candidate": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/read_statement"
+            }
+          ]
+        },
+        "result_unit": {
+          "$ref": "#/$defs/text"
+        }
+      }
+    },
+    "statement_plan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "method",
+        "nature",
+        "justification",
+        "budget"
+      ],
+      "properties": {
+        "method": {
+          "$ref": "#/$defs/text"
+        },
+        "nature": {
+          "enum": [
+            "exact",
+            "approximate"
+          ]
+        },
+        "justification": {
+          "$ref": "#/$defs/text"
+        },
+        "budget": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "wall_seconds",
+            "cpu_seconds",
+            "memory_bytes"
+          ],
+          "properties": {
+            "wall_seconds": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "cpu_seconds": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "memory_bytes": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        }
+      }
+    },
+    "statement_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "nature",
+        "answer",
+        "unit",
+        "validity",
+        "assumptions",
+        "special_cases",
+        "arbitrary_constants",
+        "certificate",
+        "steps"
+      ],
+      "properties": {
+        "nature": {
+          "enum": [
+            "exact",
+            "approximate"
+          ]
+        },
+        "answer": {
+          "$ref": "#/$defs/notated"
+        },
+        "unit": {
+          "$ref": "#/$defs/text"
+        },
+        "validity": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/domain_condition"
+          }
+        },
+        "assumptions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/domain_condition"
+          }
+        },
+        "special_cases": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "when",
+              "answer"
+            ],
+            "properties": {
+              "when": {
+                "$ref": "#/$defs/notated"
+              },
+              "answer": {
+                "$ref": "#/$defs/notated"
+              }
+            }
+          }
+        },
+        "arbitrary_constants": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/text"
+          }
+        },
+        "certificate": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/notated"
+            }
+          ]
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "description",
+              "expression"
+            ],
+            "properties": {
+              "description": {
+                "$ref": "#/$defs/text"
+              },
+              "expression": {
+                "$ref": "#/$defs/notated"
+              }
+            }
+          }
+        }
+      }
+    },
+    "catalog_card": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "identifier",
+        "version",
+        "area",
+        "problem_type",
+        "title",
+        "domain",
+        "method",
+        "limitations",
+        "example"
+      ],
+      "properties": {
+        "identifier": {
+          "$ref": "#/$defs/text"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "area": {
+          "$ref": "#/$defs/text"
+        },
+        "problem_type": {
+          "$ref": "#/$defs/text"
+        },
+        "title": {
+          "$ref": "#/$defs/text"
+        },
+        "domain": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/text"
+          },
+          "minItems": 1
+        },
+        "method": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "identifier",
+            "nature",
+            "justification"
+          ],
+          "properties": {
+            "identifier": {
+              "$ref": "#/$defs/text"
+            },
+            "nature": {
+              "enum": [
+                "exact",
+                "approximate"
+              ]
+            },
+            "justification": {
+              "$ref": "#/$defs/text"
+            }
+          }
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/text"
+          },
+          "minItems": 1
+        },
+        "example": {
+          "$ref": "#/$defs/text"
+        }
+      }
+    },
     "diagnostic": {
       "type": "object",
       "additionalProperties": false,
@@ -798,7 +1234,8 @@
         "code",
         "pointer",
         "message",
-        "expected"
+        "expected",
+        "excerpt"
       ],
       "properties": {
         "category": {
@@ -875,6 +1312,35 @@
         },
         "expected": {
           "$ref": "#/$defs/text"
+        },
+        "excerpt": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "text",
+                "start",
+                "end"
+              ],
+              "properties": {
+                "text": {
+                  "type": "string"
+                },
+                "start": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "end": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              }
+            }
+          ]
         }
       }
     },
@@ -893,7 +1359,7 @@
           "const": "validation"
         },
         "schema_version": {
-          "const": "1.0"
+          "const": "1.1"
         },
         "input": {
           "$ref": "#/$defs/input"
@@ -927,7 +1393,7 @@
           "const": "run_record"
         },
         "schema_version": {
-          "const": "1.0"
+          "const": "1.1"
         },
         "input": {
           "$ref": "#/$defs/input"
@@ -986,6 +1452,137 @@
         }
       }
     },
+    "statement_validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "document",
+        "schema_version",
+        "input",
+        "problem",
+        "plan"
+      ],
+      "properties": {
+        "document": {
+          "const": "statement_validation"
+        },
+        "schema_version": {
+          "const": "1.1"
+        },
+        "input": {
+          "$ref": "#/$defs/input"
+        },
+        "problem": {
+          "$ref": "#/$defs/statement_problem"
+        },
+        "plan": {
+          "$ref": "#/$defs/statement_plan"
+        }
+      }
+    },
+    "statement_run_record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "document",
+        "schema_version",
+        "input",
+        "problem",
+        "plan",
+        "catalog",
+        "units",
+        "result",
+        "verification",
+        "limitations",
+        "environment"
+      ],
+      "properties": {
+        "document": {
+          "const": "statement_run_record"
+        },
+        "schema_version": {
+          "const": "1.1"
+        },
+        "input": {
+          "$ref": "#/$defs/input"
+        },
+        "problem": {
+          "$ref": "#/$defs/statement_problem"
+        },
+        "plan": {
+          "$ref": "#/$defs/statement_plan"
+        },
+        "catalog": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "version"
+          ],
+          "properties": {
+            "version": {
+              "type": "string",
+              "pattern": "^\\d+\\.\\d+\\.\\d+$"
+            }
+          }
+        },
+        "units": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "registry_version"
+          ],
+          "properties": {
+            "registry_version": {
+              "$ref": "#/$defs/text"
+            }
+          }
+        },
+        "result": {
+          "$ref": "#/$defs/statement_result"
+        },
+        "verification": {
+          "$ref": "#/$defs/verification"
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/text"
+          }
+        },
+        "environment": {
+          "$ref": "#/$defs/environment"
+        }
+      }
+    },
+    "catalog": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "document",
+        "schema_version",
+        "version",
+        "cards"
+      ],
+      "properties": {
+        "document": {
+          "const": "catalog"
+        },
+        "schema_version": {
+          "const": "1.1"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "cards": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/catalog_card"
+          },
+          "minItems": 1
+        }
+      }
+    },
     "rejection": {
       "type": "object",
       "additionalProperties": false,
@@ -1000,7 +1597,7 @@
           "const": "rejection"
         },
         "schema_version": {
-          "const": "1.0"
+          "const": "1.1"
         },
         "category": {
           "enum": [

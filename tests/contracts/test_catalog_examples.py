@@ -9,11 +9,13 @@ from quantum_calculator.catalog.listing import CATALOG_VERSION, catalog_entries
 from quantum_calculator.catalog.statement_catalog import HOMOLOGATED_STATEMENT_CARDS
 from quantum_calculator.composition import Calculator
 from quantum_calculator.domain.cards import CatalogEntry, ProblemCard
+from quantum_calculator.domain.execution import NeverCancelled
 from quantum_calculator.domain.statement_cards import StatementCard
 from quantum_calculator.domain.statements import CardSelection
 from quantum_calculator.domain.verification import VerificationStatus
 from quantum_calculator.interfaces.serialization.decoding.problem_decoder import decode_problem
 from quantum_calculator.interfaces.serialization.decoding.statement_decoder import decode_statement
+from quantum_calculator.method_registry import statement_methods
 
 SEMANTIC_VERSION = r"\d+\.\d+\.\d+"
 
@@ -41,6 +43,25 @@ def test_statement_card_example_is_validated_against_the_card_it_names(
 
     assert problem.card is card
     assert problem.selection is CardSelection.CONFIRMED
+
+
+@pytest.mark.parametrize("card", HOMOLOGATED_STATEMENT_CARDS, ids=lambda card: card.identifier)
+def test_statement_card_example_is_solved_by_its_homologated_method_and_verified(
+    card: StatementCard, inline_calculator: Calculator, repository_root: Path
+) -> None:
+    spec = decode_statement((repository_root / card.example).read_bytes())
+
+    record = inline_calculator.solve_statement.execute(spec, NeverCancelled())
+
+    assert record.problem.card is card
+    assert record.plan.method == card.method
+    assert record.verification.status is VerificationStatus.PASSED
+
+
+def test_every_statement_card_method_has_a_homologated_solver_and_verifier() -> None:
+    planned = {card.method.identifier for card in HOMOLOGATED_STATEMENT_CARDS}
+
+    assert planned == set(statement_methods())
 
 
 def test_card_identifiers_are_unique_across_the_catalog() -> None:

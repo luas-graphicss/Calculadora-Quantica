@@ -58,6 +58,6 @@ Limitações
   O modelo não relativístico perde validade quando a energia se aproxima de m c^2.
 
 Ambiente
-  quantum-calculator 0.1.0; CPython 3.12.15; Linux-6.18.56-x86_64-with-glibc2.34
+  quantum-calculator 0.2.0; CPython 3.12.15; Linux-6.18.56-x86_64-with-glibc2.34
   sympy 1.14.0; mpmath 1.3.0
   registro de unidades 1.0.0

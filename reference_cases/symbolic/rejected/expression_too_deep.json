@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "problem": "calculus.derivative",
+  "description": "Parênteses aninhados além do limite de profundidade.",
+  "notation": "text",
+  "statement": "diff(((((((((((((((((((((((((((((((((((((((((x)))))))))))))))))))))))))))))))))))))))), x)",
+  "symbols": {
+    "x": {
+      "role": "variable",
+      "domain": "real",
+      "unit": "1"
+    }
+  }
+}

@@ -7,7 +7,17 @@ from jsonschema import Draft202012Validator
 from quantum_calculator.domain.constants import ConstantExactness
 from quantum_calculator.domain.diagnostics import DiagnosticCategory, DiagnosticCode
 from quantum_calculator.domain.methods import ResultNature
+from quantum_calculator.domain.statements import (
+    CardSelection,
+    Notation,
+    SymbolDomain,
+    SymbolRole,
+)
+from quantum_calculator.domain.symbolic_solution import ConditionRelation, ConditionScope
 from quantum_calculator.domain.verification import EvidenceKind, VerificationStatus
+from quantum_calculator.interfaces.serialization.encoding.common_sections import (
+    OUTPUT_SCHEMA_VERSION,
+)
 from quantum_calculator.interfaces.serialization.schema_files import SCHEMA_NAMES, read_schema
 from support.cli import CliRunner
 
@@ -20,6 +30,8 @@ STATEMENT_CASES = [
     "decay_general_solution.json",
     "decay_initial_value.json",
     "decay_candidate_correct.json",
+    "decay_candidate_wrong_initial_value.json",
+    "decay_candidate_wrong_sign.json",
 ]
 
 
@@ -102,6 +114,38 @@ def test_json_output_conforms_to_the_output_schema(
     assert _violations("output", json.loads(result.stdout)) == []
 
 
+@pytest.mark.parametrize("command", ["validate", "solve"])
+@pytest.mark.parametrize("case", STATEMENT_CASES)
+def test_statement_json_output_conforms_to_the_output_schema(
+    run_cli: CliRunner, symbolic_cases: Path, command: str, case: str
+) -> None:
+    result = run_cli(command, symbolic_cases / case, "--format", "json")
+
+    assert _violations("output", json.loads(result.stdout)) == []
+
+
+def test_catalog_document_conforms_to_the_output_schema(run_cli: CliRunner) -> None:
+    result = run_cli("catalog", "--format", "json")
+
+    assert _violations("output", json.loads(result.stdout)) == []
+
+
+def test_every_statement_refusal_document_conforms_to_the_output_schema(
+    run_cli: CliRunner, symbolic_cases: Path
+) -> None:
+    refused = sorted((symbolic_cases / "rejected").glob("*.json"))
+    cases = [path for path in refused if path.name != "expectations.json"]
+
+    violations = [
+        _violations("output", json.loads(run_cli("validate", path, "--format", "json").stderr))
+        for path in cases
+        if run_cli("validate", path).exit_code != 0
+    ]
+
+    assert violations
+    assert all(found == [] for found in violations)
+
+
 def test_every_rejection_document_conforms_to_the_output_schema(
     run_cli: CliRunner, reference_cases: Path
 ) -> None:
@@ -132,3 +176,39 @@ def test_output_schema_enumerations_follow_the_domain_vocabulary() -> None:
     assert definitions["constant"]["properties"]["exactness"]["enum"] == [
         exactness.value for exactness in ConstantExactness
     ]
+
+
+def test_statement_schema_enumerations_follow_the_domain_vocabulary() -> None:
+    definitions = json.loads(read_schema("output"))["$defs"]
+    symbol = definitions["statement_symbol"]["properties"]
+    problem = definitions["statement_problem"]["properties"]
+    condition = definitions["domain_condition"]["properties"]
+
+    assert symbol["role"]["enum"] == [role.value for role in SymbolRole]
+    assert symbol["domain"]["enum"] == [domain.value for domain in SymbolDomain]
+    assert problem["notation"]["enum"] == [notation.value for notation in Notation]
+    assert problem["card"]["properties"]["selection"]["enum"] == [
+        selection.value for selection in CardSelection
+    ]
+    assert condition["relation"]["enum"] == [relation.value for relation in ConditionRelation]
+    assert condition["scope"]["enum"] == [scope.value for scope in ConditionScope]
+
+
+@pytest.mark.parametrize(
+    "document",
+    [
+        "validation",
+        "run_record",
+        "statement_validation",
+        "statement_run_record",
+        "catalog",
+        "rejection",
+    ],
+)
+def test_every_output_document_declares_the_current_schema_version(document: str) -> None:
+    schema = json.loads(read_schema("output"))
+    declared = schema["$defs"][document]["properties"]["schema_version"]
+
+    assert declared == {"const": OUTPUT_SCHEMA_VERSION}
+    assert schema["$id"].endswith(f":{OUTPUT_SCHEMA_VERSION}")
+    assert {"$ref": f"#/$defs/{document}"} in schema["oneOf"]

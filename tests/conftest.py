@@ -17,6 +17,7 @@ from quantum_calculator.solvers.symbolic.infinite_square_well import InfiniteSqu
 from quantum_calculator.verification.infinite_square_well import InfiniteSquareWellVerifier
 from support.cli import CliResult, CliRunner
 from support.documents import ProblemDocument
+from support.execution import InlineExecutor
 
 
 @pytest.fixture(scope="session")
@@ -67,6 +68,11 @@ def verifier(constants: Codata2022Constants) -> InfiniteSquareWellVerifier:
 @pytest.fixture(scope="session")
 def calculator() -> Calculator:
     return build_calculator()
+
+
+@pytest.fixture(scope="session")
+def inline_calculator() -> Calculator:
+    return build_calculator(executor=InlineExecutor())
 
 
 @pytest.fixture

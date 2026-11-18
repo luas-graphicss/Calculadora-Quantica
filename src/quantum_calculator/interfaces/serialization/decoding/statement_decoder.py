@@ -12,6 +12,7 @@ from quantum_calculator.interfaces.serialization.decoding.schema_version import 
 
 STATEMENT_SCHEMA_VERSION = "1.0"
 STATEMENT_FIELD = "statement"
+STATEMENT_ONLY_FIELDS = frozenset({"notation", STATEMENT_FIELD, "symbols"})
 
 _SYMBOL_FORM = 'objeto {"role", "domain", "unit"} e, para funções, "argument"'
 
