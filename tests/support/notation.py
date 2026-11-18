@@ -1,5 +1,5 @@
 from quantum_calculator.domain.dimensions import Dimension
-from quantum_calculator.domain.expressions import Statement
+from quantum_calculator.domain.expressions import Equation, Expression, Statement
 from quantum_calculator.domain.statement_errors import StatementError
 from quantum_calculator.domain.statements import BoundSymbol, Notation, SymbolDomain, SymbolRole
 from quantum_calculator.notation.reader import read_statement
@@ -41,6 +41,13 @@ SYMBOLS = symbol_table(
 
 def read(notation: Notation, statement: str, symbols: SymbolTable = SYMBOLS) -> Statement:
     return read_statement(notation, statement, symbols)
+
+
+def read_expression_text(statement: str, symbols: SymbolTable = SYMBOLS) -> Expression:
+    tree = read(Notation.TEXT, statement, symbols)
+    if isinstance(tree, Equation):
+        raise TypeError(f"{statement!r} is an equation, not an expression")
+    return tree
 
 
 def structure_of(notation: Notation, statement: str, symbols: SymbolTable = SYMBOLS) -> str:

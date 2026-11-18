@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from enum import StrEnum
 
 from quantum_calculator.domain.dimensions import Dimension
+from quantum_calculator.domain.expression_traversal import unknown_functions
 from quantum_calculator.domain.expressions import Equation, Statement
 from quantum_calculator.domain.problem_spec import SourceDocument
 from quantum_calculator.domain.statement_cards import StatementCard
@@ -62,6 +63,11 @@ class BoundSymbol:
     unit: str
     argument: str | None
 
+    def require_argument(self) -> str:
+        if self.argument is None:
+            raise LookupError(f"symbol {self.name} was not declared as a function of a variable")
+        return self.argument
+
 
 @dataclass(frozen=True, slots=True)
 class ValidatedStatement:
@@ -80,3 +86,14 @@ class ValidatedStatement:
             if bound.name == name:
                 return bound
         raise KeyError(name)
+
+    @property
+    def variable_names(self) -> frozenset[str]:
+        return frozenset(bound.name for bound in self.symbols if bound.role is SymbolRole.VARIABLE)
+
+    @property
+    def unknown(self) -> BoundSymbol:
+        references = unknown_functions(self.statement)
+        if not references:
+            raise LookupError("the statement has no unknown function")
+        return self.symbol(references[0].name)

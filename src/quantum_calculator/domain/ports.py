@@ -1,9 +1,13 @@
+from collections.abc import Callable
 from typing import Protocol
 
 from quantum_calculator.domain.constants import PhysicalConstant
 from quantum_calculator.domain.dimensions import Dimension
+from quantum_calculator.domain.execution import CancellationSignal, ExecutionBudget
 from quantum_calculator.domain.run_record import EnvironmentManifest
 from quantum_calculator.domain.solution import SolverReport
+from quantum_calculator.domain.statements import ValidatedStatement
+from quantum_calculator.domain.symbolic_solution import SymbolicSolverReport
 from quantum_calculator.domain.units import Unit
 from quantum_calculator.domain.validated_problem import ValidatedProblem
 from quantum_calculator.domain.verification import VerificationReport
@@ -35,6 +39,22 @@ class Solver(Protocol):
 
 class Verifier(Protocol):
     def verify(self, problem: ValidatedProblem, report: SolverReport) -> VerificationReport: ...
+
+
+class StatementSolver(Protocol):
+    def solve(self, problem: ValidatedStatement) -> SymbolicSolverReport: ...
+
+
+class StatementVerifier(Protocol):
+    def verify(
+        self, problem: ValidatedStatement, report: SymbolicSolverReport
+    ) -> VerificationReport: ...
+
+
+class CalculationExecutor(Protocol):
+    def run[Result](
+        self, task: Callable[[], Result], budget: ExecutionBudget, cancellation: CancellationSignal
+    ) -> Result: ...
 
 
 class EnvironmentProbe(Protocol):

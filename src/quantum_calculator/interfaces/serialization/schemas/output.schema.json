@@ -676,6 +676,7 @@
               "kind": {
                 "enum": [
                   "proof",
+                  "numerical_evidence",
                   "consistency_test"
                 ]
               },
