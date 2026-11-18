@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "problem": "quantum.infinite_square_well.energy_level",
+  "hypotheses": {
+    "walls": "infinite",
+    "interior_potential": "zero",
+    "boundary_wavefunction": "zero"
+  },
+  "parameters": {
+    "mass": {
+      "constant": "electron_mass"
+    },
+    "width": {
+      "value": 1,
+      "unit": "nm"
+    },
+    "level": 1
+  },
+  "requested": {
+    "quantity": "energy",
+    "unit": "eV",
+    "significant_digits": 10
+  },
+  "uncertainty": {
+    "standard_uncertainties": {
+      "mass": {
+        "value": "2.8e-40",
+        "unit": "kg"
+      },
+      "width": {
+        "value": "0.01",
+        "unit": "nm"
+      }
+    }
+  }
+}

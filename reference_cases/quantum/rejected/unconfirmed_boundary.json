@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "problem": "quantum.infinite_square_well.energy_level",
+  "hypotheses": {
+    "walls": "infinite",
+    "interior_potential": "zero"
+  },
+  "parameters": {
+    "mass": {
+      "constant": "electron_mass"
+    },
+    "width": {
+      "value": 1,
+      "unit": "nm"
+    },
+    "level": 1
+  },
+  "requested": {
+    "quantity": "energy",
+    "unit": "eV",
+    "significant_digits": 10
+  }
+}
