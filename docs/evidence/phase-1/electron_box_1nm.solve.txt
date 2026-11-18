@@ -1,0 +1,63 @@
+E = 0.3760301621 eV
+resultado exact; 10 algarismos significativos, arredondamento half_even; verificação: passed
+
+Problema
+  ficha: quantum.infinite_square_well.energy_level 1.0.0
+  Nível de energia de uma partícula em um poço infinito unidimensional
+  descrição: Elétron de massa livre em um poço infinito unidimensional de 1 nm: energia do nível fundamental.
+  entrada (sha256): 63405a2a9fed11efccdf9110877b97b95dc5c4dc759677e88f2e1f781388b085
+
+Hipóteses
+  da ficha: Partícula única, não relativística e sem spin, em uma dimensão espacial.
+  da ficha: Equação de Schrödinger independente do tempo no intervalo 0 < x < L.
+  confirmada: walls = infinite. As paredes do poço são infinitas: a partícula não sai do intervalo.
+  confirmada: interior_potential = zero. O potencial dentro do poço é nulo, o que põe o zero de energia no fundo do poço.
+  confirmada: boundary_wavefunction = zero. A função de onda se anula nas duas extremidades (Dirichlet homogênea).
+
+Parâmetros em unidades coerentes do SI
+  m = 9.1093837139E-31 kg; constante electron_mass do catálogo
+  L = 1E-9 m; entrada: 1 nm
+  n = 1
+
+Constantes (CODATA 2022)
+  h = 6.62607015E-34 J s; exata; https://physics.nist.gov/cgi-bin/cuu/Value?h
+  m_e = 9.1093837139E-31 kg; medida, u = 2.8E-40 kg; https://physics.nist.gov/cgi-bin/cuu/Value?me
+  eV = 1.602176634E-19 J; exata; https://physics.nist.gov/cgi-bin/cuu/Value?evj
+
+Memória de cálculo
+  método: closed_form.infinite_square_well_energy (exact)
+  O problema de autovalores com extremos de Dirichlet tem solução fechada, E_n = n^2 h^2 / (8 m L^2); nenhuma aproximação numérica é necessária.
+  1. Expressão fechada dos níveis de energia: E_n = h**2*n**2/(8*L**2*m)
+  2. Numerador em unidades coerentes do SI: h**2*n**2 = 4.39048056327210225E-67 J^2 s^2
+  3. Denominador em unidades coerentes do SI: 8*L**2*m = 7.28750697112E-48 kg m^2
+  4. Energia em unidades coerentes do SI: h**2*n**2/(8*L**2*m) = 6.024667394036591229315698043602203E-20 J (arredondado)
+  5. Conversão para eV: divisão por 1.602176634E-19 J/eV
+
+Incerteza
+  não avaliada. Nenhuma incerteza de entrada foi declarada.
+
+Verificação: passed
+  passed [consistency_test] dimensional_consistency
+    O valor relatado e a unidade de exibição têm a dimensão que a ficha declara para a saída.
+    observado: valor relatado em kg m^2 s^-2; a ficha declara kg m^2 s^-2
+  passed [proof] stationary_schrodinger_residual
+    psi_n(x) = sin(n pi x / L) satisfaz -(h^2 / (8 pi^2 m)) psi_n'' = E psi_n em 0 < x < L com a energia informada.
+    observado: a razão -(h^2 / (8 pi^2 m)) psi_n'' / psi_n não depende da posição e é igual à energia informada
+  passed [proof] dirichlet_boundary
+    psi_n se anula nas duas extremidades do poço para todo n inteiro positivo.
+    observado: psi_n(0) = 0 e psi_n(L) = 0
+  passed [proof] normalizable_mode
+    A integral de psi_n(x)^2 em [0, L] vale L/2: o estado é normalizável, com constante sqrt(2/L).
+    observado: integral em x/L igual a 1/2
+  não realizada: independent_discrete_solution. Nenhum método numérico está homologado nesta versão para comparar com uma solução discreta independente.
+  referência: D. J. Griffiths e D. F. Schroeter, Introduction to Quantum Mechanics, 3ª ed., Cambridge University Press, 2018, seção 2.2.
+
+Limitações
+  Um poço finito, uma massa efetiva ou outro zero de energia definem problemas diferentes desta ficha.
+  A expressão é exata no modelo; os algarismos exibidos não declaram a precisão experimental dos parâmetros.
+  O modelo não relativístico perde validade quando a energia se aproxima de m c^2.
+
+Ambiente
+  quantum-calculator 0.1.0; CPython 3.12.15; Linux-6.18.56-x86_64-with-glibc2.34
+  sympy 1.14.0; mpmath 1.3.0
+  registro de unidades 1.0.0

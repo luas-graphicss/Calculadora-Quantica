@@ -1,0 +1,398 @@
+{
+  "document": "run_record",
+  "schema_version": "1.0",
+  "input": {
+    "sha256": "359bed25ad0841ada4f08b544b8ec609a8306f159dde9e54d97768e4eaaadb01",
+    "schema_version": "1.0",
+    "description": "Elétron em um poço infinito de 1 nm com incertezas independentes de massa e largura.",
+    "text": "{\n  \"schema_version\": \"1.0\",\n  \"problem\": \"quantum.infinite_square_well.energy_level\",\n  \"description\": \"Elétron em um poço infinito de 1 nm com incertezas independentes de massa e largura.\",\n  \"hypotheses\": {\n    \"walls\": \"infinite\",\n    \"interior_potential\": \"zero\",\n    \"boundary_wavefunction\": \"zero\"\n  },\n  \"parameters\": {\n    \"mass\": {\n      \"constant\": \"electron_mass\"\n    },\n    \"width\": {\n      \"value\": 1,\n      \"unit\": \"nm\"\n    },\n    \"level\": 1\n  },\n  \"requested\": {\n    \"quantity\": \"energy\",\n    \"unit\": \"eV\",\n    \"significant_digits\": 10\n  },\n  \"uncertainty\": {\n    \"covariance\": \"independent\",\n    \"standard_uncertainties\": {\n      \"mass\": {\n        \"value\": \"2.8e-40\",\n        \"unit\": \"kg\"\n      },\n      \"width\": {\n        \"value\": \"0.01\",\n        \"unit\": \"nm\"\n      }\n    }\n  }\n}\n"
+  },
+  "problem": {
+    "card": {
+      "identifier": "quantum.infinite_square_well.energy_level",
+      "version": "1.0.0",
+      "area": "stationary_schrodinger_1d",
+      "title": "Nível de energia de uma partícula em um poço infinito unidimensional"
+    },
+    "scope": [
+      "Partícula única, não relativística e sem spin, em uma dimensão espacial.",
+      "Equação de Schrödinger independente do tempo no intervalo 0 < x < L."
+    ],
+    "hypotheses": [
+      {
+        "key": "walls",
+        "value": "infinite",
+        "statement": "As paredes do poço são infinitas: a partícula não sai do intervalo."
+      },
+      {
+        "key": "interior_potential",
+        "value": "zero",
+        "statement": "O potencial dentro do poço é nulo, o que põe o zero de energia no fundo do poço."
+      },
+      {
+        "key": "boundary_wavefunction",
+        "value": "zero",
+        "statement": "A função de onda se anula nas duas extremidades (Dirichlet homogênea)."
+      }
+    ],
+    "parameters": [
+      {
+        "name": "mass",
+        "symbol": "m",
+        "origin": "catalog_constant",
+        "constant": "electron_mass",
+        "si": {
+          "decimal": "9.1093837139E-31",
+          "is_exact": true,
+          "numerator": "91093837139",
+          "denominator": "100000000000000000000000000000000000000000",
+          "unit": "kg"
+        }
+      },
+      {
+        "name": "width",
+        "symbol": "L",
+        "origin": "user",
+        "given": {
+          "value": "1",
+          "unit": "nm"
+        },
+        "si": {
+          "decimal": "1E-9",
+          "is_exact": true,
+          "numerator": "1",
+          "denominator": "1000000000",
+          "unit": "m"
+        }
+      },
+      {
+        "name": "level",
+        "symbol": "n",
+        "origin": "user",
+        "count": "1"
+      }
+    ],
+    "requested": {
+      "quantity": "energy",
+      "symbol": "E",
+      "label": "energia do nível",
+      "unit": "eV",
+      "significant_digits": 10
+    },
+    "uncertainty": {
+      "covariance": "independent",
+      "standard_uncertainties": [
+        {
+          "parameter": "mass",
+          "given": {
+            "value": "2.8e-40",
+            "unit": "kg"
+          },
+          "si": {
+            "decimal": "2.8E-40",
+            "is_exact": true,
+            "numerator": "7",
+            "denominator": "25000000000000000000000000000000000000000",
+            "unit": "kg"
+          }
+        },
+        {
+          "parameter": "width",
+          "given": {
+            "value": "0.01",
+            "unit": "nm"
+          },
+          "si": {
+            "decimal": "1E-11",
+            "is_exact": true,
+            "numerator": "1",
+            "denominator": "100000000000",
+            "unit": "m"
+          }
+        }
+      ]
+    }
+  },
+  "plan": {
+    "method": "closed_form.infinite_square_well_energy",
+    "nature": "exact",
+    "justification": "O problema de autovalores com extremos de Dirichlet tem solução fechada, E_n = n^2 h^2 / (8 m L^2); nenhuma aproximação numérica é necessária.",
+    "rounding": {
+      "mode": "half_even",
+      "significant_digits": 10
+    }
+  },
+  "constants": {
+    "edition": "CODATA 2022",
+    "used": [
+      {
+        "identifier": "planck_constant",
+        "symbol": "h",
+        "name": "constante de Planck",
+        "value": {
+          "decimal": "6.62607015E-34",
+          "is_exact": true,
+          "numerator": "132521403",
+          "denominator": "200000000000000000000000000000000000000000",
+          "unit": "J s"
+        },
+        "exactness": "exact",
+        "standard_uncertainty": null,
+        "source": "https://physics.nist.gov/cgi-bin/cuu/Value?h"
+      },
+      {
+        "identifier": "electron_mass",
+        "symbol": "m_e",
+        "name": "massa do elétron",
+        "value": {
+          "decimal": "9.1093837139E-31",
+          "is_exact": true,
+          "numerator": "91093837139",
+          "denominator": "100000000000000000000000000000000000000000",
+          "unit": "kg"
+        },
+        "exactness": "measured",
+        "standard_uncertainty": {
+          "decimal": "2.8E-40",
+          "is_exact": true,
+          "numerator": "7",
+          "denominator": "25000000000000000000000000000000000000000",
+          "unit": "kg"
+        },
+        "source": "https://physics.nist.gov/cgi-bin/cuu/Value?me"
+      },
+      {
+        "identifier": "electron_volt",
+        "symbol": "eV",
+        "name": "elétron-volt em joules",
+        "value": {
+          "decimal": "1.602176634E-19",
+          "is_exact": true,
+          "numerator": "801088317",
+          "denominator": "5000000000000000000000000000",
+          "unit": "J"
+        },
+        "exactness": "exact",
+        "standard_uncertainty": null,
+        "source": "https://physics.nist.gov/cgi-bin/cuu/Value?evj"
+      }
+    ]
+  },
+  "units": {
+    "registry_version": "1.0.0"
+  },
+  "result": {
+    "quantity": "energy",
+    "symbol": "E",
+    "nature": "exact",
+    "expression": {
+      "plain": "E_n = h**2*n**2/(8*L**2*m)",
+      "latex": "E_n = \\frac{h^{2} n^{2}}{8 L^{2} m}"
+    },
+    "value": {
+      "decimal": "0.3760301621",
+      "is_exact": false,
+      "numerator": "6097889671211253125",
+      "denominator": "16216490818389690014",
+      "unit": "eV"
+    },
+    "si_value": {
+      "decimal": "6.024667394E-20",
+      "is_exact": false,
+      "numerator": "17561922253088409",
+      "denominator": "291500278844800000000000000000000000",
+      "unit": "J"
+    },
+    "conversion": {
+      "unit": "eV",
+      "si_factor": {
+        "decimal": "1.602176634E-19",
+        "is_exact": true,
+        "numerator": "801088317",
+        "denominator": "5000000000000000000000000000",
+        "unit": "J/eV"
+      },
+      "defining_constants": [
+        "electron_volt"
+      ]
+    },
+    "steps": [
+      {
+        "description": "Expressão fechada dos níveis de energia",
+        "expression": "E_n = h**2*n**2/(8*L**2*m)",
+        "value": null
+      },
+      {
+        "description": "Numerador em unidades coerentes do SI",
+        "expression": "h**2*n**2",
+        "value": {
+          "decimal": "4.39048056327210225E-67",
+          "is_exact": true,
+          "numerator": "17561922253088409",
+          "denominator": "40000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "unit": "J^2 s^2"
+        }
+      },
+      {
+        "description": "Denominador em unidades coerentes do SI",
+        "expression": "8*L**2*m",
+        "value": {
+          "decimal": "7.28750697112E-48",
+          "is_exact": true,
+          "numerator": "91093837139",
+          "denominator": "12500000000000000000000000000000000000000000000000000000000",
+          "unit": "kg m^2"
+        }
+      },
+      {
+        "description": "Energia em unidades coerentes do SI",
+        "expression": "h**2*n**2/(8*L**2*m)",
+        "value": {
+          "decimal": "6.024667394036591229315698043602203E-20",
+          "is_exact": false,
+          "numerator": "17561922253088409",
+          "denominator": "291500278844800000000000000000000000",
+          "unit": "J"
+        }
+      }
+    ],
+    "uncertainty": {
+      "status": "evaluated",
+      "method": "linear_propagation",
+      "covariance": "independent",
+      "standard_uncertainty": {
+        "decimal": "0.0075",
+        "unit": "eV"
+      },
+      "relative_standard_uncertainty": "0.020",
+      "significant_digits": 2,
+      "variance": {
+        "decimal": "1.451864688350706391262233323449851E-42",
+        "is_exact": false,
+        "numerator": "2559305280964645552962576789763508884138078273437426201",
+        "denominator": "1762771215182575210800191372419858431685453849600000000000000000000000000000000000000000000000000",
+        "unit": "J^2"
+      },
+      "contributions": [
+        {
+          "parameter": "mass",
+          "symbol": "m",
+          "sensitivity": {
+            "decimal": "-66136937286.36720996296001735826278",
+            "is_exact": false,
+            "numerator": "-548810070409012781250000000000000",
+            "denominator": "8298087164706655705321",
+            "unit": "J/kg"
+          },
+          "standard_uncertainty": {
+            "decimal": "2.8E-40",
+            "is_exact": true,
+            "numerator": "7",
+            "denominator": "25000000000000000000000000000000000000000",
+            "unit": "kg"
+          },
+          "variance": {
+            "decimal": "3.429290067318761555016584804922878E-58",
+            "is_exact": false,
+            "numerator": "15112634547952571138918999737412769",
+            "denominator": "44069280379564380270004784310496460792136346240000000000000000000000000000000000000000000000",
+            "unit": "J^2"
+          }
+        },
+        {
+          "parameter": "width",
+          "symbol": "L",
+          "sensitivity": {
+            "decimal": "-1.204933478807318245863139608720441E-10",
+            "is_exact": false,
+            "numerator": "-17561922253088409",
+            "denominator": "145750139422400000000000000",
+            "unit": "J/m"
+          },
+          "standard_uncertainty": {
+            "decimal": "1E-11",
+            "is_exact": true,
+            "numerator": "1",
+            "denominator": "100000000000",
+            "unit": "m"
+          },
+          "variance": {
+            "decimal": "1.451864688350706048333226591573696E-42",
+            "is_exact": false,
+            "numerator": "308421113223521859977938770151281",
+            "denominator": "212431031416490386056217600000000000000000000000000000000000000000000000000",
+            "unit": "J^2"
+          }
+        }
+      ]
+    }
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "identifier": "dimensional_consistency",
+        "kind": "consistency_test",
+        "status": "passed",
+        "statement": "O valor relatado e a unidade de exibição têm a dimensão que a ficha declara para a saída.",
+        "observed": "valor relatado em kg m^2 s^-2; a ficha declara kg m^2 s^-2"
+      },
+      {
+        "identifier": "stationary_schrodinger_residual",
+        "kind": "proof",
+        "status": "passed",
+        "statement": "psi_n(x) = sin(n pi x / L) satisfaz -(h^2 / (8 pi^2 m)) psi_n'' = E psi_n em 0 < x < L com a energia informada.",
+        "observed": "a razão -(h^2 / (8 pi^2 m)) psi_n'' / psi_n não depende da posição e é igual à energia informada"
+      },
+      {
+        "identifier": "dirichlet_boundary",
+        "kind": "proof",
+        "status": "passed",
+        "statement": "psi_n se anula nas duas extremidades do poço para todo n inteiro positivo.",
+        "observed": "psi_n(0) = 0 e psi_n(L) = 0"
+      },
+      {
+        "identifier": "normalizable_mode",
+        "kind": "proof",
+        "status": "passed",
+        "statement": "A integral de psi_n(x)^2 em [0, L] vale L/2: o estado é normalizável, com constante sqrt(2/L).",
+        "observed": "integral em x/L igual a 1/2"
+      }
+    ],
+    "not_performed": [
+      {
+        "identifier": "independent_discrete_solution",
+        "reason": "Nenhum método numérico está homologado nesta versão para comparar com uma solução discreta independente."
+      }
+    ],
+    "references": [
+      "D. J. Griffiths e D. F. Schroeter, Introduction to Quantum Mechanics, 3ª ed., Cambridge University Press, 2018, seção 2.2."
+    ]
+  },
+  "limitations": [
+    "Um poço finito, uma massa efetiva ou outro zero de energia definem problemas diferentes desta ficha.",
+    "A expressão é exata no modelo; os algarismos exibidos não declaram a precisão experimental dos parâmetros.",
+    "O modelo não relativístico perde validade quando a energia se aproxima de m c^2."
+  ],
+  "environment": {
+    "package": {
+      "name": "quantum-calculator",
+      "version": "0.1.0"
+    },
+    "python": {
+      "implementation": "CPython",
+      "version": "3.12.15"
+    },
+    "platform": "Linux-6.18.56-x86_64-with-glibc2.34",
+    "dependencies": [
+      {
+        "name": "sympy",
+        "version": "1.14.0"
+      },
+      {
+        "name": "mpmath",
+        "version": "1.3.0"
+      }
+    ]
+  }
+}
