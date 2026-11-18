@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from enum import StrEnum
 
-from quantum_calculator.domain.cards import HypothesisRule
+from quantum_calculator.domain.cards import HypothesisRule, PositiveQuantityRule
 from quantum_calculator.domain.methods import MethodDescription
 
 
@@ -41,6 +41,7 @@ class NumericalCard:
     required_sections: frozenset[InputSection]
     optional_sections: frozenset[InputSection]
     hypotheses: tuple[HypothesisRule, ...]
+    quantities: tuple[PositiveQuantityRule, ...]
     method: MethodDescription
     limitations: tuple[str, ...]
     example: str

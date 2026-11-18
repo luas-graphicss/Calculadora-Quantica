@@ -75,6 +75,7 @@ def bench_context(family: NumericalFamily) -> NumericalContext:
         required_sections=frozenset(),
         optional_sections=frozenset(),
         hypotheses=(),
+        quantities=(),
         method=MethodDescription("bench.method", ResultNature.APPROXIMATE, "Só para testes.", ()),
         limitations=("Só para testes.",),
         example="",
