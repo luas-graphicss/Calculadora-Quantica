@@ -4,6 +4,9 @@ from collections.abc import Mapping
 from quantum_calculator.domain.methods import MethodDescription, ResultNature
 from quantum_calculator.domain.numerical.cards import NumericalCard, NumericalFamily
 from quantum_calculator.domain.numerical.problems import (
+    ComplexMatrix,
+    ComplexVector,
+    FiniteBasisProblem,
     InitialValueProblem,
     NumericalContext,
     OdeComponent,
@@ -127,6 +130,25 @@ def initial_value_problem(
         samples=samples,
         relative_tolerance=relative_tolerance,
         absolute_tolerance=absolute_tolerance,
+    )
+
+
+def finite_basis_problem(
+    state: ComplexVector,
+    observable: ComplexMatrix,
+    *,
+    normalize: bool = False,
+    basis: ComplexMatrix | None = None,
+    tolerance: float = 1e-12,
+) -> FiniteBasisProblem:
+    return FiniteBasisProblem(
+        context=bench_context(NumericalFamily.FINITE_BASIS),
+        state=state,
+        normalize=normalize,
+        observable=observable,
+        unit="1",
+        basis=basis,
+        tolerance=tolerance,
     )
 
 
