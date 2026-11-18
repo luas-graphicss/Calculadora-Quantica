@@ -74,12 +74,13 @@ python_version = "3.12"
 strict = true
 warn_unreachable = true
 files = ["src", "tests"]
-mypy_path = "src"
+mypy_path = "src:tests"
 explicit_package_bases = true
 
 [tool.pytest.ini_options]
 minversion = "9.0"
 testpaths = ["tests"]
+pythonpath = ["tests"]
 addopts = ["--import-mode=importlib", "--strict-markers", "--strict-config", "-ra"]
 xfail_strict = true
 markers = [

@@ -1,7 +1,12 @@
 from fractions import Fraction
 from typing import Self
 
-from quantum_calculator.domain.diagnostics import Diagnostic, DiagnosticCode, quote_user_text
+from quantum_calculator.domain.diagnostics import (
+    Diagnostic,
+    DiagnosticCode,
+    json_pointer,
+    quote_user_text,
+)
 from quantum_calculator.domain.problem_spec import ExactNumber
 from quantum_calculator.interfaces.serialization.decoding.json_document import NumberToken
 from quantum_calculator.interfaces.serialization.decoding.number_literals import (
@@ -129,4 +134,4 @@ class ObjectReader:
         return type(self)({}, self._pointer_to(key), [])
 
     def _pointer_to(self, key: str) -> str:
-        return f"{self._pointer}/{key.replace('~', '~0').replace('/', '~1')}"
+        return self._pointer + json_pointer(key)

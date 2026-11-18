@@ -50,6 +50,10 @@ def quote_user_text(text: str) -> str:
     return f'"{shown}"'
 
 
+def json_pointer(*segments: str) -> str:
+    return "".join(f"/{segment.replace('~', '~0').replace('/', '~1')}" for segment in segments)
+
+
 @dataclass(frozen=True, slots=True)
 class Diagnostic:
     code: DiagnosticCode
