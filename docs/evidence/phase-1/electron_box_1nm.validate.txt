@@ -1,0 +1,24 @@
+Entrada válida: quantum.infinite_square_well.energy_level 1.0.0
+plano: closed_form.infinite_square_well_energy, resultado exact, 10 algarismos significativos, arredondamento half_even
+
+Problema
+  ficha: quantum.infinite_square_well.energy_level 1.0.0
+  Nível de energia de uma partícula em um poço infinito unidimensional
+  descrição: Elétron de massa livre em um poço infinito unidimensional de 1 nm: energia do nível fundamental.
+  entrada (sha256): 63405a2a9fed11efccdf9110877b97b95dc5c4dc759677e88f2e1f781388b085
+
+Hipóteses
+  da ficha: Partícula única, não relativística e sem spin, em uma dimensão espacial.
+  da ficha: Equação de Schrödinger independente do tempo no intervalo 0 < x < L.
+  confirmada: walls = infinite. As paredes do poço são infinitas: a partícula não sai do intervalo.
+  confirmada: interior_potential = zero. O potencial dentro do poço é nulo, o que põe o zero de energia no fundo do poço.
+  confirmada: boundary_wavefunction = zero. A função de onda se anula nas duas extremidades (Dirichlet homogênea).
+
+Parâmetros em unidades coerentes do SI
+  m = 9.1093837139E-31 kg; constante electron_mass do catálogo
+  L = 1E-9 m; entrada: 1 nm
+  n = 1
+
+Saída pedida
+  E (energia do nível) em eV
+  incerteza: nenhuma declarada; o resultado sai com incerteza não avaliada

@@ -1,0 +1,12 @@
+{
+  "case": "electron_box_1nm_uncertainty.json",
+  "quantity": "energy",
+  "unit": "eV",
+  "nominal_value": "0.3760301621",
+  "absolute_tolerance": "0.000000001",
+  "covariance": "independent",
+  "standard_uncertainty": "0.0075",
+  "relative_standard_uncertainty": "0.020",
+  "uncertainty_rationale": "Propagação linear com entradas independentes: (u(E)/E)^2 = (u(m)/m)^2 + (2 u(L)/L)^2. Com u(m) = 2.8e-40 kg e u(L) = 0.01 nm, u(E)/E = 0.0200000000000000024 e u(E) = 0.00752060324 eV. Os valores esperados têm 2 algarismos significativos.",
+  "derivation": "electron_box_1nm.derivation.md"
+}

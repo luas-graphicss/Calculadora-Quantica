@@ -1,0 +1,38 @@
+{
+  "case": "electron_box_1nm.json",
+  "quantity": "energy",
+  "unit": "eV",
+  "nominal_value": "0.3760301621",
+  "absolute_tolerance": "0.000000001",
+  "tolerance_rationale": "O valor de referência e a exibição da calculadora são arredondados na décima casa decimal, com erro de até 5e-11 eV cada um; a aritmética é exata até a exibição. A tolerância cobre a soma com margem de dez vezes. Ela testa a implementação, não a precisão de um experimento.",
+  "expression": "E_n = n^2 h^2 / (8 m L^2)",
+  "derivation": "electron_box_1nm.derivation.md",
+  "constants": {
+    "edition": "CODATA 2022",
+    "values": {
+      "planck_constant": {
+        "value": "6.62607015e-34",
+        "unit": "J s",
+        "standard_uncertainty": null,
+        "source": "https://physics.nist.gov/cgi-bin/cuu/Value?h"
+      },
+      "electron_volt": {
+        "value": "1.602176634e-19",
+        "unit": "J",
+        "standard_uncertainty": null,
+        "source": "https://physics.nist.gov/cgi-bin/cuu/Value?evj"
+      },
+      "electron_mass": {
+        "value": "9.1093837139e-31",
+        "unit": "kg",
+        "standard_uncertainty": "2.8e-40",
+        "source": "https://physics.nist.gov/cgi-bin/cuu/Value?me"
+      }
+    }
+  },
+  "sources": [
+    "CODATA 2022, NIST: https://physics.nist.gov/cuu/Constants/",
+    "BIPM, The International System of Units (SI), 9th edition, 2019",
+    "D. J. Griffiths and D. F. Schroeter, Introduction to Quantum Mechanics, 3rd edition, Cambridge University Press, 2018, section 2.2"
+  ]
+}

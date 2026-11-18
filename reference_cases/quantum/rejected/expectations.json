@@ -1,0 +1,101 @@
+{
+  "accepted_case": "../electron_box_1nm.json",
+  "cases": [
+    {
+      "file": "negative_mass.json",
+      "defect": "massa negativa",
+      "category": "invalid_input",
+      "code": "non_positive_quantity",
+      "pointer": "/parameters/mass/value",
+      "expected_mentions": "maior que zero"
+    },
+    {
+      "file": "zero_mass.json",
+      "defect": "massa nula",
+      "category": "invalid_input",
+      "code": "non_positive_quantity",
+      "pointer": "/parameters/mass/value",
+      "expected_mentions": "maior que zero"
+    },
+    {
+      "file": "zero_width.json",
+      "defect": "largura nula",
+      "category": "invalid_input",
+      "code": "non_positive_quantity",
+      "pointer": "/parameters/width/value",
+      "expected_mentions": "maior que zero"
+    },
+    {
+      "file": "fractional_level.json",
+      "defect": "nível fracionário",
+      "category": "invalid_input",
+      "code": "not_a_positive_integer",
+      "pointer": "/parameters/level",
+      "expected_mentions": "inteiro positivo"
+    },
+    {
+      "file": "zero_level.json",
+      "defect": "nível zero",
+      "category": "invalid_input",
+      "code": "not_a_positive_integer",
+      "pointer": "/parameters/level",
+      "expected_mentions": "inteiro positivo"
+    },
+    {
+      "file": "negative_level.json",
+      "defect": "nível negativo",
+      "category": "invalid_input",
+      "code": "not_a_positive_integer",
+      "pointer": "/parameters/level",
+      "expected_mentions": "inteiro positivo"
+    },
+    {
+      "file": "width_in_seconds.json",
+      "defect": "largura em segundos",
+      "category": "invalid_input",
+      "code": "dimension_mismatch",
+      "pointer": "/parameters/width/unit",
+      "expected_mentions": "nm"
+    },
+    {
+      "file": "energy_in_nanometers.json",
+      "defect": "energia pedida em nanômetros",
+      "category": "invalid_input",
+      "code": "dimension_mismatch",
+      "pointer": "/requested/unit",
+      "expected_mentions": "eV"
+    },
+    {
+      "file": "non_finite_width.json",
+      "defect": "largura infinita",
+      "category": "invalid_input",
+      "code": "non_finite_number",
+      "pointer": "/parameters/width/value",
+      "expected_mentions": "finito"
+    },
+    {
+      "file": "unconfirmed_boundary.json",
+      "defect": "condição de contorno não confirmada",
+      "category": "invalid_input",
+      "code": "hypothesis_not_confirmed",
+      "pointer": "/hypotheses/boundary_wavefunction",
+      "expected_mentions": "zero"
+    },
+    {
+      "file": "finite_walls.json",
+      "defect": "paredes finitas",
+      "category": "unsupported_problem",
+      "code": "unsupported_hypothesis",
+      "pointer": "/hypotheses/walls",
+      "expected_mentions": "infinite"
+    },
+    {
+      "file": "undeclared_covariance.json",
+      "defect": "incertezas sem hipótese de covariância",
+      "category": "invalid_input",
+      "code": "missing_field",
+      "pointer": "/uncertainty/covariance",
+      "expected_mentions": "independent"
+    }
+  ]
+}

@@ -1,0 +1,153 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:quantum-calculator:schema:problem:1.0",
+  "title": "Entrada estruturada de um problema da Calculadora Quântica",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "problem",
+    "hypotheses",
+    "parameters",
+    "requested"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "problem": {
+      "$ref": "#/$defs/text"
+    },
+    "description": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/text"
+        }
+      ]
+    },
+    "hypotheses": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/text"
+      }
+    },
+    "parameters": {
+      "type": "object",
+      "additionalProperties": {
+        "oneOf": [
+          {
+            "$ref": "#/$defs/number"
+          },
+          {
+            "$ref": "#/$defs/quantity"
+          },
+          {
+            "$ref": "#/$defs/constant"
+          }
+        ]
+      }
+    },
+    "requested": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "quantity",
+        "unit"
+      ],
+      "properties": {
+        "quantity": {
+          "$ref": "#/$defs/text"
+        },
+        "unit": {
+          "$ref": "#/$defs/text"
+        },
+        "significant_digits": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/number"
+            }
+          ]
+        }
+      }
+    },
+    "uncertainty": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "covariance",
+            "standard_uncertainties"
+          ],
+          "properties": {
+            "covariance": {
+              "$ref": "#/$defs/text"
+            },
+            "standard_uncertainties": {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/$defs/quantity"
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "number": {
+      "oneOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "^[+-]?(\\d+(\\.\\d*)?|\\.\\d+)([eE][+-]?\\d+)?$|^[+-]?\\d+/\\d+$"
+        }
+      ]
+    },
+    "quantity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "value",
+        "unit"
+      ],
+      "properties": {
+        "value": {
+          "$ref": "#/$defs/number"
+        },
+        "unit": {
+          "$ref": "#/$defs/text"
+        }
+      }
+    },
+    "constant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "constant"
+      ],
+      "properties": {
+        "constant": {
+          "$ref": "#/$defs/text"
+        }
+      }
+    }
+  }
+}

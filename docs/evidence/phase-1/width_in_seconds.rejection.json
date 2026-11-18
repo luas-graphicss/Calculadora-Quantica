@@ -1,0 +1,14 @@
+{
+  "document": "rejection",
+  "schema_version": "1.0",
+  "category": "invalid_input",
+  "diagnostics": [
+    {
+      "category": "invalid_input",
+      "code": "dimension_mismatch",
+      "pointer": "/parameters/width/unit",
+      "message": "A unidade \"s\" mede tempo, mas o parâmetro width (largura do poço) exige comprimento.",
+      "expected": "unidade de comprimento: m, mm, μm, nm, Å, pm"
+    }
+  ]
+}
