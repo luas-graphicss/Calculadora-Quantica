@@ -1,6 +1,6 @@
 # 0002 — Fronteiras entre módulos
 
-Estado: aceita (fase 1).
+Estado: aceita (fase 1). Estendida pela decisão 0005 na fase 2.
 
 ## Contexto
 
