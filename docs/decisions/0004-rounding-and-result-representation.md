@@ -42,7 +42,7 @@ Em caso de recusa nada é escrito na saída padrão; o diagnóstico vai para a s
 
 ## Limites da entrada
 
-Documento de até 64 KiB em UTF-8; literais numéricos de até 64 caracteres com expoente de módulo até 999; `NaN` e infinitos são recusados, como token JSON ou como texto. Chaves duplicadas e campos desconhecidos são recusados em vez de ignorados.
+Documento de até 64 KiB em UTF-8; literais numéricos de até 64 caracteres com expoente de módulo até 99, o que mantém numerador e denominador exatos abaixo do limite de 4300 dígitos que o Python impõe à conversão de inteiros em texto; `NaN` e infinitos são recusados, como token JSON ou como texto. Chaves duplicadas e campos desconhecidos são recusados em vez de ignorados.
 
 ## Quando rever
 

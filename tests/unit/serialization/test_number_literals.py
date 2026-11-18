@@ -18,6 +18,8 @@ from quantum_calculator.interfaces.serialization.decoding.number_literals import
         ("0.1", Fraction(1, 10)),
         ("1e-9", Fraction(1, 10**9)),
         ("9.1093837139E-31", Fraction(91093837139, 10**41)),
+        ("1e99", Fraction(10**99)),
+        ("1e-99", Fraction(1, 10**99)),
         ("1/3", Fraction(1, 3)),
         ("-2/6", Fraction(-1, 3)),
         (".5", Fraction(1, 2)),
@@ -49,7 +51,7 @@ def test_fraction_with_zero_denominator_is_refused() -> None:
         parse_exact_number("1/0")
 
 
-@pytest.mark.parametrize("literal", ["1e1000", "1e-1000", "1" * 65])
+@pytest.mark.parametrize("literal", ["1e100", "1e-100", "1e1000", "1" * 65])
 def test_literals_that_would_expand_without_bound_are_refused(literal: str) -> None:
     with pytest.raises(NumberLiteralError) as refusal:
         parse_exact_number(literal)

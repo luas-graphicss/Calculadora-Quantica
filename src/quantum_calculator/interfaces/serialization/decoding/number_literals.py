@@ -4,7 +4,7 @@ from fractions import Fraction
 from quantum_calculator.domain.diagnostics import DiagnosticCode
 
 MAX_LITERAL_LENGTH = 64
-MAX_EXPONENT_MAGNITUDE = 999
+MAX_EXPONENT_MAGNITUDE = 99
 NUMBER_EXPECTATION = (
     f"número finito, decimal ou fração p/q, com até {MAX_LITERAL_LENGTH} caracteres "
     f"e expoente de módulo até {MAX_EXPONENT_MAGNITUDE}"
