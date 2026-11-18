@@ -6,6 +6,7 @@ from quantum_calculator.adapters.units.codata_2022 import Codata2022Constants
 from quantum_calculator.adapters.units.si_registry import SiUnitRegistry
 from quantum_calculator.application.validation.problem_validator import ProblemValidator
 from quantum_calculator.catalog.card_catalog import HOMOLOGATED_CARDS, CardCatalog
+from quantum_calculator.solvers.symbolic.infinite_square_well import InfiniteSquareWellSolver
 from support.documents import ProblemDocument
 
 
@@ -27,6 +28,11 @@ def units(constants: Codata2022Constants) -> SiUnitRegistry:
 @pytest.fixture(scope="session")
 def validator(units: SiUnitRegistry, constants: Codata2022Constants) -> ProblemValidator:
     return ProblemValidator(CardCatalog(HOMOLOGATED_CARDS), units, constants)
+
+
+@pytest.fixture(scope="session")
+def solver(constants: Codata2022Constants) -> InfiniteSquareWellSolver:
+    return InfiniteSquareWellSolver(constants)
 
 
 @pytest.fixture

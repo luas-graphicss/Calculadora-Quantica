@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from enum import StrEnum
 
+INDEPENDENT_COVARIANCE = "independent"
+
 
 class ResultNature(StrEnum):
     EXACT = "exact"

@@ -6,7 +6,11 @@ from quantum_calculator.domain.cards import (
     ProblemCard,
 )
 from quantum_calculator.domain.dimensions import ENERGY, LENGTH, MASS
-from quantum_calculator.domain.methods import MethodDescription, ResultNature
+from quantum_calculator.domain.methods import (
+    INDEPENDENT_COVARIANCE,
+    MethodDescription,
+    ResultNature,
+)
 
 INFINITE_SQUARE_WELL_ENERGY_LEVEL = ProblemCard(
     identifier="quantum.infinite_square_well.energy_level",
@@ -51,7 +55,7 @@ INFINITE_SQUARE_WELL_ENERGY_LEVEL = ProblemCard(
             "O problema de autovalores com extremos de Dirichlet tem solução fechada, "
             "E_n = n^2 h^2 / (8 m L^2); nenhuma aproximação numérica é necessária."
         ),
-        covariance_models=("independent",),
+        covariance_models=(INDEPENDENT_COVARIANCE,),
     ),
     limitations=(
         "Um poço finito, uma massa efetiva ou outro zero de energia definem problemas "
