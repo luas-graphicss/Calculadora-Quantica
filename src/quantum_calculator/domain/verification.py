@@ -11,6 +11,7 @@ class VerificationStatus(StrEnum):
 
 class EvidenceKind(StrEnum):
     PROOF = "proof"
+    NUMERICAL_EVIDENCE = "numerical_evidence"
     CONSISTENCY_TEST = "consistency_test"
 
 

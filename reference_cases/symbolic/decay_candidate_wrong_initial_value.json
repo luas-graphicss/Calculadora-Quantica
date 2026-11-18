@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0",
+  "problem": "ode.first_order_linear.candidate_review",
+  "description": "Decaimento exponencial: candidata que satisfaz a equação, mas começa em 2 y_0.",
+  "notation": "text",
+  "statement": "y' = -k*y",
+  "symbols": {
+    "t": {
+      "role": "variable",
+      "domain": "real",
+      "unit": "s"
+    },
+    "k": {
+      "role": "parameter",
+      "domain": "positive",
+      "unit": "1/s"
+    },
+    "y_0": {
+      "role": "parameter",
+      "domain": "positive",
+      "unit": "1"
+    },
+    "y": {
+      "role": "function",
+      "domain": "real",
+      "unit": "1",
+      "argument": "t"
+    }
+  },
+  "conditions": [
+    "y(0) = y_0"
+  ],
+  "candidate": "y(t) = 2*y_0*exp(-k*t)"
+}

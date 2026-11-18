@@ -1,9 +1,4 @@
-from quantum_calculator.domain.diagnostics import (
-    Diagnostic,
-    DiagnosticCode,
-    ProblemRejectedError,
-    quote_user_text,
-)
+from quantum_calculator.domain.diagnostics import Diagnostic, ProblemRejectedError
 from quantum_calculator.domain.problem_spec import (
     ConstantInput,
     HypothesisInput,
@@ -12,6 +7,7 @@ from quantum_calculator.domain.problem_spec import (
     ProblemSpec,
     QuantityInput,
     RequestedOutput,
+    SourceDocument,
     UncertaintyDeclaration,
     UncertaintyInput,
 )
@@ -20,6 +16,9 @@ from quantum_calculator.interfaces.serialization.decoding.number_literals import
     NUMBER_EXPECTATION,
 )
 from quantum_calculator.interfaces.serialization.decoding.object_reader import ObjectReader
+from quantum_calculator.interfaces.serialization.decoding.schema_version import (
+    decode_schema_version,
+)
 
 PROBLEM_SCHEMA_VERSION = "1.0"
 
@@ -28,12 +27,15 @@ _PARAMETER_FORMS = f'número, {_QUANTITY_FORM} ou objeto {{"constant"}}'
 
 
 def decode_problem(raw: bytes) -> ProblemSpec:
-    source, content = read_document(raw)
+    return decode_problem_document(*read_document(raw))
+
+
+def decode_problem_document(source: SourceDocument, content: dict[str, object]) -> ProblemSpec:
     diagnostics: list[Diagnostic] = []
     document = ObjectReader(content, "", diagnostics)
     spec = ProblemSpec(
         source=source,
-        schema_version=_decode_schema_version(document),
+        schema_version=decode_schema_version(document, PROBLEM_SCHEMA_VERSION),
         card_identifier=document.text("problem", "identificador de uma ficha do catálogo"),
         description=document.optional_text("description", "texto livre que descreve o caso"),
         hypotheses=_decode_hypotheses(
@@ -55,19 +57,6 @@ def decode_problem(raw: bytes) -> ProblemSpec:
     if diagnostics:
         raise ProblemRejectedError(tuple(diagnostics))
     return spec
-
-
-def _decode_schema_version(document: ObjectReader) -> str:
-    expected = f'"{PROBLEM_SCHEMA_VERSION}"'
-    version = document.text("schema_version", expected)
-    if version and version != PROBLEM_SCHEMA_VERSION:
-        document.report(
-            DiagnosticCode.UNSUPPORTED_SCHEMA_VERSION,
-            "schema_version",
-            f"A versão {quote_user_text(version)} do esquema de entrada não é suportada.",
-            expected,
-        )
-    return version
 
 
 def _decode_hypotheses(fields: ObjectReader) -> tuple[HypothesisInput, ...]:

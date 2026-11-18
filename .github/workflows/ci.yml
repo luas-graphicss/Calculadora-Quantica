@@ -37,16 +37,23 @@ jobs:
       - name: Check types
         run: uv run --no-sync mypy
       - name: Run contract tests
-        run: uv run --no-sync pytest tests/contracts
+        run: uv run --no-sync pytest tests/contracts --junitxml=test-reports/contracts.xml
       - name: Run exact algebraic identities
-        run: uv run --no-sync pytest -m algebraic
+        run: uv run --no-sync pytest -m algebraic --junitxml=test-reports/algebraic.xml
       - name: Run numerical comparisons with declared tolerance
-        run: uv run --no-sync pytest -m numerical
+        run: uv run --no-sync pytest -m numerical --junitxml=test-reports/numerical.xml
       - name: Run the remaining tests
-        run: uv run --no-sync pytest -m "not algebraic and not numerical" --ignore=tests/contracts
+        run: uv run --no-sync pytest -m "not algebraic and not numerical" --ignore=tests/contracts --junitxml=test-reports/remaining.xml
+      - name: Publish the suite report
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: test-reports
+          path: test-reports/
+          if-no-files-found: error
 
   clean-install:
-    name: Reproduce the reference case from a clean install
+    name: Reproduce the reference cases from a clean install
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
@@ -79,9 +86,30 @@ jobs:
           jq 'del(.environment)' reproduction/electron_box_1nm.run_record.json > reproduction/reproduced-content.json
           jq 'del(.environment)' docs/evidence/phase-1/electron_box_1nm.run_record.json > reproduction/recorded-content.json
           diff reproduction/recorded-content.json reproduction/reproduced-content.json
+      - name: Reproduce the symbolic cases
+        run: |
+          mkdir symbolic-reproduction
+          clean-environment/bin/qcalc catalog | tee symbolic-reproduction/catalog.txt
+          clean-environment/bin/qcalc catalog --format json > symbolic-reproduction/catalog.json
+          clean-environment/bin/qcalc validate reference_cases/symbolic/product_rule.json | tee symbolic-reproduction/product_rule.validate.txt
+          clean-environment/bin/qcalc solve reference_cases/symbolic/decay_initial_value.json | tee symbolic-reproduction/decay_initial_value.solve.txt
+          clean-environment/bin/qcalc solve reference_cases/symbolic/decay_initial_value.json --format json > symbolic-reproduction/decay_initial_value.run_record.json
+          review_status=0
+          clean-environment/bin/qcalc solve reference_cases/symbolic/decay_candidate_wrong_initial_value.json --format json > symbolic-reproduction/decay_candidate_wrong_initial_value.run_record.json || review_status=$?
+          test "$review_status" -eq 5
+      - name: Compare the symbolic output with the recorded evidence
+        run: |
+          diff docs/evidence/phase-2/catalog.txt symbolic-reproduction/catalog.txt
+          diff docs/evidence/phase-2/catalog.json symbolic-reproduction/catalog.json
+          diff docs/evidence/phase-2/product_rule.validate.txt symbolic-reproduction/product_rule.validate.txt
+          for record in decay_initial_value decay_candidate_wrong_initial_value; do
+            jq 'del(.environment)' "symbolic-reproduction/$record.run_record.json" > "symbolic-reproduction/$record.reproduced-content.json"
+            jq 'del(.environment)' "docs/evidence/phase-2/$record.run_record.json" > "symbolic-reproduction/$record.recorded-content.json"
+            diff "symbolic-reproduction/$record.recorded-content.json" "symbolic-reproduction/$record.reproduced-content.json"
+          done
       - name: Confirm that rejected inputs exit non-zero without a result
         run: |
-          for input in reference_cases/quantum/rejected/*.json; do
+          for input in reference_cases/quantum/rejected/*.json reference_cases/symbolic/rejected/*.json; do
             if [ "$(basename "$input")" = "expectations.json" ]; then
               continue
             fi
@@ -99,4 +127,10 @@ jobs:
         with:
           name: phase-1-reproduction
           path: reproduction/
+          if-no-files-found: error
+      - name: Publish the symbolic reproduction
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: phase-2-reproduction
+          path: symbolic-reproduction/
           if-no-files-found: error

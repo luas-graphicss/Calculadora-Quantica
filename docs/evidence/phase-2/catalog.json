@@ -1,0 +1,156 @@
+{
+  "document": "catalog",
+  "schema_version": "1.1",
+  "version": "1.1.0",
+  "cards": [
+    {
+      "identifier": "quantum.infinite_square_well.energy_level",
+      "version": "1.0.0",
+      "area": "stationary_schrodinger_1d",
+      "problem_type": "energy_level",
+      "title": "Nível de energia de uma partícula em um poço infinito unidimensional",
+      "domain": [
+        "Massa e largura estritamente positivas e índice de nível inteiro positivo.",
+        "Posição no intervalo aberto 0 < x < L."
+      ],
+      "method": {
+        "identifier": "closed_form.infinite_square_well_energy",
+        "nature": "exact",
+        "justification": "O problema de autovalores com extremos de Dirichlet tem solução fechada, E_n = n^2 h^2 / (8 m L^2); nenhuma aproximação numérica é necessária."
+      },
+      "limitations": [
+        "Um poço finito, uma massa efetiva ou outro zero de energia definem problemas diferentes desta ficha.",
+        "A expressão é exata no modelo; os algarismos exibidos não declaram a precisão experimental dos parâmetros.",
+        "O modelo não relativístico perde validade quando a energia se aproxima de m c^2."
+      ],
+      "example": "reference_cases/quantum/electron_box_1nm.json"
+    },
+    {
+      "identifier": "calculus.derivative",
+      "version": "1.0.0",
+      "area": "differential_integral_calculus",
+      "problem_type": "derivative",
+      "title": "Derivada ordinária ou parcial de uma expressão explícita",
+      "domain": [
+        "Expressões reais explícitas, escritas com as operações e funções registradas, sobre símbolos com domínio real declarado.",
+        "O resultado vale onde a expressão e a derivada estão definidas; as exclusões são listadas com a resposta."
+      ],
+      "method": {
+        "identifier": "symbolic.differentiation",
+        "nature": "exact",
+        "justification": "As regras de derivação das operações e funções registradas dão a derivada em forma fechada; nenhuma aproximação numérica é necessária."
+      },
+      "limitations": [
+        "Não deriva funções incógnitas, integrais nem derivadas aninhadas.",
+        "A simplificação preserva as exclusões da expressão original: os zeros de um fator cancelado continuam fora do domínio."
+      ],
+      "example": "reference_cases/symbolic/product_rule.json"
+    },
+    {
+      "identifier": "calculus.antiderivative",
+      "version": "1.0.0",
+      "area": "differential_integral_calculus",
+      "problem_type": "antiderivative",
+      "title": "Primitiva de uma expressão explícita em uma variável",
+      "domain": [
+        "Expressões reais explícitas, escritas com as operações e funções registradas, sobre símbolos com domínio real declarado.",
+        "A primitiva vale em cada intervalo em que o integrando está definido."
+      ],
+      "method": {
+        "identifier": "symbolic.antidifferentiation",
+        "nature": "exact",
+        "justification": "A primitiva é procurada em forma fechada e só é aceita quando se escreve com as operações registradas; a resposta traz a constante de integração."
+      },
+      "limitations": [
+        "Integrandos cuja primitiva pede funções especiais, como erf ou a integral seno, ficam fora da cobertura.",
+        "Nenhum método numérico está homologado nesta versão: sem primitiva coberta, nenhuma aproximação é oferecida.",
+        "Quando o domínio tem exclusões, a constante de integração pode ser diferente em cada intervalo."
+      ],
+      "example": "reference_cases/symbolic/reciprocal_primitive.json"
+    },
+    {
+      "identifier": "calculus.definite_integral",
+      "version": "1.0.0",
+      "area": "differential_integral_calculus",
+      "problem_type": "definite_integral",
+      "title": "Integral definida de uma expressão explícita em um intervalo finito",
+      "domain": [
+        "Expressões reais explícitas, escritas com as operações e funções registradas, sobre símbolos com domínio real declarado.",
+        "Intervalo finito, com o integrando definido e uma primitiva contínua em todo o intervalo fechado."
+      ],
+      "method": {
+        "identifier": "symbolic.fundamental_theorem",
+        "nature": "exact",
+        "justification": "Com uma primitiva contínua no intervalo fechado, o teorema fundamental do cálculo dá o valor exato como diferença da primitiva nos extremos."
+      },
+      "limitations": [
+        "Uma singularidade do integrando ou da primitiva no intervalo fechado é recusada; integrais impróprias não são cobertas.",
+        "Nenhum método numérico está homologado nesta versão: sem primitiva coberta, nenhuma aproximação é oferecida."
+      ],
+      "example": "reference_cases/symbolic/parabola_area.json"
+    },
+    {
+      "identifier": "ode.first_order_linear.general_solution",
+      "version": "1.0.0",
+      "area": "ordinary_differential_equations",
+      "problem_type": "general_solution",
+      "title": "Solução geral de uma EDO linear de primeira ordem com coeficientes constantes",
+      "domain": [
+        "Equação escalar de primeira ordem, linear na função incógnita e na sua derivada, com coeficientes e termo fonte que não dependem da variável independente.",
+        "A família de soluções traz uma constante arbitrária."
+      ],
+      "method": {
+        "identifier": "closed_form.first_order_linear_ode",
+        "nature": "exact",
+        "justification": "Para y' = a y + b com a e b constantes a solução é fechada: exponencial em torno do equilíbrio -b/a quando a é diferente de zero, e reta quando a é zero."
+      },
+      "limitations": [
+        "Equações não lineares, de ordem maior, com coeficientes variáveis ou sistemas ficam fora desta ficha.",
+        "Se o sinal do coeficiente de y não está fixado pelo domínio declarado, a resposta é condicional e o caso de coeficiente nulo é listado à parte."
+      ],
+      "example": "reference_cases/symbolic/decay_general_solution.json"
+    },
+    {
+      "identifier": "ode.first_order_linear.initial_value",
+      "version": "1.0.0",
+      "area": "ordinary_differential_equations",
+      "problem_type": "initial_value_problem",
+      "title": "Problema de valor inicial de uma EDO linear de primeira ordem",
+      "domain": [
+        "Equação escalar de primeira ordem, linear na função incógnita e na sua derivada, com coeficientes e termo fonte que não dependem da variável independente.",
+        "Uma condição inicial da forma y(t0) = y0."
+      ],
+      "method": {
+        "identifier": "closed_form.first_order_linear_ode",
+        "nature": "exact",
+        "justification": "Para y' = a y + b com a e b constantes a solução é fechada: exponencial em torno do equilíbrio -b/a quando a é diferente de zero, e reta quando a é zero."
+      },
+      "limitations": [
+        "Equações não lineares, de ordem maior, com coeficientes variáveis ou sistemas ficam fora desta ficha.",
+        "A condição inicial é exigida: sem ela o problema é o da solução geral."
+      ],
+      "example": "reference_cases/symbolic/decay_initial_value.json"
+    },
+    {
+      "identifier": "ode.first_order_linear.candidate_review",
+      "version": "1.0.0",
+      "area": "ordinary_differential_equations",
+      "problem_type": "candidate_review",
+      "title": "Revisão de uma solução candidata de um problema de valor inicial",
+      "domain": [
+        "Equação escalar de primeira ordem, linear na função incógnita e na sua derivada, com coeficientes e termo fonte que não dependem da variável independente.",
+        "Uma condição inicial da forma y(t0) = y0 e uma candidata explícita y(t) = ..."
+      ],
+      "method": {
+        "identifier": "substitution.candidate_review",
+        "nature": "exact",
+        "justification": "A candidata é substituída na equação original e a condição inicial é conferida à parte; a equação não é resolvida."
+      },
+      "limitations": [
+        "Equações não lineares, de ordem maior, com coeficientes variáveis ou sistemas ficam fora desta ficha.",
+        "Concordância em pontos amostrados não é relatada como prova: sem demonstração, o resultado é inconclusivo."
+      ],
+      "example": "reference_cases/symbolic/decay_candidate_correct.json"
+    }
+  ]
+}

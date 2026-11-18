@@ -1,9 +1,19 @@
 from quantum_calculator.application.review_problem import ProblemReview
+from quantum_calculator.application.review_statement import StatementReview
+from quantum_calculator.application.statements.budget import describe_budget
+from quantum_calculator.domain.cards import CatalogListing
 from quantum_calculator.domain.diagnostics import ProblemRejectedError
 from quantum_calculator.domain.ports import UnitRegistry
 from quantum_calculator.domain.rounding import ROUNDING_MODE
 from quantum_calculator.domain.run_record import RunRecord
-from quantum_calculator.interfaces.cli.rendering.text.formatting import QuantityFormatter, printable
+from quantum_calculator.domain.symbolic_solution import StatementRunRecord
+from quantum_calculator.interfaces.cli.rendering.text.catalog_sections import catalog_lines
+from quantum_calculator.interfaces.cli.rendering.text.common_sections import (
+    environment_section,
+    limitations_section,
+    verification_section,
+)
+from quantum_calculator.interfaces.cli.rendering.text.formatting import QuantityFormatter, section
 from quantum_calculator.interfaces.cli.rendering.text.problem_sections import (
     problem_sections,
     request_section,
@@ -12,15 +22,22 @@ from quantum_calculator.interfaces.cli.rendering.text.record_sections import (
     answer_lines,
     calculation_section,
     constants_section,
-    environment_section,
-    limitations_section,
     uncertainty_section,
-    verification_section,
+)
+from quantum_calculator.interfaces.cli.rendering.text.rejection_lines import rejection_lines
+from quantum_calculator.interfaces.cli.rendering.text.solution_sections import (
+    solution_answer_lines,
+    solution_sections,
+)
+from quantum_calculator.interfaces.cli.rendering.text.statement_sections import (
+    result_unit,
+    statement_sections,
 )
 
 
 class TextRenderer:
     def __init__(self, units: UnitRegistry) -> None:
+        self._units = units
         self._numbers = QuantityFormatter(units)
 
     def validation(self, review: ProblemReview) -> str:
@@ -45,19 +62,49 @@ class TextRenderer:
                 *constants_section(record, self._numbers),
                 *calculation_section(record, self._numbers),
                 *uncertainty_section(record, self._numbers),
-                *verification_section(record),
-                *limitations_section(record),
-                *environment_section(record),
+                *verification_section(record.verification),
+                *limitations_section(record.problem.card.limitations),
+                *environment_section(
+                    record.environment, f"registro de unidades {record.unit_registry_version}"
+                ),
             ]
         )
 
+    def statement_validation(self, review: StatementReview) -> str:
+        problem = review.problem
+        method = review.plan.method
+        return _join(
+            [
+                f"Enunciado válido: {problem.card.identifier} {problem.card.version}",
+                f"plano: {method.identifier}, resultado {method.nature.value}; "
+                f"limites: {describe_budget(review.plan.budget)}",
+                *statement_sections(problem),
+                *section("Saída", [f"resposta simbólica; {result_unit(problem, self._units)}"]),
+                *limitations_section(problem.card.limitations),
+            ]
+        )
+
+    def statement_run_record(self, record: StatementRunRecord) -> str:
+        return _join(
+            [
+                *solution_answer_lines(record, result_unit(record.problem, self._units)),
+                *statement_sections(record.problem),
+                *solution_sections(record),
+                *verification_section(record.verification),
+                *limitations_section(record.problem.card.limitations),
+                *environment_section(
+                    record.environment,
+                    f"catálogo {record.catalog_version}; "
+                    f"registro de unidades {record.unit_registry_version}",
+                ),
+            ]
+        )
+
+    def catalog(self, listing: CatalogListing) -> str:
+        return _join(catalog_lines(listing))
+
     def rejection(self, rejection: ProblemRejectedError) -> str:
-        lines = [f"Entrada recusada ({rejection.category.value})"]
-        for item in rejection.diagnostics:
-            lines.append(f"  {printable(item.pointer) or '/'} [{item.code.value}]")
-            lines.append(f"    {printable(item.message)}")
-            lines.append(f"    esperado: {printable(item.expected)}")
-        return _join(lines)
+        return _join(rejection_lines(rejection))
 
 
 def _join(lines: list[str]) -> str:

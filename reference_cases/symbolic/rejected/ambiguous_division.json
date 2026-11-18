@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "problem": "calculus.derivative",
+  "description": "Divisão seguida de outro fator: 1/2x admite duas leituras.",
+  "notation": "text",
+  "statement": "diff(1/2x, x)",
+  "symbols": {
+    "x": {
+      "role": "variable",
+      "domain": "real",
+      "unit": "1"
+    }
+  }
+}

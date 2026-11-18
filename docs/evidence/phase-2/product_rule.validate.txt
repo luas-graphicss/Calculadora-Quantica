@@ -1,0 +1,27 @@
+Enunciado válido: calculus.derivative 1.0.0
+plano: symbolic.differentiation, resultado exact; limites: 30 s de relógio, 30 s de CPU e 2048 MiB de memória
+
+Leitura
+  texto: diff(x^2*sin(x), x)
+  LaTeX: \frac{d}{dx}\left(x^{2} \cdot \sin\left(x\right)\right)
+  árvore: (derivative ordinary x 1 (multiply (power (symbol x) (number 2)) (sin (symbol x))))
+  entrada (text): diff(x^2*sin(x), x)
+
+Símbolos
+  x: variable, domínio real, unidade 1
+
+Ficha
+  calculus.derivative 1.0.0 (confirmada na entrada)
+  Derivada ordinária ou parcial de uma expressão explícita
+  área: differential_integral_calculus; tipo: derivative
+  domínio: Expressões reais explícitas, escritas com as operações e funções registradas, sobre símbolos com domínio real declarado.
+  domínio: O resultado vale onde a expressão e a derivada estão definidas; as exclusões são listadas com a resposta.
+  descrição: Regra do produto: derivada de x² sen x.
+  entrada (sha256): a5aeaebde7c66c30a97ed9a15688ad348c876d9e40818794882f72db742b7b3f
+
+Saída
+  resposta simbólica; adimensional
+
+Limitações
+  Não deriva funções incógnitas, integrais nem derivadas aninhadas.
+  A simplificação preserva as exclusões da expressão original: os zeros de um fator cancelado continuam fora do domínio.

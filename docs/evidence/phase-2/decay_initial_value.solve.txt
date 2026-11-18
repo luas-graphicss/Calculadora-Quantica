@@ -1,0 +1,59 @@
+y(t) = y_0*exp(-k*t)
+resultado exact; adimensional; verificação: passed
+
+Leitura
+  texto: y'(t) = -k*y(t)
+  LaTeX: y'(t) = -k \cdot y(t)
+  árvore: (equation (unknown y 1 (symbol t)) (negate (multiply (symbol k) (unknown y 0 (symbol t)))))
+  entrada (text): y' = -k*y
+
+Símbolos
+  t: variable, domínio real, unidade s
+  k: parameter, domínio positive, unidade 1/s
+  y_0: parameter, domínio positive, unidade 1
+  y: function de t, domínio real, unidade 1
+
+Condições
+  y(0) = y_0
+
+Ficha
+  ode.first_order_linear.initial_value 1.0.0 (confirmada na entrada)
+  Problema de valor inicial de uma EDO linear de primeira ordem
+  área: ordinary_differential_equations; tipo: initial_value_problem
+  domínio: Equação escalar de primeira ordem, linear na função incógnita e na sua derivada, com coeficientes e termo fonte que não dependem da variável independente.
+  domínio: Uma condição inicial da forma y(t0) = y0.
+  descrição: Decaimento exponencial com valor inicial y_0 em t = 0.
+  entrada (sha256): c671bf78c2c884fb7b63ee463d4a62697ac43a5126c6022c95fdb874940ed31d
+
+Validade
+  sem exclusões: vale em todo o domínio declarado
+
+Memória de cálculo
+  método: closed_form.first_order_linear_ode (exact)
+  Para y' = a y + b com a e b constantes a solução é fechada: exponencial em torno do equilíbrio -b/a quando a é diferente de zero, e reta quando a é zero.
+  1. Forma normal da equação: y'(t) = -k*y(t)
+  2. Solução em forma fechada: y(t) = y_0*exp(-k*t)
+
+Verificação: passed
+  passed [proof] equation_residual
+    A função informada, substituída na equação original, anula a diferença entre os dois lados.
+    observado: o resíduo se reduz a zero por simplificação simbólica
+  passed [proof] initial_condition
+    A função informada assume o valor declarado no ponto da condição inicial.
+    observado: o resíduo se reduz a zero por simplificação simbólica
+  passed [proof] declared_domain_suffices
+    A resposta vale para todos os valores dos parâmetros no domínio declarado.
+    observado: nenhuma hipótese além do domínio declarado é necessária
+  passed [consistency_test] dimensional_consistency
+    A resposta tem a dimensão que o enunciado e as unidades declaradas exigem.
+    observado: resposta com dimensão adimensional; o enunciado exige adimensional
+  referência: W. E. Boyce e R. C. DiPrima, Elementary Differential Equations and Boundary Value Problems, 10ª ed., Wiley, 2012, seção 2.1.
+
+Limitações
+  Equações não lineares, de ordem maior, com coeficientes variáveis ou sistemas ficam fora desta ficha.
+  A condição inicial é exigida: sem ela o problema é o da solução geral.
+
+Ambiente
+  quantum-calculator 0.2.0; CPython 3.12.15; Linux-6.18.56-x86_64-with-glibc2.34
+  sympy 1.14.0; mpmath 1.3.0
+  catálogo 1.1.0; registro de unidades 1.0.0

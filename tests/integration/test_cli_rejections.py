@@ -1,5 +1,6 @@
 import io
 import json
+from dataclasses import replace
 from pathlib import Path
 
 import pytest
@@ -7,11 +8,11 @@ import pytest
 from quantum_calculator.adapters.execution.runtime_environment import RuntimeEnvironmentProbe
 from quantum_calculator.adapters.units.codata_2022 import Codata2022Constants
 from quantum_calculator.adapters.units.si_registry import SiUnitRegistry
-from quantum_calculator.application.review_problem import ReviewProblem
 from quantum_calculator.application.solve_problem import HomologatedMethod, SolveProblem
 from quantum_calculator.application.validation.problem_validator import ProblemValidator
 from quantum_calculator.catalog.infinite_square_well import INFINITE_SQUARE_WELL_ENERGY_LEVEL
 from quantum_calculator.composition import Calculator
+from quantum_calculator.domain.execution import NeverCancelled
 from quantum_calculator.interfaces.cli.exit_codes import ExitCode
 from quantum_calculator.interfaces.cli.main import main
 from quantum_calculator.interfaces.cli.problem_commands import ProblemCommands
@@ -123,6 +124,7 @@ def test_command_line_misuse_exits_with_code_two() -> None:
 
 
 def test_result_that_fails_verification_is_not_reported_as_success(
+    calculator: Calculator,
     validator: ProblemValidator,
     solver: InfiniteSquareWellSolver,
     verifier: InfiniteSquareWellVerifier,
@@ -135,14 +137,13 @@ def test_result_that_fails_verification_is_not_reported_as_success(
             DoubledEnergySolver(solver), verifier
         )
     }
-    faulty = Calculator(
-        review_problem=ReviewProblem(validator),
+    faulty = replace(
+        calculator,
         solve_problem=SolveProblem(validator, methods, constants, units, RuntimeEnvironmentProbe()),
-        units=units,
     )
     stdout = io.StringIO()
     commands = ProblemCommands(
-        faulty, renderer_for(OutputFormat.TEXT, units), stdout, io.StringIO()
+        faulty, renderer_for(OutputFormat.TEXT, units), stdout, io.StringIO(), NeverCancelled()
     )
 
     exit_code = commands.solve(reference_cases / "electron_box_1nm.json")

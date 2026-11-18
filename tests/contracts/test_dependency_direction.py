@@ -28,22 +28,27 @@ def _imports_of(package: str) -> set[str]:
     return imports
 
 
-def test_domain_imports_only_the_standard_library_and_itself() -> None:
+@pytest.mark.parametrize(
+    ("package", "allowed"), [("domain", ("domain",)), ("notation", ("domain", "notation"))]
+)
+def test_pure_package_imports_only_the_standard_library_and_its_allowed_packages(
+    package: str, allowed: tuple[str, ...]
+) -> None:
+    prefixes = tuple(f"{PACKAGE}.{name}" for name in allowed)
     foreign = {
         module
-        for module in _imports_of("domain")
-        if module.split(".")[0] not in sys.stdlib_module_names
-        and not module.startswith(f"{PACKAGE}.domain")
+        for module in _imports_of(package)
+        if module.split(".")[0] not in sys.stdlib_module_names and not module.startswith(prefixes)
     }
 
     assert foreign == set()
 
 
-def test_sympy_is_confined_to_solvers_and_verification() -> None:
+def test_sympy_is_confined_to_the_algebra_bridge_solvers_and_verification() -> None:
     offenders = [
         str(path.relative_to(SOURCE))
         for path in SOURCE.rglob("*.py")
-        if path.relative_to(SOURCE).parts[0] not in {"solvers", "verification"}
+        if path.relative_to(SOURCE).parts[0] not in {"algebra", "solvers", "verification"}
         and any(module.split(".")[0] == "sympy" for module in _imported_modules(path))
     ]
 
@@ -53,11 +58,21 @@ def test_sympy_is_confined_to_solvers_and_verification() -> None:
 @pytest.mark.parametrize(
     ("package", "forbidden"),
     [
-        ("catalog", ("application", "interfaces", "adapters", "solvers", "verification")),
-        ("application", ("interfaces", "adapters", "solvers", "verification")),
+        (
+            "catalog",
+            ("application", "interfaces", "adapters", "algebra", "solvers", "verification"),
+        ),
+        ("application", ("interfaces", "adapters", "algebra", "solvers", "verification")),
+        (
+            "algebra",
+            ("application", "interfaces", "adapters", "catalog", "solvers", "verification"),
+        ),
         ("solvers", ("application", "interfaces", "adapters", "catalog", "verification")),
         ("verification", ("application", "interfaces", "adapters", "catalog", "solvers")),
-        ("adapters", ("application", "interfaces", "catalog", "solvers", "verification")),
+        (
+            "adapters",
+            ("application", "interfaces", "catalog", "algebra", "solvers", "verification"),
+        ),
     ],
 )
 def test_inner_packages_do_not_import_outer_ones(package: str, forbidden: tuple[str, ...]) -> None:

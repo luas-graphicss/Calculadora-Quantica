@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "problem": "calculus.definite_integral",
+  "description": "Integral de 1/x através de x = 0.",
+  "notation": "latex",
+  "statement": "\\int_{-1}^{1} \\frac{1}{x} \\, dx",
+  "symbols": {
+    "x": {
+      "role": "variable",
+      "domain": "real",
+      "unit": "1"
+    }
+  }
+}

@@ -2,9 +2,12 @@ from enum import StrEnum
 from typing import Protocol
 
 from quantum_calculator.application.review_problem import ProblemReview
+from quantum_calculator.application.review_statement import StatementReview
+from quantum_calculator.domain.cards import CatalogListing
 from quantum_calculator.domain.diagnostics import ProblemRejectedError
 from quantum_calculator.domain.ports import UnitRegistry
 from quantum_calculator.domain.run_record import RunRecord
+from quantum_calculator.domain.symbolic_solution import StatementRunRecord
 from quantum_calculator.interfaces.cli.rendering.json_renderer import JsonRenderer
 from quantum_calculator.interfaces.cli.rendering.text_renderer import TextRenderer
 
@@ -18,6 +21,12 @@ class ReportRenderer(Protocol):
     def validation(self, review: ProblemReview) -> str: ...
 
     def run_record(self, record: RunRecord) -> str: ...
+
+    def statement_validation(self, review: StatementReview) -> str: ...
+
+    def statement_run_record(self, record: StatementRunRecord) -> str: ...
+
+    def catalog(self, listing: CatalogListing) -> str: ...
 
     def rejection(self, rejection: ProblemRejectedError) -> str: ...
 

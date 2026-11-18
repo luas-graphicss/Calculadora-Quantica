@@ -1,0 +1,4 @@
+Entrada recusada (budget_exceeded)
+  / [time_budget_exceeded]
+    O cálculo simbólico passou do limite de 0.05 s de relógio. O processo foi encerrado e nenhum resultado parcial foi aproveitado.
+    esperado: um enunciado mais simples ou um limite maior; o próximo cálculo não é afetado

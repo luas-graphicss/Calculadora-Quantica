@@ -1,0 +1,181 @@
+{
+  "document": "statement_run_record",
+  "schema_version": "1.1",
+  "input": {
+    "sha256": "c671bf78c2c884fb7b63ee463d4a62697ac43a5126c6022c95fdb874940ed31d",
+    "schema_version": "1.0",
+    "description": "Decaimento exponencial com valor inicial y_0 em t = 0.",
+    "text": "{\n  \"schema_version\": \"1.0\",\n  \"problem\": \"ode.first_order_linear.initial_value\",\n  \"description\": \"Decaimento exponencial com valor inicial y_0 em t = 0.\",\n  \"notation\": \"text\",\n  \"statement\": \"y' = -k*y\",\n  \"symbols\": {\n    \"t\": {\n      \"role\": \"variable\",\n      \"domain\": \"real\",\n      \"unit\": \"s\"\n    },\n    \"k\": {\n      \"role\": \"parameter\",\n      \"domain\": \"positive\",\n      \"unit\": \"1/s\"\n    },\n    \"y_0\": {\n      \"role\": \"parameter\",\n      \"domain\": \"positive\",\n      \"unit\": \"1\"\n    },\n    \"y\": {\n      \"role\": \"function\",\n      \"domain\": \"real\",\n      \"unit\": \"1\",\n      \"argument\": \"t\"\n    }\n  },\n  \"conditions\": [\n    \"y(0) = y_0\"\n  ]\n}\n"
+  },
+  "problem": {
+    "card": {
+      "identifier": "ode.first_order_linear.initial_value",
+      "version": "1.0.0",
+      "area": "ordinary_differential_equations",
+      "problem_type": "initial_value_problem",
+      "title": "Problema de valor inicial de uma EDO linear de primeira ordem",
+      "selection": "confirmed"
+    },
+    "domain": [
+      "Equação escalar de primeira ordem, linear na função incógnita e na sua derivada, com coeficientes e termo fonte que não dependem da variável independente.",
+      "Uma condição inicial da forma y(t0) = y0."
+    ],
+    "notation": "text",
+    "statement": {
+      "source": "y' = -k*y",
+      "text": "y'(t) = -k*y(t)",
+      "latex": "y'(t) = -k \\cdot y(t)",
+      "structure": "(equation (unknown y 1 (symbol t)) (negate (multiply (symbol k) (unknown y 0 (symbol t)))))"
+    },
+    "symbols": [
+      {
+        "name": "t",
+        "role": "variable",
+        "domain": "real",
+        "unit": "s",
+        "argument": null
+      },
+      {
+        "name": "k",
+        "role": "parameter",
+        "domain": "positive",
+        "unit": "1/s",
+        "argument": null
+      },
+      {
+        "name": "y_0",
+        "role": "parameter",
+        "domain": "positive",
+        "unit": "1",
+        "argument": null
+      },
+      {
+        "name": "y",
+        "role": "function",
+        "domain": "real",
+        "unit": "1",
+        "argument": "t"
+      }
+    ],
+    "conditions": [
+      {
+        "source": "y(0) = y_0",
+        "text": "y(0) = y_0",
+        "latex": "y(0) = y_{0}",
+        "structure": "(equation (unknown y 0 (number 0)) (symbol y_0))"
+      }
+    ],
+    "candidate": null,
+    "result_unit": "1"
+  },
+  "plan": {
+    "method": "closed_form.first_order_linear_ode",
+    "nature": "exact",
+    "justification": "Para y' = a y + b com a e b constantes a solução é fechada: exponencial em torno do equilíbrio -b/a quando a é diferente de zero, e reta quando a é zero.",
+    "budget": {
+      "wall_seconds": 30.0,
+      "cpu_seconds": 30,
+      "memory_bytes": 2147483648
+    }
+  },
+  "catalog": {
+    "version": "1.1.0"
+  },
+  "units": {
+    "registry_version": "1.0.0"
+  },
+  "result": {
+    "nature": "exact",
+    "answer": {
+      "text": "y(t) = y_0*exp(-k*t)",
+      "latex": "y(t) = y_{0} \\cdot \\exp\\left(-k \\cdot t\\right)",
+      "structure": "(equation (unknown y 0 (symbol t)) (multiply (symbol y_0) (exp (negate (multiply (symbol k) (symbol t))))))"
+    },
+    "unit": "1",
+    "validity": [],
+    "assumptions": [],
+    "special_cases": [],
+    "arbitrary_constants": [],
+    "certificate": null,
+    "steps": [
+      {
+        "description": "Forma normal da equação",
+        "expression": {
+          "text": "y'(t) = -k*y(t)",
+          "latex": "y'(t) = -k \\cdot y(t)",
+          "structure": "(equation (unknown y 1 (symbol t)) (negate (multiply (symbol k) (unknown y 0 (symbol t)))))"
+        }
+      },
+      {
+        "description": "Solução em forma fechada",
+        "expression": {
+          "text": "y(t) = y_0*exp(-k*t)",
+          "latex": "y(t) = y_{0} \\cdot \\exp\\left(-k \\cdot t\\right)",
+          "structure": "(equation (unknown y 0 (symbol t)) (multiply (symbol y_0) (exp (negate (multiply (symbol k) (symbol t))))))"
+        }
+      }
+    ]
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "identifier": "equation_residual",
+        "kind": "proof",
+        "status": "passed",
+        "statement": "A função informada, substituída na equação original, anula a diferença entre os dois lados.",
+        "observed": "o resíduo se reduz a zero por simplificação simbólica"
+      },
+      {
+        "identifier": "initial_condition",
+        "kind": "proof",
+        "status": "passed",
+        "statement": "A função informada assume o valor declarado no ponto da condição inicial.",
+        "observed": "o resíduo se reduz a zero por simplificação simbólica"
+      },
+      {
+        "identifier": "declared_domain_suffices",
+        "kind": "proof",
+        "status": "passed",
+        "statement": "A resposta vale para todos os valores dos parâmetros no domínio declarado.",
+        "observed": "nenhuma hipótese além do domínio declarado é necessária"
+      },
+      {
+        "identifier": "dimensional_consistency",
+        "kind": "consistency_test",
+        "status": "passed",
+        "statement": "A resposta tem a dimensão que o enunciado e as unidades declaradas exigem.",
+        "observed": "resposta com dimensão adimensional; o enunciado exige adimensional"
+      }
+    ],
+    "not_performed": [],
+    "references": [
+      "W. E. Boyce e R. C. DiPrima, Elementary Differential Equations and Boundary Value Problems, 10ª ed., Wiley, 2012, seção 2.1."
+    ]
+  },
+  "limitations": [
+    "Equações não lineares, de ordem maior, com coeficientes variáveis ou sistemas ficam fora desta ficha.",
+    "A condição inicial é exigida: sem ela o problema é o da solução geral."
+  ],
+  "environment": {
+    "package": {
+      "name": "quantum-calculator",
+      "version": "0.2.0"
+    },
+    "python": {
+      "implementation": "CPython",
+      "version": "3.12.15"
+    },
+    "platform": "Linux-6.18.56-x86_64-with-glibc2.34",
+    "dependencies": [
+      {
+        "name": "sympy",
+        "version": "1.14.0"
+      },
+      {
+        "name": "mpmath",
+        "version": "1.3.0"
+      }
+    ]
+  }
+}

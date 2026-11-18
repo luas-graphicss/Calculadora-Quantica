@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "problem": "calculus.antiderivative",
+  "description": "Primitiva que pede a função erro, fora das operações registradas.",
+  "notation": "text",
+  "statement": "integral(exp(-x^2), x)",
+  "symbols": {
+    "x": {
+      "role": "variable",
+      "domain": "real",
+      "unit": "1"
+    }
+  }
+}

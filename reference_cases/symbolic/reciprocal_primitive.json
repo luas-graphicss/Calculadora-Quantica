@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "problem": "calculus.antiderivative",
+  "description": "Primitiva de 1/x em uma variável real.",
+  "notation": "text",
+  "statement": "integral(1/x, x)",
+  "symbols": {
+    "x": {
+      "role": "variable",
+      "domain": "real",
+      "unit": "1"
+    }
+  }
+}

@@ -5,6 +5,8 @@ from enum import StrEnum
 class DiagnosticCategory(StrEnum):
     INVALID_INPUT = "invalid_input"
     UNSUPPORTED_PROBLEM = "unsupported_problem"
+    AMBIGUOUS_INPUT = "ambiguous_input"
+    BUDGET_EXCEEDED = "budget_exceeded"
 
 
 class DiagnosticCode(StrEnum):
@@ -31,15 +33,82 @@ class DiagnosticCode(StrEnum):
     UNSUPPORTED_HYPOTHESIS = "unsupported_hypothesis"
     UNSUPPORTED_QUANTITY = "unsupported_quantity"
     UNSUPPORTED_COVARIANCE = "unsupported_covariance"
+    UNEXPECTED_CHARACTER = "unexpected_character"
+    SYNTAX_ERROR = "syntax_error"
+    UNEXPECTED_END = "unexpected_end"
+    UNDECLARED_SYMBOL = "undeclared_symbol"
+    RESERVED_NAME = "reserved_name"
+    INVALID_SYMBOL_NAME = "invalid_symbol_name"
+    UNKNOWN_OPTION = "unknown_option"
+    NOT_A_VARIABLE = "not_a_variable"
+    NOT_A_FUNCTION = "not_a_function"
+    BOUND_VARIABLE_MISUSE = "bound_variable_misuse"
+    DIMENSIONAL_ARGUMENT = "dimensional_argument"
+    UNDEFINED_EXPRESSION = "undefined_expression"
+    CARD_MISMATCH = "card_mismatch"
+    MALFORMED_CONDITION = "malformed_condition"
+    MALFORMED_CANDIDATE = "malformed_candidate"
+    AMBIGUOUS_DIVISION = "ambiguous_division"
+    AMBIGUOUS_POWER = "ambiguous_power"
+    AMBIGUOUS_APPLICATION = "ambiguous_application"
+    AMBIGUOUS_ARGUMENT = "ambiguous_argument"
+    AMBIGUOUS_JUXTAPOSITION = "ambiguous_juxtaposition"
+    AMBIGUOUS_DERIVATIVE = "ambiguous_derivative"
+    AMBIGUOUS_PROBLEM = "ambiguous_problem"
+    UNSUPPORTED_OPERATION = "unsupported_operation"
+    NO_COMPATIBLE_CARD = "no_compatible_card"
+    OUTSIDE_COVERAGE = "outside_coverage"
+    SINGULARITY_IN_INTERVAL = "singularity_in_interval"
+    STATEMENT_TOO_LONG = "statement_too_long"
+    EXPRESSION_TOO_DEEP = "expression_too_deep"
+    EXPRESSION_TOO_LARGE = "expression_too_large"
+    TIME_BUDGET_EXCEEDED = "time_budget_exceeded"
+    MEMORY_BUDGET_EXCEEDED = "memory_budget_exceeded"
 
 
-_UNSUPPORTED_PROBLEM_CODES = frozenset(
-    {
-        DiagnosticCode.UNKNOWN_PROBLEM,
-        DiagnosticCode.UNSUPPORTED_HYPOTHESIS,
-        DiagnosticCode.UNSUPPORTED_QUANTITY,
-        DiagnosticCode.UNSUPPORTED_COVARIANCE,
-    }
+_CATEGORY_BY_CODE = {
+    **dict.fromkeys(
+        (
+            DiagnosticCode.UNKNOWN_PROBLEM,
+            DiagnosticCode.UNSUPPORTED_HYPOTHESIS,
+            DiagnosticCode.UNSUPPORTED_QUANTITY,
+            DiagnosticCode.UNSUPPORTED_COVARIANCE,
+            DiagnosticCode.UNSUPPORTED_OPERATION,
+            DiagnosticCode.NO_COMPATIBLE_CARD,
+            DiagnosticCode.OUTSIDE_COVERAGE,
+            DiagnosticCode.SINGULARITY_IN_INTERVAL,
+        ),
+        DiagnosticCategory.UNSUPPORTED_PROBLEM,
+    ),
+    **dict.fromkeys(
+        (
+            DiagnosticCode.AMBIGUOUS_DIVISION,
+            DiagnosticCode.AMBIGUOUS_POWER,
+            DiagnosticCode.AMBIGUOUS_APPLICATION,
+            DiagnosticCode.AMBIGUOUS_ARGUMENT,
+            DiagnosticCode.AMBIGUOUS_JUXTAPOSITION,
+            DiagnosticCode.AMBIGUOUS_DERIVATIVE,
+            DiagnosticCode.AMBIGUOUS_PROBLEM,
+        ),
+        DiagnosticCategory.AMBIGUOUS_INPUT,
+    ),
+    **dict.fromkeys(
+        (
+            DiagnosticCode.STATEMENT_TOO_LONG,
+            DiagnosticCode.EXPRESSION_TOO_DEEP,
+            DiagnosticCode.EXPRESSION_TOO_LARGE,
+            DiagnosticCode.TIME_BUDGET_EXCEEDED,
+            DiagnosticCode.MEMORY_BUDGET_EXCEEDED,
+        ),
+        DiagnosticCategory.BUDGET_EXCEEDED,
+    ),
+}
+
+_MOST_ACTIONABLE_FIRST = (
+    DiagnosticCategory.INVALID_INPUT,
+    DiagnosticCategory.BUDGET_EXCEEDED,
+    DiagnosticCategory.AMBIGUOUS_INPUT,
+    DiagnosticCategory.UNSUPPORTED_PROBLEM,
 )
 
 _QUOTED_TEXT_LIMIT = 64
@@ -55,17 +124,23 @@ def json_pointer(*segments: str) -> str:
 
 
 @dataclass(frozen=True, slots=True)
+class SourceExcerpt:
+    text: str
+    start: int
+    end: int
+
+
+@dataclass(frozen=True, slots=True)
 class Diagnostic:
     code: DiagnosticCode
     pointer: str
     message: str
     expected: str
+    excerpt: SourceExcerpt | None = None
 
     @property
     def category(self) -> DiagnosticCategory:
-        if self.code in _UNSUPPORTED_PROBLEM_CODES:
-            return DiagnosticCategory.UNSUPPORTED_PROBLEM
-        return DiagnosticCategory.INVALID_INPUT
+        return _CATEGORY_BY_CODE.get(self.code, DiagnosticCategory.INVALID_INPUT)
 
 
 class ProblemRejectedError(Exception):
@@ -75,9 +150,13 @@ class ProblemRejectedError(Exception):
         )
         self.diagnostics = diagnostics
 
+    def __reduce__(self) -> tuple[type["ProblemRejectedError"], tuple[tuple[Diagnostic, ...]]]:
+        return type(self), (self.diagnostics,)
+
     @property
     def category(self) -> DiagnosticCategory:
-        categories = {item.category for item in self.diagnostics}
-        if DiagnosticCategory.INVALID_INPUT in categories:
-            return DiagnosticCategory.INVALID_INPUT
-        return DiagnosticCategory.UNSUPPORTED_PROBLEM
+        present = {item.category for item in self.diagnostics}
+        for category in _MOST_ACTIONABLE_FIRST:
+            if category in present:
+                return category
+        return DiagnosticCategory.INVALID_INPUT
