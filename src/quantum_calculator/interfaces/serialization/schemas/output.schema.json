@@ -1,0 +1,987 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:quantum-calculator:schema:output:1.0",
+  "title": "Documentos de saída da Calculadora Quântica",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/validation"
+    },
+    {
+      "$ref": "#/$defs/run_record"
+    },
+    {
+      "$ref": "#/$defs/rejection"
+    }
+  ],
+  "$defs": {
+    "text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "decimal": {
+      "type": "string",
+      "pattern": "^-?\\d+(\\.\\d+)?(E[+-]\\d+)?$"
+    },
+    "exact_value": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "decimal",
+        "is_exact",
+        "numerator",
+        "denominator",
+        "unit"
+      ],
+      "properties": {
+        "decimal": {
+          "$ref": "#/$defs/decimal"
+        },
+        "is_exact": {
+          "type": "boolean"
+        },
+        "numerator": {
+          "type": "string",
+          "pattern": "^-?\\d+$"
+        },
+        "denominator": {
+          "type": "string",
+          "pattern": "^[1-9]\\d*$"
+        },
+        "unit": {
+          "$ref": "#/$defs/text"
+        }
+      }
+    },
+    "input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sha256",
+        "schema_version",
+        "description",
+        "text"
+      ],
+      "properties": {
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "schema_version": {
+          "const": "1.0"
+        },
+        "description": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/text"
+            }
+          ]
+        },
+        "text": {
+          "$ref": "#/$defs/text"
+        }
+      }
+    },
+    "parameter": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "name",
+            "symbol",
+            "origin",
+            "given",
+            "si"
+          ],
+          "properties": {
+            "name": {
+              "$ref": "#/$defs/text"
+            },
+            "symbol": {
+              "$ref": "#/$defs/text"
+            },
+            "origin": {
+              "const": "user"
+            },
+            "given": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "value",
+                "unit"
+              ],
+              "properties": {
+                "value": {
+                  "$ref": "#/$defs/text"
+                },
+                "unit": {
+                  "$ref": "#/$defs/text"
+                }
+              }
+            },
+            "si": {
+              "$ref": "#/$defs/exact_value"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "name",
+            "symbol",
+            "origin",
+            "constant",
+            "si"
+          ],
+          "properties": {
+            "name": {
+              "$ref": "#/$defs/text"
+            },
+            "symbol": {
+              "$ref": "#/$defs/text"
+            },
+            "origin": {
+              "const": "catalog_constant"
+            },
+            "constant": {
+              "$ref": "#/$defs/text"
+            },
+            "si": {
+              "$ref": "#/$defs/exact_value"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "name",
+            "symbol",
+            "origin",
+            "count"
+          ],
+          "properties": {
+            "name": {
+              "$ref": "#/$defs/text"
+            },
+            "symbol": {
+              "$ref": "#/$defs/text"
+            },
+            "origin": {
+              "const": "user"
+            },
+            "count": {
+              "type": "string",
+              "pattern": "^[1-9]\\d*$"
+            }
+          }
+        }
+      ]
+    },
+    "problem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "card",
+        "scope",
+        "hypotheses",
+        "parameters",
+        "requested",
+        "uncertainty"
+      ],
+      "properties": {
+        "card": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "identifier",
+            "version",
+            "area",
+            "title"
+          ],
+          "properties": {
+            "identifier": {
+              "$ref": "#/$defs/text"
+            },
+            "version": {
+              "$ref": "#/$defs/text"
+            },
+            "area": {
+              "$ref": "#/$defs/text"
+            },
+            "title": {
+              "$ref": "#/$defs/text"
+            }
+          }
+        },
+        "scope": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/text"
+          }
+        },
+        "hypotheses": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "key",
+              "value",
+              "statement"
+            ],
+            "properties": {
+              "key": {
+                "$ref": "#/$defs/text"
+              },
+              "value": {
+                "$ref": "#/$defs/text"
+              },
+              "statement": {
+                "$ref": "#/$defs/text"
+              }
+            }
+          }
+        },
+        "parameters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/parameter"
+          }
+        },
+        "requested": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "quantity",
+            "symbol",
+            "label",
+            "unit",
+            "significant_digits"
+          ],
+          "properties": {
+            "quantity": {
+              "$ref": "#/$defs/text"
+            },
+            "symbol": {
+              "$ref": "#/$defs/text"
+            },
+            "label": {
+              "$ref": "#/$defs/text"
+            },
+            "unit": {
+              "$ref": "#/$defs/text"
+            },
+            "significant_digits": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 34
+            }
+          }
+        },
+        "uncertainty": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "covariance",
+                "standard_uncertainties"
+              ],
+              "properties": {
+                "covariance": {
+                  "$ref": "#/$defs/text"
+                },
+                "standard_uncertainties": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "parameter",
+                      "given",
+                      "si"
+                    ],
+                    "properties": {
+                      "parameter": {
+                        "$ref": "#/$defs/text"
+                      },
+                      "given": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                          "value",
+                          "unit"
+                        ],
+                        "properties": {
+                          "value": {
+                            "$ref": "#/$defs/text"
+                          },
+                          "unit": {
+                            "$ref": "#/$defs/text"
+                          }
+                        }
+                      },
+                      "si": {
+                        "$ref": "#/$defs/exact_value"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "plan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "method",
+        "nature",
+        "justification",
+        "rounding"
+      ],
+      "properties": {
+        "method": {
+          "$ref": "#/$defs/text"
+        },
+        "nature": {
+          "enum": [
+            "exact",
+            "approximate"
+          ]
+        },
+        "justification": {
+          "$ref": "#/$defs/text"
+        },
+        "rounding": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mode",
+            "significant_digits"
+          ],
+          "properties": {
+            "mode": {
+              "const": "half_even"
+            },
+            "significant_digits": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 34
+            }
+          }
+        }
+      }
+    },
+    "constant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "identifier",
+        "symbol",
+        "name",
+        "value",
+        "exactness",
+        "standard_uncertainty",
+        "source"
+      ],
+      "properties": {
+        "identifier": {
+          "$ref": "#/$defs/text"
+        },
+        "symbol": {
+          "$ref": "#/$defs/text"
+        },
+        "name": {
+          "$ref": "#/$defs/text"
+        },
+        "value": {
+          "$ref": "#/$defs/exact_value"
+        },
+        "exactness": {
+          "enum": [
+            "exact",
+            "measured"
+          ]
+        },
+        "standard_uncertainty": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/exact_value"
+            }
+          ]
+        },
+        "source": {
+          "$ref": "#/$defs/text"
+        }
+      }
+    },
+    "uncertainty": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "reason"
+          ],
+          "properties": {
+            "status": {
+              "const": "not_evaluated"
+            },
+            "reason": {
+              "$ref": "#/$defs/text"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "method",
+            "covariance",
+            "standard_uncertainty",
+            "relative_standard_uncertainty",
+            "significant_digits",
+            "variance",
+            "contributions"
+          ],
+          "properties": {
+            "status": {
+              "const": "evaluated"
+            },
+            "method": {
+              "const": "linear_propagation"
+            },
+            "covariance": {
+              "$ref": "#/$defs/text"
+            },
+            "standard_uncertainty": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "decimal",
+                "unit"
+              ],
+              "properties": {
+                "decimal": {
+                  "$ref": "#/$defs/decimal"
+                },
+                "unit": {
+                  "$ref": "#/$defs/text"
+                }
+              }
+            },
+            "relative_standard_uncertainty": {
+              "$ref": "#/$defs/decimal"
+            },
+            "significant_digits": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 34
+            },
+            "variance": {
+              "$ref": "#/$defs/exact_value"
+            },
+            "contributions": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "parameter",
+                  "symbol",
+                  "sensitivity",
+                  "standard_uncertainty",
+                  "variance"
+                ],
+                "properties": {
+                  "parameter": {
+                    "$ref": "#/$defs/text"
+                  },
+                  "symbol": {
+                    "$ref": "#/$defs/text"
+                  },
+                  "sensitivity": {
+                    "$ref": "#/$defs/exact_value"
+                  },
+                  "standard_uncertainty": {
+                    "$ref": "#/$defs/exact_value"
+                  },
+                  "variance": {
+                    "$ref": "#/$defs/exact_value"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "quantity",
+        "symbol",
+        "nature",
+        "expression",
+        "value",
+        "si_value",
+        "conversion",
+        "steps",
+        "uncertainty"
+      ],
+      "properties": {
+        "quantity": {
+          "$ref": "#/$defs/text"
+        },
+        "symbol": {
+          "$ref": "#/$defs/text"
+        },
+        "nature": {
+          "enum": [
+            "exact",
+            "approximate"
+          ]
+        },
+        "expression": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "plain",
+            "latex"
+          ],
+          "properties": {
+            "plain": {
+              "$ref": "#/$defs/text"
+            },
+            "latex": {
+              "$ref": "#/$defs/text"
+            }
+          }
+        },
+        "value": {
+          "$ref": "#/$defs/exact_value"
+        },
+        "si_value": {
+          "$ref": "#/$defs/exact_value"
+        },
+        "conversion": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "unit",
+            "si_factor",
+            "defining_constants"
+          ],
+          "properties": {
+            "unit": {
+              "$ref": "#/$defs/text"
+            },
+            "si_factor": {
+              "$ref": "#/$defs/exact_value"
+            },
+            "defining_constants": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/text"
+              }
+            }
+          }
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "description",
+              "expression",
+              "value"
+            ],
+            "properties": {
+              "description": {
+                "$ref": "#/$defs/text"
+              },
+              "expression": {
+                "$ref": "#/$defs/text"
+              },
+              "value": {
+                "oneOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "$ref": "#/$defs/exact_value"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "uncertainty": {
+          "$ref": "#/$defs/uncertainty"
+        }
+      }
+    },
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "checks",
+        "not_performed",
+        "references"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "passed",
+            "conditional",
+            "inconclusive",
+            "failed"
+          ]
+        },
+        "checks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "identifier",
+              "kind",
+              "status",
+              "statement",
+              "observed"
+            ],
+            "properties": {
+              "identifier": {
+                "$ref": "#/$defs/text"
+              },
+              "kind": {
+                "enum": [
+                  "proof",
+                  "consistency_test"
+                ]
+              },
+              "status": {
+                "enum": [
+                  "passed",
+                  "conditional",
+                  "inconclusive",
+                  "failed"
+                ]
+              },
+              "statement": {
+                "$ref": "#/$defs/text"
+              },
+              "observed": {
+                "$ref": "#/$defs/text"
+              }
+            }
+          }
+        },
+        "not_performed": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "identifier",
+              "reason"
+            ],
+            "properties": {
+              "identifier": {
+                "$ref": "#/$defs/text"
+              },
+              "reason": {
+                "$ref": "#/$defs/text"
+              }
+            }
+          }
+        },
+        "references": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/text"
+          }
+        }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "package",
+        "python",
+        "platform",
+        "dependencies"
+      ],
+      "properties": {
+        "package": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "name",
+            "version"
+          ],
+          "properties": {
+            "name": {
+              "$ref": "#/$defs/text"
+            },
+            "version": {
+              "$ref": "#/$defs/text"
+            }
+          }
+        },
+        "python": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "implementation",
+            "version"
+          ],
+          "properties": {
+            "implementation": {
+              "$ref": "#/$defs/text"
+            },
+            "version": {
+              "$ref": "#/$defs/text"
+            }
+          }
+        },
+        "platform": {
+          "$ref": "#/$defs/text"
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "version"
+            ],
+            "properties": {
+              "name": {
+                "$ref": "#/$defs/text"
+              },
+              "version": {
+                "$ref": "#/$defs/text"
+              }
+            }
+          }
+        }
+      }
+    },
+    "diagnostic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "category",
+        "code",
+        "pointer",
+        "message",
+        "expected"
+      ],
+      "properties": {
+        "category": {
+          "enum": [
+            "invalid_input",
+            "unsupported_problem"
+          ]
+        },
+        "code": {
+          "enum": [
+            "document_too_large",
+            "invalid_encoding",
+            "malformed_json",
+            "document_too_deep",
+            "duplicate_field",
+            "missing_field",
+            "unexpected_field",
+            "invalid_type",
+            "malformed_number",
+            "non_finite_number",
+            "number_out_of_range",
+            "unsupported_schema_version",
+            "unknown_unit",
+            "unknown_constant",
+            "dimension_mismatch",
+            "non_positive_quantity",
+            "not_a_positive_integer",
+            "negative_uncertainty",
+            "hypothesis_not_confirmed",
+            "unknown_problem",
+            "unsupported_hypothesis",
+            "unsupported_quantity",
+            "unsupported_covariance"
+          ]
+        },
+        "pointer": {
+          "type": "string"
+        },
+        "message": {
+          "$ref": "#/$defs/text"
+        },
+        "expected": {
+          "$ref": "#/$defs/text"
+        }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "document",
+        "schema_version",
+        "input",
+        "problem",
+        "plan"
+      ],
+      "properties": {
+        "document": {
+          "const": "validation"
+        },
+        "schema_version": {
+          "const": "1.0"
+        },
+        "input": {
+          "$ref": "#/$defs/input"
+        },
+        "problem": {
+          "$ref": "#/$defs/problem"
+        },
+        "plan": {
+          "$ref": "#/$defs/plan"
+        }
+      }
+    },
+    "run_record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "document",
+        "schema_version",
+        "input",
+        "problem",
+        "plan",
+        "constants",
+        "units",
+        "result",
+        "verification",
+        "limitations",
+        "environment"
+      ],
+      "properties": {
+        "document": {
+          "const": "run_record"
+        },
+        "schema_version": {
+          "const": "1.0"
+        },
+        "input": {
+          "$ref": "#/$defs/input"
+        },
+        "problem": {
+          "$ref": "#/$defs/problem"
+        },
+        "plan": {
+          "$ref": "#/$defs/plan"
+        },
+        "constants": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "edition",
+            "used"
+          ],
+          "properties": {
+            "edition": {
+              "$ref": "#/$defs/text"
+            },
+            "used": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/constant"
+              }
+            }
+          }
+        },
+        "units": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "registry_version"
+          ],
+          "properties": {
+            "registry_version": {
+              "$ref": "#/$defs/text"
+            }
+          }
+        },
+        "result": {
+          "$ref": "#/$defs/result"
+        },
+        "verification": {
+          "$ref": "#/$defs/verification"
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/text"
+          }
+        },
+        "environment": {
+          "$ref": "#/$defs/environment"
+        }
+      }
+    },
+    "rejection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "document",
+        "schema_version",
+        "category",
+        "diagnostics"
+      ],
+      "properties": {
+        "document": {
+          "const": "rejection"
+        },
+        "schema_version": {
+          "const": "1.0"
+        },
+        "category": {
+          "enum": [
+            "invalid_input",
+            "unsupported_problem"
+          ]
+        },
+        "diagnostics": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/diagnostic"
+          },
+          "minItems": 1
+        }
+      }
+    }
+  }
+}

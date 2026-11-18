@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from quantum_calculator.adapters.execution.runtime_environment import RuntimeEnvironmentProbe
 from quantum_calculator.adapters.units.codata_2022 import Codata2022Constants
 from quantum_calculator.adapters.units.si_registry import SiUnitRegistry
+from quantum_calculator.application.review_problem import ReviewProblem
 from quantum_calculator.application.solve_problem import HomologatedMethod, SolveProblem
 from quantum_calculator.application.validation.problem_validator import ProblemValidator
 from quantum_calculator.catalog.card_catalog import HOMOLOGATED_CARDS, CardCatalog
@@ -14,7 +15,7 @@ from quantum_calculator.verification.infinite_square_well import InfiniteSquareW
 
 @dataclass(frozen=True, slots=True)
 class Calculator:
-    validator: ProblemValidator
+    review_problem: ReviewProblem
     solve_problem: SolveProblem
     units: UnitRegistry
 
@@ -30,7 +31,7 @@ def build_calculator() -> Calculator:
         )
     }
     return Calculator(
-        validator=validator,
+        review_problem=ReviewProblem(validator),
         solve_problem=SolveProblem(validator, methods, constants, units, RuntimeEnvironmentProbe()),
         units=units,
     )

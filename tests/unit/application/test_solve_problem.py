@@ -1,5 +1,3 @@
-from dataclasses import replace
-
 import pytest
 
 from quantum_calculator.adapters.execution.runtime_environment import RuntimeEnvironmentProbe
@@ -10,26 +8,13 @@ from quantum_calculator.application.validation.problem_validator import ProblemV
 from quantum_calculator.composition import Calculator
 from quantum_calculator.domain.diagnostics import ProblemRejectedError
 from quantum_calculator.domain.methods import ResultNature
-from quantum_calculator.domain.ports import Solver
-from quantum_calculator.domain.quantities import Quantity
 from quantum_calculator.domain.run_record import RunRecord
-from quantum_calculator.domain.solution import SolverReport
-from quantum_calculator.domain.validated_problem import ValidatedProblem
 from quantum_calculator.domain.verification import VerificationStatus
 from quantum_calculator.interfaces.serialization.decoding.problem_decoder import decode_problem
 from quantum_calculator.solvers.symbolic.infinite_square_well import InfiniteSquareWellSolver
 from quantum_calculator.verification.infinite_square_well import InfiniteSquareWellVerifier
 from support.documents import ProblemDocument
-
-
-class DoubledEnergySolver:
-    def __init__(self, honest: Solver) -> None:
-        self._honest = honest
-
-    def solve(self, problem: ValidatedProblem) -> SolverReport:
-        report = self._honest.solve(problem)
-        doubled = Quantity(2 * report.value.magnitude, report.value.dimension)
-        return replace(report, value=doubled)
+from support.solvers import DoubledEnergySolver
 
 
 def _execute(calculator: Calculator, document: ProblemDocument) -> RunRecord:
