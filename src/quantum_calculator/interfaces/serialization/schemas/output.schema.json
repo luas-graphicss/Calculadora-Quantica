@@ -1274,7 +1274,8 @@
             "invalid_input",
             "unsupported_problem",
             "ambiguous_input",
-            "budget_exceeded"
+            "budget_exceeded",
+            "non_convergent"
           ]
         },
         "code": {
@@ -1332,7 +1333,16 @@
             "expression_too_deep",
             "expression_too_large",
             "time_budget_exceeded",
-            "memory_budget_exceeded"
+            "memory_budget_exceeded",
+            "invalid_shape",
+            "zero_state",
+            "state_not_normalized",
+            "non_hermitian_operator",
+            "basis_not_orthonormal",
+            "incompatible_condition",
+            "resource_limit_exceeded",
+            "method_not_converged",
+            "non_finite_result"
           ]
         },
         "pointer": {
@@ -1635,7 +1645,8 @@
             "invalid_input",
             "unsupported_problem",
             "ambiguous_input",
-            "budget_exceeded"
+            "budget_exceeded",
+            "non_convergent"
           ]
         },
         "diagnostics": {

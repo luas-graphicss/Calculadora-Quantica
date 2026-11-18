@@ -4,6 +4,8 @@ from typing import Protocol
 from quantum_calculator.domain.constants import PhysicalConstant
 from quantum_calculator.domain.dimensions import Dimension
 from quantum_calculator.domain.execution import CancellationSignal, ExecutionBudget
+from quantum_calculator.domain.numerical.problems import NumericalProblem
+from quantum_calculator.domain.numerical.report import NumericalSolverReport
 from quantum_calculator.domain.run_record import EnvironmentManifest
 from quantum_calculator.domain.solution import SolverReport
 from quantum_calculator.domain.statements import ValidatedStatement
@@ -48,6 +50,16 @@ class StatementSolver(Protocol):
 class StatementVerifier(Protocol):
     def verify(
         self, problem: ValidatedStatement, report: SymbolicSolverReport
+    ) -> VerificationReport: ...
+
+
+class NumericalSolver(Protocol):
+    def solve(self, problem: NumericalProblem) -> NumericalSolverReport: ...
+
+
+class NumericalVerifier(Protocol):
+    def verify(
+        self, problem: NumericalProblem, report: NumericalSolverReport
     ) -> VerificationReport: ...
 
 
