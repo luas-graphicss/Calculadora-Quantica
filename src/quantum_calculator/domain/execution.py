@@ -28,7 +28,9 @@ class CalculationCancelledError(Exception):
 
 
 class CalculationFailedError(Exception):
-    pass
+    def __init__(self, exit_code: int | None) -> None:
+        super().__init__(f"the calculation process ended without a result, exit code {exit_code}")
+        self.exit_code = exit_code
 
 
 class CancellationSignal(Protocol):
