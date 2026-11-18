@@ -42,6 +42,13 @@ _UNSUPPORTED_PROBLEM_CODES = frozenset(
     }
 )
 
+_QUOTED_TEXT_LIMIT = 64
+
+
+def quote_user_text(text: str) -> str:
+    shown = text if len(text) <= _QUOTED_TEXT_LIMIT else f"{text[:_QUOTED_TEXT_LIMIT]}..."
+    return f'"{shown}"'
+
 
 @dataclass(frozen=True, slots=True)
 class Diagnostic:
