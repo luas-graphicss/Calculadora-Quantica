@@ -1,0 +1,60 @@
+Candidata reprovada: y(t) = y_0*exp(k*t)
+revisão por substituição; adimensional; verificação: failed (equation_residual)
+
+Leitura
+  texto: y'(t) = -k*y(t)
+  LaTeX: y'(t) = -k \cdot y(t)
+  árvore: (equation (unknown y 1 (symbol t)) (negate (multiply (symbol k) (unknown y 0 (symbol t)))))
+  entrada (text): y' = -k*y
+
+Símbolos
+  t: variable, domínio real, unidade s
+  k: parameter, domínio positive, unidade 1/s
+  y_0: parameter, domínio positive, unidade 1
+  y: function de t, domínio real, unidade 1
+
+Condições
+  y(0) = y_0
+
+Candidata
+  y(t) = y_0*exp(k*t)
+
+Ficha
+  ode.first_order_linear.candidate_review 1.0.0 (confirmada na entrada)
+  Revisão de uma solução candidata de um problema de valor inicial
+  área: ordinary_differential_equations; tipo: candidate_review
+  domínio: Equação escalar de primeira ordem, linear na função incógnita e na sua derivada, com coeficientes e termo fonte que não dependem da variável independente.
+  domínio: Uma condição inicial da forma y(t0) = y0 e uma candidata explícita y(t) = ...
+  descrição: Decaimento exponencial: candidata com o sinal do expoente trocado.
+  entrada (sha256): 2db292fec7359c8c11dbe746becadc36e6d643dee27b6e82e68e9bd565ba362f
+
+Domínio da candidata
+  sem exclusões: está definida em todo o domínio declarado
+
+Memória de cálculo
+  método: substitution.candidate_review (exact)
+  A candidata é substituída na equação original e a condição inicial é conferida à parte; a equação não é resolvida.
+
+Verificação: failed
+  failed [proof] equation_residual
+    A função informada, substituída na equação original, anula a diferença entre os dois lados.
+    observado: o resíduo 2*k*y_0*exp(k*t) não se anula em nenhum ponto do domínio declarado
+  passed [proof] initial_condition
+    A função informada assume o valor declarado no ponto da condição inicial.
+    observado: o resíduo se reduz a zero por simplificação simbólica
+  passed [proof] declared_domain_suffices
+    A resposta vale para todos os valores dos parâmetros no domínio declarado.
+    observado: nenhuma hipótese além do domínio declarado é necessária
+  passed [consistency_test] dimensional_consistency
+    A resposta tem a dimensão que o enunciado e as unidades declaradas exigem.
+    observado: resposta com dimensão adimensional; o enunciado exige adimensional
+  referência: W. E. Boyce e R. C. DiPrima, Elementary Differential Equations and Boundary Value Problems, 10ª ed., Wiley, 2012, seção 2.1.
+
+Limitações
+  Equações não lineares, de ordem maior, com coeficientes variáveis ou sistemas ficam fora desta ficha.
+  Concordância em pontos amostrados não é relatada como prova: sem demonstração, o resultado é inconclusivo.
+
+Ambiente
+  quantum-calculator 0.2.0; CPython 3.12.15; Linux-6.18.56-x86_64-with-glibc2.34
+  sympy 1.14.0; mpmath 1.3.0
+  catálogo 1.1.0; registro de unidades 1.0.0

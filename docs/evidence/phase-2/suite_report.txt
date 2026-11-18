@@ -1,0 +1,18 @@
+Relatório da suíte no encerramento da fase 2
+quantum-calculator 0.2.0; CPython 3.12.15; Linux-6.18.56-x86_64-with-glibc2.34
+ruff 0.17.5; mypy 2.4.1; pytest 9.2.0
+
+$ ruff format --check .
+217 files already formatted
+$ ruff check .
+All checks passed!
+$ mypy
+Success: no issues found in 206 source files
+$ pytest tests/contracts
+215 passed in 6.30s
+$ pytest -m algebraic
+120 passed, 852 deselected in 1.79s
+$ pytest -m numerical
+3 passed, 969 deselected in 0.28s
+$ pytest -m "not algebraic and not numerical" --ignore=tests/contracts
+634 passed, 123 deselected in 18.77s

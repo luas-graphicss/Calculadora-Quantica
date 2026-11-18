@@ -1,0 +1,6 @@
+Entrada recusada (ambiguous_input)
+  /statement [ambiguous_division]
+    Depois de uma divisão, outro fator na mesma sequência admite duas leituras.
+    esperado: parênteses que fixem a leitura, como (a/b)*c ou a/(b*c)
+    trecho: diff(1/2x, x)
+                 ^^^^

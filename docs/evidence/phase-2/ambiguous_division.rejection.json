@@ -1,0 +1,19 @@
+{
+  "document": "rejection",
+  "schema_version": "1.1",
+  "category": "ambiguous_input",
+  "diagnostics": [
+    {
+      "category": "ambiguous_input",
+      "code": "ambiguous_division",
+      "pointer": "/statement",
+      "message": "Depois de uma divisão, outro fator na mesma sequência admite duas leituras.",
+      "expected": "parênteses que fixem a leitura, como (a/b)*c ou a/(b*c)",
+      "excerpt": {
+        "text": "diff(1/2x, x)",
+        "start": 5,
+        "end": 9
+      }
+    }
+  ]
+}

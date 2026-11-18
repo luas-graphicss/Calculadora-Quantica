@@ -1,0 +1,73 @@
+Catálogo 1.1.0: 7 fichas homologadas
+
+quantum.infinite_square_well.energy_level 1.0.0
+  Nível de energia de uma partícula em um poço infinito unidimensional
+  área: stationary_schrodinger_1d; tipo: energy_level
+  método: closed_form.infinite_square_well_energy (exact)
+  domínio: Massa e largura estritamente positivas e índice de nível inteiro positivo.
+  domínio: Posição no intervalo aberto 0 < x < L.
+  limitação: Um poço finito, uma massa efetiva ou outro zero de energia definem problemas diferentes desta ficha.
+  limitação: A expressão é exata no modelo; os algarismos exibidos não declaram a precisão experimental dos parâmetros.
+  limitação: O modelo não relativístico perde validade quando a energia se aproxima de m c^2.
+  exemplo: reference_cases/quantum/electron_box_1nm.json
+
+calculus.derivative 1.0.0
+  Derivada ordinária ou parcial de uma expressão explícita
+  área: differential_integral_calculus; tipo: derivative
+  método: symbolic.differentiation (exact)
+  domínio: Expressões reais explícitas, escritas com as operações e funções registradas, sobre símbolos com domínio real declarado.
+  domínio: O resultado vale onde a expressão e a derivada estão definidas; as exclusões são listadas com a resposta.
+  limitação: Não deriva funções incógnitas, integrais nem derivadas aninhadas.
+  limitação: A simplificação preserva as exclusões da expressão original: os zeros de um fator cancelado continuam fora do domínio.
+  exemplo: reference_cases/symbolic/product_rule.json
+
+calculus.antiderivative 1.0.0
+  Primitiva de uma expressão explícita em uma variável
+  área: differential_integral_calculus; tipo: antiderivative
+  método: symbolic.antidifferentiation (exact)
+  domínio: Expressões reais explícitas, escritas com as operações e funções registradas, sobre símbolos com domínio real declarado.
+  domínio: A primitiva vale em cada intervalo em que o integrando está definido.
+  limitação: Integrandos cuja primitiva pede funções especiais, como erf ou a integral seno, ficam fora da cobertura.
+  limitação: Nenhum método numérico está homologado nesta versão: sem primitiva coberta, nenhuma aproximação é oferecida.
+  limitação: Quando o domínio tem exclusões, a constante de integração pode ser diferente em cada intervalo.
+  exemplo: reference_cases/symbolic/reciprocal_primitive.json
+
+calculus.definite_integral 1.0.0
+  Integral definida de uma expressão explícita em um intervalo finito
+  área: differential_integral_calculus; tipo: definite_integral
+  método: symbolic.fundamental_theorem (exact)
+  domínio: Expressões reais explícitas, escritas com as operações e funções registradas, sobre símbolos com domínio real declarado.
+  domínio: Intervalo finito, com o integrando definido e uma primitiva contínua em todo o intervalo fechado.
+  limitação: Uma singularidade do integrando ou da primitiva no intervalo fechado é recusada; integrais impróprias não são cobertas.
+  limitação: Nenhum método numérico está homologado nesta versão: sem primitiva coberta, nenhuma aproximação é oferecida.
+  exemplo: reference_cases/symbolic/parabola_area.json
+
+ode.first_order_linear.general_solution 1.0.0
+  Solução geral de uma EDO linear de primeira ordem com coeficientes constantes
+  área: ordinary_differential_equations; tipo: general_solution
+  método: closed_form.first_order_linear_ode (exact)
+  domínio: Equação escalar de primeira ordem, linear na função incógnita e na sua derivada, com coeficientes e termo fonte que não dependem da variável independente.
+  domínio: A família de soluções traz uma constante arbitrária.
+  limitação: Equações não lineares, de ordem maior, com coeficientes variáveis ou sistemas ficam fora desta ficha.
+  limitação: Se o sinal do coeficiente de y não está fixado pelo domínio declarado, a resposta é condicional e o caso de coeficiente nulo é listado à parte.
+  exemplo: reference_cases/symbolic/decay_general_solution.json
+
+ode.first_order_linear.initial_value 1.0.0
+  Problema de valor inicial de uma EDO linear de primeira ordem
+  área: ordinary_differential_equations; tipo: initial_value_problem
+  método: closed_form.first_order_linear_ode (exact)
+  domínio: Equação escalar de primeira ordem, linear na função incógnita e na sua derivada, com coeficientes e termo fonte que não dependem da variável independente.
+  domínio: Uma condição inicial da forma y(t0) = y0.
+  limitação: Equações não lineares, de ordem maior, com coeficientes variáveis ou sistemas ficam fora desta ficha.
+  limitação: A condição inicial é exigida: sem ela o problema é o da solução geral.
+  exemplo: reference_cases/symbolic/decay_initial_value.json
+
+ode.first_order_linear.candidate_review 1.0.0
+  Revisão de uma solução candidata de um problema de valor inicial
+  área: ordinary_differential_equations; tipo: candidate_review
+  método: substitution.candidate_review (exact)
+  domínio: Equação escalar de primeira ordem, linear na função incógnita e na sua derivada, com coeficientes e termo fonte que não dependem da variável independente.
+  domínio: Uma condição inicial da forma y(t0) = y0 e uma candidata explícita y(t) = ...
+  limitação: Equações não lineares, de ordem maior, com coeficientes variáveis ou sistemas ficam fora desta ficha.
+  limitação: Concordância em pontos amostrados não é relatada como prova: sem demonstração, o resultado é inconclusivo.
+  exemplo: reference_cases/symbolic/decay_candidate_correct.json
