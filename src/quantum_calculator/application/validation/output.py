@@ -33,13 +33,13 @@ def bind_output(
         "/requested/unit",
         diagnostics,
     )
-    rounding = _rounding_policy(requested.significant_digits, diagnostics)
+    rounding = rounding_policy(requested.significant_digits, diagnostics)
     if unit is None or rounding is None:
         return None
     return BoundOutput(rule, unit, rounding)
 
 
-def _rounding_policy(
+def rounding_policy(
     requested: ExactNumber | None, diagnostics: list[Diagnostic]
 ) -> RoundingPolicy | None:
     if requested is None:

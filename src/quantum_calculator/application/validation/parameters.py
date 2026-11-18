@@ -2,7 +2,7 @@ from quantum_calculator.application.validation.unit_resolution import (
     UnitResolver,
     describe_dimension,
 )
-from quantum_calculator.domain.cards import PositiveIntegerRule, PositiveQuantityRule, ProblemCard
+from quantum_calculator.domain.cards import PositiveIntegerRule, PositiveQuantityRule
 from quantum_calculator.domain.diagnostics import (
     Diagnostic,
     DiagnosticCode,
@@ -14,7 +14,7 @@ from quantum_calculator.domain.problem_spec import (
     ConstantInput,
     ExactNumber,
     ParameterContent,
-    ProblemSpec,
+    ParameterInput,
     QuantityInput,
 )
 from quantum_calculator.domain.validated_problem import BoundCount, BoundQuantity, UserQuantity
@@ -28,19 +28,25 @@ class ParameterBinder:
         self._constants = constants
 
     def bind_quantities(
-        self, card: ProblemCard, spec: ProblemSpec, diagnostics: list[Diagnostic]
+        self,
+        rules: tuple[PositiveQuantityRule, ...],
+        parameters: tuple[ParameterInput, ...],
+        diagnostics: list[Diagnostic],
     ) -> tuple[BoundQuantity, ...]:
-        given = _contents_by_name(spec)
+        given = _contents_by_name(parameters)
         candidates = (
-            self._bind_quantity(rule, given.get(rule.name), diagnostics) for rule in card.quantities
+            self._bind_quantity(rule, given.get(rule.name), diagnostics) for rule in rules
         )
         return tuple(bound for bound in candidates if bound is not None)
 
     def bind_counts(
-        self, card: ProblemCard, spec: ProblemSpec, diagnostics: list[Diagnostic]
+        self,
+        rules: tuple[PositiveIntegerRule, ...],
+        parameters: tuple[ParameterInput, ...],
+        diagnostics: list[Diagnostic],
     ) -> tuple[BoundCount, ...]:
-        given = _contents_by_name(spec)
-        candidates = (_bind_count(rule, given.get(rule.name), diagnostics) for rule in card.counts)
+        given = _contents_by_name(parameters)
+        candidates = (_bind_count(rule, given.get(rule.name), diagnostics) for rule in rules)
         return tuple(bound for bound in candidates if bound is not None)
 
     def _bind_quantity(
@@ -145,9 +151,8 @@ class ParameterBinder:
 
 
 def reject_unknown_parameters(
-    card: ProblemCard, spec: ProblemSpec, diagnostics: list[Diagnostic]
+    known: tuple[str, ...], parameters: tuple[ParameterInput, ...], diagnostics: list[Diagnostic]
 ) -> None:
-    known = [rule.name for rule in card.quantities] + [rule.name for rule in card.counts]
     diagnostics.extend(
         Diagnostic(
             DiagnosticCode.UNEXPECTED_FIELD,
@@ -155,7 +160,7 @@ def reject_unknown_parameters(
             f"A ficha não usa o parâmetro {quote_user_text(parameter.name)}.",
             f"um destes parâmetros: {', '.join(known)}",
         )
-        for parameter in spec.parameters
+        for parameter in parameters
         if parameter.name not in known
     )
 
@@ -198,8 +203,8 @@ def _bind_count(
     return BoundCount(rule.name, rule.symbol, content.value.numerator)
 
 
-def _contents_by_name(spec: ProblemSpec) -> dict[str, ParameterContent]:
-    return {parameter.name: parameter.content for parameter in spec.parameters}
+def _contents_by_name(parameters: tuple[ParameterInput, ...]) -> dict[str, ParameterContent]:
+    return {parameter.name: parameter.content for parameter in parameters}
 
 
 def _subject(rule: PositiveQuantityRule | PositiveIntegerRule) -> str:

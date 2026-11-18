@@ -1,20 +1,22 @@
-from quantum_calculator.domain.cards import ProblemCard
+from quantum_calculator.domain.cards import HypothesisRule
 from quantum_calculator.domain.diagnostics import (
     Diagnostic,
     DiagnosticCode,
     json_pointer,
     quote_user_text,
 )
-from quantum_calculator.domain.problem_spec import ProblemSpec
+from quantum_calculator.domain.problem_spec import HypothesisInput
 from quantum_calculator.domain.validated_problem import ConfirmedHypothesis
 
 
 def confirm_hypotheses(
-    card: ProblemCard, spec: ProblemSpec, diagnostics: list[Diagnostic]
+    rules: tuple[HypothesisRule, ...],
+    given: tuple[HypothesisInput, ...],
+    diagnostics: list[Diagnostic],
 ) -> tuple[ConfirmedHypothesis, ...]:
-    declared = {hypothesis.key: hypothesis.value for hypothesis in spec.hypotheses}
+    declared = {hypothesis.key: hypothesis.value for hypothesis in given}
     confirmed: list[ConfirmedHypothesis] = []
-    for rule in card.hypotheses:
+    for rule in rules:
         pointer = json_pointer("hypotheses", rule.key)
         expected = f'"{rule.required_value}"'
         value = declared.pop(rule.key, None)
@@ -39,7 +41,7 @@ def confirm_hypotheses(
             )
         else:
             confirmed.append(ConfirmedHypothesis(rule.key, value, rule.statement))
-    known = ", ".join(rule.key for rule in card.hypotheses)
+    known = ", ".join(rule.key for rule in rules)
     diagnostics.extend(
         Diagnostic(
             DiagnosticCode.UNEXPECTED_FIELD,
