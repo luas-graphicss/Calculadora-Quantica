@@ -20,7 +20,11 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Topic :: Scientific/Engineering :: Physics",
 ]
-dependencies = ["sympy==1.14.0"]
+dependencies = [
+    "numpy==2.5.5",
+    "scipy==1.18.1",
+    "sympy==1.14.0",
+]
 
 [project.scripts]
 qcalc = "quantum_calculator.interfaces.cli.main:main"
@@ -82,7 +86,7 @@ mypy_path = "src:tests"
 explicit_package_bases = true
 
 [[tool.mypy.overrides]]
-module = ["sympy", "sympy.*"]
+module = ["scipy", "scipy.*", "sympy", "sympy.*"]
 ignore_missing_imports = true
 
 [tool.pytest.ini_options]

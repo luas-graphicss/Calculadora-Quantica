@@ -13,6 +13,14 @@ class DependencyVersion:
 
 
 @dataclass(frozen=True, slots=True)
+class LinearAlgebraLibrary:
+    consumer: str
+    interface: str
+    name: str
+    version: str
+
+
+@dataclass(frozen=True, slots=True)
 class EnvironmentManifest:
     package_name: str
     package_version: str
@@ -20,6 +28,7 @@ class EnvironmentManifest:
     python_version: str
     platform: str
     dependencies: tuple[DependencyVersion, ...]
+    linear_algebra: tuple[LinearAlgebraLibrary, ...]
 
 
 @dataclass(frozen=True, slots=True)

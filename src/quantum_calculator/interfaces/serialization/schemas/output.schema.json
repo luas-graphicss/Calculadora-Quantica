@@ -740,7 +740,8 @@
         "package",
         "python",
         "platform",
-        "dependencies"
+        "dependencies",
+        "linear_algebra"
       ],
       "properties": {
         "package": {
@@ -788,6 +789,36 @@
               "version"
             ],
             "properties": {
+              "name": {
+                "$ref": "#/$defs/text"
+              },
+              "version": {
+                "$ref": "#/$defs/text"
+              }
+            }
+          }
+        },
+        "linear_algebra": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "consumer",
+              "interface",
+              "name",
+              "version"
+            ],
+            "properties": {
+              "consumer": {
+                "$ref": "#/$defs/text"
+              },
+              "interface": {
+                "enum": [
+                  "blas",
+                  "lapack"
+                ]
+              },
               "name": {
                 "$ref": "#/$defs/text"
               },

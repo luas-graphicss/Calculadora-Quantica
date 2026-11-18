@@ -9,6 +9,7 @@ import quantum_calculator
 SOURCE = Path(quantum_calculator.__file__).resolve().parent
 PACKAGE = "quantum_calculator"
 DYNAMIC_EVALUATION = {"eval", "exec", "sympify", "parse_expr"}
+NUMERICAL_LIBRARIES = {"numpy", "scipy"}
 
 
 def _imported_modules(path: Path) -> set[str]:
@@ -50,6 +51,18 @@ def test_sympy_is_confined_to_the_algebra_bridge_solvers_and_verification() -> N
         for path in SOURCE.rglob("*.py")
         if path.relative_to(SOURCE).parts[0] not in {"algebra", "solvers", "verification"}
         and any(module.split(".")[0] == "sympy" for module in _imported_modules(path))
+    ]
+
+    assert offenders == []
+
+
+def test_numpy_and_scipy_are_confined_to_numerical_code_and_the_environment_probe() -> None:
+    allowed = (("numerics",), ("solvers",), ("verification",), ("adapters", "execution"))
+    offenders = [
+        str(path.relative_to(SOURCE))
+        for path in SOURCE.rglob("*.py")
+        if not any(path.relative_to(SOURCE).parts[: len(prefix)] == prefix for prefix in allowed)
+        and any(module.split(".")[0] in NUMERICAL_LIBRARIES for module in _imported_modules(path))
     ]
 
     assert offenders == []

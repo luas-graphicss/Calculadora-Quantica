@@ -53,4 +53,13 @@ def encode_environment(manifest: EnvironmentManifest) -> JsonObject:
             {"name": dependency.name, "version": dependency.version}
             for dependency in manifest.dependencies
         ],
+        "linear_algebra": [
+            {
+                "consumer": library.consumer,
+                "interface": library.interface,
+                "name": library.name,
+                "version": library.version,
+            }
+            for library in manifest.linear_algebra
+        ],
     }
