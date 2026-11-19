@@ -42,13 +42,16 @@ class ValidationToolkit:
         return require_constant(self._constants, PLANCK_CONSTANT)
 
     def hypotheses(self, request: ValidationRequest) -> tuple[ConfirmedHypothesis, ...]:
-        return confirm_hypotheses(
-            request.card.hypotheses, request.spec.hypotheses or (), request.diagnostics
-        )
+        given = request.spec.hypotheses
+        if given is None:
+            return ()
+        return confirm_hypotheses(request.card.hypotheses, given, request.diagnostics)
 
     def quantities(self, request: ValidationRequest) -> dict[str, BoundQuantity]:
         rules = request.card.quantities
-        parameters = request.spec.parameters or ()
+        parameters = request.spec.parameters
+        if parameters is None:
+            return {}
         bound = self._binder.bind_quantities(rules, parameters, request.diagnostics)
         reject_unknown_parameters(
             tuple(rule.name for rule in rules), parameters, request.diagnostics
@@ -66,7 +69,9 @@ class ValidationToolkit:
 
     def energy_unit(self, request: ValidationRequest) -> Unit | None:
         requested = request.spec.requested
-        if requested is None or requested.unit is None:
+        if requested is None:
+            return None
+        if requested.unit is None:
             request.refuse(
                 DiagnosticCode.MISSING_FIELD,
                 pointer_to(_REQUESTED, _UNIT),

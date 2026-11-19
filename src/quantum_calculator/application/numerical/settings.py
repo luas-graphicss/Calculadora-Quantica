@@ -84,7 +84,7 @@ class SettingsReader:
         setting = self._given.get(name)
         literal = "ausente" if setting is None else setting.number.literal
         self._read[name] = ResolutionSetting(name, label, literal)
-        if setting is None:
+        if setting is None and self._request.spec.numerics is not None:
             self.refuse(
                 name,
                 DiagnosticCode.MISSING_FIELD,
