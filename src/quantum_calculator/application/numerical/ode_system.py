@@ -86,12 +86,12 @@ class OdeSystemReader:
             field = reader.read(pointer_to(_EQUATIONS, str(index)), text)
             if field is None:
                 continue
-            reader.check(field, partial(self._dimensions.check, field.statement))
             equation = reader.check(
                 field, partial(explicit_equation, field.statement, self._bound.symbols)
             )
             if equation is None:
                 continue
+            reader.check(field, partial(self._dimensions.check, field.statement))
             name = equation.function.name
             if name in found:
                 reader.report(
@@ -149,14 +149,15 @@ class OdeSystemReader:
         functions = {name: equation.function for name, equation in equations.items()}
         points: dict[str, _InitialPoint] = {}
         given = self._request.spec.conditions
+        reported = len(self._request.diagnostics)
         for index, text in enumerate(given or ()):
             field = reader.read(pointer_to(_CONDITIONS, str(index)), text)
             if field is None:
                 continue
-            reader.check(field, partial(self._dimensions.check, field.statement))
             condition = reader.check(field, partial(initial_condition, field.statement, functions))
             if condition is None:
                 continue
+            reader.check(field, partial(self._dimensions.check, field.statement))
             name = condition.function.name
             if name in points:
                 reader.report(
@@ -174,7 +175,7 @@ class OdeSystemReader:
                 self._bound.describe(f"condition_{name}", "condição inicial lida", field)
             )
             points[name] = point
-        if given is not None:
+        if given is not None and len(self._request.diagnostics) == reported:
             self._check_single_start(functions.keys() - points.keys(), points)
         return points
 
