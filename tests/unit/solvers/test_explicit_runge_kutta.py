@@ -47,7 +47,7 @@ def test_tolerances_evaluations_and_termination_are_recorded() -> None:
     assert effective["relative_tolerance"] == "1e-10"
     assert effective["absolute_tolerance"] == "1e-12"
     assert int(effective["evaluations"]) > 0
-    assert "successfully reached the end" in effective["termination"]
+    assert "status 0" in effective["termination"]
 
 
 def test_solution_that_blows_up_inside_the_interval_yields_no_answer() -> None:
@@ -59,7 +59,7 @@ def test_solution_that_blows_up_inside_the_interval_yields_no_answer() -> None:
     (diagnostic,) = refusal.value.diagnostics
     assert refusal.value.category is DiagnosticCategory.NON_CONVERGENT
     assert diagnostic.code.value == "method_not_converged"
-    assert "step size" in diagnostic.message
+    assert "passo adaptativo" in diagnostic.message
 
 
 def test_right_hand_side_that_is_not_finite_yields_no_answer() -> None:

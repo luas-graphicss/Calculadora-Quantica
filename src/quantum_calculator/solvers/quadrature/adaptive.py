@@ -19,6 +19,28 @@ _METHOD = "QUADPACK QAGS"
 _CONVERGED_LENGTH = 3
 _INTEGRAND = "O integrando"
 _VALUE = "O valor da integral"
+_REASONS = (
+    (
+        "The maximum number of subdivisions",
+        "o limite de subdivisões foi atingido sem alcançar a tolerância",
+    ),
+    (
+        "The occurrence of roundoff error",
+        "o erro de arredondamento impede alcançar a tolerância pedida",
+    ),
+    (
+        "Extremely bad integrand behavior",
+        "o integrando se comporta mal em algum ponto do intervalo",
+    ),
+    (
+        "The algorithm does not converge",
+        "a extrapolação não converge e o erro de arredondamento domina",
+    ),
+    (
+        "The integral is probably divergent",
+        "a integral provavelmente diverge ou converge devagar demais",
+    ),
+)
 
 
 class AdaptiveQuadratureSolver:
@@ -37,7 +59,7 @@ class AdaptiveQuadratureSolver:
         except NonFiniteValueError as error:
             raise non_finite_result(_INTEGRAND) from error
         if len(outcome) > _CONVERGED_LENGTH:
-            raise method_not_converged(_METHOD, " ".join(str(outcome[3]).split()))
+            raise method_not_converged(_METHOD, _reason(str(outcome[3])))
         value, estimate = float(outcome[0]), float(outcome[1])
         if not (math.isfinite(value) and math.isfinite(estimate)):
             raise non_finite_result(_VALUE)
@@ -80,6 +102,14 @@ def _effective(
             "termination", "motivo de término", "tolerância pedida atingida (ier = 0)"
         ),
     )
+
+
+def _reason(library_message: str) -> str:
+    sentence, _, _ = " ".join(library_message.split()).partition(". ")
+    for opening, reason in _REASONS:
+        if sentence.startswith(opening):
+            return f"{reason}."
+    return f"a biblioteca relata: {sentence.rstrip('.')}."
 
 
 def _quadrature(problem: NumericalProblem) -> QuadratureProblem:

@@ -67,4 +67,4 @@ def test_oscillation_the_subdivision_limit_cannot_resolve_yields_no_answer() -> 
     (diagnostic,) = refusal.diagnostics
     assert refusal.category is DiagnosticCategory.NON_CONVERGENT
     assert diagnostic.code.value == "method_not_converged"
-    assert "maximum number of subdivisions" in diagnostic.message
+    assert "limite de subdivisões foi atingido" in diagnostic.message

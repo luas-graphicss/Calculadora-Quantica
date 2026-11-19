@@ -20,6 +20,11 @@ METHOD = "DOP853"
 _COMPLETED = 0
 _DERIVATIVE = "O lado direito da equação"
 _TRAJECTORY = "A trajetória"
+_REACHED_THE_END = "fim do intervalo alcançado dentro das tolerâncias (status 0)"
+_STEP_COLLAPSE = (
+    "o passo adaptativo ficou menor que o espaçamento entre números representáveis antes "
+    "do fim do intervalo."
+)
 
 
 class ExplicitRungeKuttaSolver:
@@ -39,7 +44,7 @@ class ExplicitRungeKuttaSolver:
         except NonFiniteValueError as error:
             raise non_finite_result(_DERIVATIVE) from error
         if int(solution.status) != _COMPLETED:
-            raise method_not_converged(METHOD, str(solution.message))
+            raise method_not_converged(METHOD, _STEP_COLLAPSE)
         trajectory = numpy.asarray(solution.y, dtype=numpy.float64)
         if not numpy.all(numpy.isfinite(trajectory)):
             raise non_finite_result(_TRAJECTORY)
@@ -47,7 +52,7 @@ class ExplicitRungeKuttaSolver:
             nature=ResultNature.APPROXIMATE,
             answers=_final_values(initial_value, trajectory),
             tables=(_trajectory_table(initial_value, instants, trajectory),),
-            effective=_effective(initial_value, int(solution.nfev), str(solution.message)),
+            effective=_effective(initial_value, int(solution.nfev)),
             warnings=(),
         )
 
@@ -83,9 +88,7 @@ def _trajectory_table(
     return SampleTable(TRAJECTORY, "Trajetória nos instantes pedidos", tuple(columns))
 
 
-def _effective(
-    problem: InitialValueProblem, evaluations: int, termination: str
-) -> tuple[EffectiveParameter, ...]:
+def _effective(problem: InitialValueProblem, evaluations: int) -> tuple[EffectiveParameter, ...]:
     return (
         EffectiveParameter(
             "relative_tolerance", "tolerância relativa", repr(problem.relative_tolerance)
@@ -94,7 +97,7 @@ def _effective(
             "absolute_tolerance", "tolerância absoluta", repr(problem.absolute_tolerance)
         ),
         EffectiveParameter("evaluations", "avaliações do lado direito", str(evaluations)),
-        EffectiveParameter("termination", "motivo de término", termination),
+        EffectiveParameter("termination", "motivo de término", _REACHED_THE_END),
     )
 
 
