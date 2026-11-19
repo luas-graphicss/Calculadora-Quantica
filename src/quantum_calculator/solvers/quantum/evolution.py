@@ -226,7 +226,7 @@ def _time_refinement_table(
         coarse = _propagate(problem, states, coefficients, steps, samples=2)
         error = _phase_errors(states, coefficients, coarse.snapshots, pair)[-1]
         rows.append((float(steps), abs(float(error))))
-    rows.append((float(problem.steps), finest_error))
+    rows.append((float(problem.steps), float(finest_error)))
     steps_column, errors = zip(*rows, strict=True)
     return SampleTable(
         TIME_REFINEMENT,

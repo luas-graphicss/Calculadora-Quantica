@@ -11,6 +11,7 @@ from quantum_calculator.domain.numerical.layout import (
     PREPARED_STATE,
     PROBABILITY,
     REAL_PART,
+    outcome_probability,
 )
 from quantum_calculator.domain.numerical.problems import FiniteBasisProblem, NumericalProblem
 from quantum_calculator.domain.numerical.report import (
@@ -51,6 +52,7 @@ class ProjectiveMeasurementSolver:
         return NumericalSolverReport(
             nature=ResultNature.APPROXIMATE,
             answers=(
+                *_probability_answers(outcomes, measurement.unit),
                 NumericalAnswer(
                     name=EXPECTATION_VALUE,
                     symbol="<A>",
@@ -87,6 +89,23 @@ def _eigenspace(
         float(numpy.mean(eigenvalues[members])),
         len(members),
         float(numpy.sum(weights[members])),
+    )
+
+
+def _probability_answers(
+    outcomes: list[tuple[float, int, float]], unit: str
+) -> tuple[NumericalAnswer, ...]:
+    suffix = "" if unit == _DIMENSIONLESS else f" {unit}"
+    return tuple(
+        NumericalAnswer(
+            name=outcome_probability(index),
+            symbol=f"P(a = {value:.12g}{suffix})",
+            label=f"probabilidade do resultado {index}, em ordem crescente de autovalor",
+            value=probability,
+            unit=_DIMENSIONLESS,
+            estimate=None,
+        )
+        for index, (value, _, probability) in enumerate(outcomes, start=1)
     )
 
 

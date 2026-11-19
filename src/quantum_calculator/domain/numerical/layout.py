@@ -47,3 +47,7 @@ def eigenfunction(level: int) -> str:
 
 def population(level: int) -> str:
     return f"population_{level}"
+
+
+def outcome_probability(outcome: int) -> str:
+    return f"probability_{outcome}"
