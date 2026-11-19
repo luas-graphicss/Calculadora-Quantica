@@ -90,6 +90,7 @@ class ReproducedPackage(TypedDict):
     sha256: str
     imported_state: str
     rerun_state: str
+    received_state: str
     version_divergences: list[VersionDivergence]
     differences: list[str]
 

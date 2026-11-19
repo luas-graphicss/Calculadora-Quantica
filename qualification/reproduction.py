@@ -82,5 +82,5 @@ def is_reproduced(report: ReproductionReport) -> bool:
 def _reproduced_packages(command: str, packages: Sequence[Path]) -> list[ReproducedPackage]:
     if not packages:
         return []
-    with BenchClient(command) as bench:
-        return [reproduce_package(bench, package) for package in packages]
+    with BenchClient(command) as bench, BenchClient(command) as receiver:
+        return [reproduce_package(bench, package, receiver) for package in packages]

@@ -66,6 +66,9 @@ def render_reproduction(report: ReproductionReport) -> str:
             f"{package['imported_state']}, reexecução {package['rerun_state']}: {outcome}"
         )
         lines.append(f"  versões diferentes das do pacote: {divergences or 'nenhuma'}")
+        lines.append(
+            f"  reexecução exportada e importada em outra bancada: {package['received_state']}"
+        )
     return "\n".join(lines) + "\n"
 
 
