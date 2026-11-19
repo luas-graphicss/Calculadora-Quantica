@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "quantum-calculator"
-version = "0.3.0"
+version = "0.4.0"
 description = "Bancada de cálculo para físicos: da equação a uma resposta que outra pessoa consegue conferir."
 readme = "README.md"
 requires-python = "==3.12.*"
