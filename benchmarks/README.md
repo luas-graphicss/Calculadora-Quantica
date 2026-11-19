@@ -28,7 +28,7 @@ Interpretação é ler o documento e validá-lo contra a ficha. Preparação é 
 
 Cada envio à bancada usa uma chave de idempotência nova, então nenhum resultado é reaproveitado. O percentil é o do posto mais próximo: com 30 execuções, o p95 é a 29ª em ordem crescente.
 
-O pico de memória do worker sai de duas leituras. Na bancada, o `VmHWM` do processo de cálculo em `/proc`, lido a cada consulta enquanto ele existe. No percurso por estágios, o `ru_maxrss` que o próprio processo lê ao terminar. A meta usa a maior das duas.
+O pico de memória do worker sai de duas leituras. Na bancada, o `VmHWM` do processo de cálculo em `/proc`, lido a cada consulta enquanto ele existe. No percurso por estágios, o `VmHWM` que o próprio processo lê ao terminar; o `ru_maxrss` não serve, porque depois de um `fork` ele também conta o tamanho do processo pai. A meta usa a maior das duas leituras.
 
 ## Limites
 

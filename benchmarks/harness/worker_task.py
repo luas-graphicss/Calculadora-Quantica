@@ -1,14 +1,12 @@
-import resource
 import time
 from dataclasses import dataclass
 
+from benchmarks.harness.worker_memory import own_peak_rss_bytes
 from quantum_calculator.application.solve_numerical import (
     HomologatedNumericalMethod,
     NumericalOutcome,
 )
 from quantum_calculator.domain.numerical.problems import NumericalProblem
-
-_KIBIBYTE = 1024
 
 
 @dataclass(frozen=True, slots=True)
@@ -31,5 +29,6 @@ def solve_and_verify_measured(
         outcome=NumericalOutcome(report, verification),
         solver_seconds=solved - started,
         verification_seconds=verified - solved,
-        peak_rss_bytes=resource.getrusage(resource.RUSAGE_SELF).ru_maxrss * _KIBIBYTE,
+        # ru_maxrss also counts the parent's size at the fork; VmHWM is this process alone.
+        peak_rss_bytes=own_peak_rss_bytes(),
     )
