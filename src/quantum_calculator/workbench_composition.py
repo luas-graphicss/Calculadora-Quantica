@@ -6,6 +6,11 @@ from pathlib import Path
 
 from quantum_calculator.adapters.execution.runtime_environment import PACKAGE_NAME
 from quantum_calculator.adapters.execution.serial_run_queue import SerialRunQueue
+from quantum_calculator.adapters.storage.data_directory import (
+    ARTIFACTS_DIRECTORY,
+    HISTORY_FILE,
+    PRIVATE_DIRECTORY,
+)
 from quantum_calculator.adapters.storage.file_artifacts import FileArtifactStore
 from quantum_calculator.adapters.storage.sqlite_runs import SqliteRunRepository
 from quantum_calculator.adapters.storage.system_clock import SystemClock
@@ -40,9 +45,6 @@ from quantum_calculator.interfaces.serialization.encoding.common_sections import
     READABLE_OUTPUT_SCHEMA_VERSIONS,
 )
 
-_HISTORY_FILE = "history.sqlite3"
-_ARTIFACTS_DIRECTORY = "artifacts"
-_PRIVATE_DIRECTORY = 0o700
 _CACHED_TIME_LIMITS = 8
 
 
@@ -67,11 +69,11 @@ class Workbench:
 
 
 def build_workbench(data_directory: Path) -> Workbench:
-    data_directory.mkdir(mode=_PRIVATE_DIRECTORY, parents=True, exist_ok=True)
+    data_directory.mkdir(mode=PRIVATE_DIRECTORY, parents=True, exist_ok=True)
     constants = Codata2022Constants()
     units = SiUnitRegistry(constants)
-    runs = SqliteRunRepository(data_directory / _HISTORY_FILE)
-    artifacts = FileArtifactStore(data_directory / _ARTIFACTS_DIRECTORY)
+    runs = SqliteRunRepository(data_directory / HISTORY_FILE)
+    artifacts = FileArtifactStore(data_directory / ARTIFACTS_DIRECTORY)
     archive = ZipPackageArchive()
     clock = SystemClock()
     cancellations = RunCancellations()

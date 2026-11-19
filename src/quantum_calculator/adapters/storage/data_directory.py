@@ -1,0 +1,3 @@
+HISTORY_FILE = "history.sqlite3"
+ARTIFACTS_DIRECTORY = "artifacts"
+PRIVATE_DIRECTORY = 0o700
