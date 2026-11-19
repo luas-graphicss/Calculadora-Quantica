@@ -1,0 +1,4198 @@
+{
+  "schema": "qualification_case_matrix",
+  "schema_version": "1.0",
+  "generated_at": "2026-11-19T06:09:52+00:00",
+  "calculator": "qcalc 1.0.0rc1",
+  "environment": {
+    "package": {
+      "name": "quantum-calculator",
+      "version": "1.0.0rc1"
+    },
+    "python": {
+      "implementation": "CPython",
+      "version": "3.12.15"
+    },
+    "platform": "Linux-6.18.56-x86_64-with-glibc2.34",
+    "dependencies": [
+      {
+        "name": "sympy",
+        "version": "1.14.0"
+      },
+      {
+        "name": "mpmath",
+        "version": "1.3.0"
+      },
+      {
+        "name": "numpy",
+        "version": "2.5.5"
+      },
+      {
+        "name": "scipy",
+        "version": "1.18.1"
+      },
+      {
+        "name": "fastapi",
+        "version": "0.165.0"
+      },
+      {
+        "name": "uvicorn",
+        "version": "0.54.0"
+      }
+    ],
+    "linear_algebra": [
+      {
+        "consumer": "numpy",
+        "interface": "blas",
+        "name": "scipy-openblas",
+        "version": "0.3.34.237.2"
+      },
+      {
+        "consumer": "numpy",
+        "interface": "lapack",
+        "name": "scipy-openblas",
+        "version": "0.3.34.237.2"
+      },
+      {
+        "consumer": "scipy",
+        "interface": "blas",
+        "name": "scipy-openblas",
+        "version": "0.3.31.dev"
+      },
+      {
+        "consumer": "scipy",
+        "interface": "lapack",
+        "name": "scipy-openblas",
+        "version": "0.3.31.dev"
+      }
+    ]
+  },
+  "catalog_version": "1.2.0",
+  "cases": [
+    {
+      "expectation": {
+        "identifier": "quantum/electron_box_1nm",
+        "family": "quantum",
+        "card": "quantum.infinite_square_well.energy_level",
+        "input": "reference_cases/quantum/electron_box_1nm.json",
+        "command": "solve",
+        "oracle": "electron_box_1nm.derivation.md O valor de referência e a exibição da calculadora são arredondados na décima casa decimal, com erro de até 5e-11 eV cada um; a aritmética é exata até a exibição. A tolerância cobre a soma com margem de dez vezes. Ela testa a implementação, não a precisão de um experimento.",
+        "exit_code": 0,
+        "verification": "passed",
+        "not_passed": [],
+        "values": [
+          {
+            "name": "energy",
+            "expected": 0.3760301621,
+            "tolerance": 1e-09,
+            "comparison": "absolute"
+          }
+        ],
+        "texts": {},
+        "refusal": null
+      },
+      "observation": {
+        "exit_code": 0,
+        "card": "quantum.infinite_square_well.energy_level",
+        "verification": "passed",
+        "not_passed": [],
+        "values": {
+          "energy": 0.3760301621
+        },
+        "texts": {},
+        "refusals": []
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "quantum/electron_box_1nm_uncertainty",
+        "family": "quantum",
+        "card": "quantum.infinite_square_well.energy_level",
+        "input": "reference_cases/quantum/electron_box_1nm_uncertainty.json",
+        "command": "solve",
+        "oracle": "electron_box_1nm.derivation.md Propagação linear com entradas independentes: (u(E)/E)^2 = (u(m)/m)^2 + (2 u(L)/L)^2. Com u(m) = 2.8e-40 kg e u(L) = 0.01 nm, u(E)/E = 0.0200000000000000024 e u(E) = 0.00752060324 eV. Os valores esperados têm 2 algarismos significativos.",
+        "exit_code": 0,
+        "verification": "passed",
+        "not_passed": [],
+        "values": [
+          {
+            "name": "energy",
+            "expected": 0.3760301621,
+            "tolerance": 1e-09,
+            "comparison": "absolute"
+          }
+        ],
+        "texts": {
+          "standard_uncertainty": "0.0075",
+          "relative_standard_uncertainty": "0.020"
+        },
+        "refusal": null
+      },
+      "observation": {
+        "exit_code": 0,
+        "card": "quantum.infinite_square_well.energy_level",
+        "verification": "passed",
+        "not_passed": [],
+        "values": {
+          "energy": 0.3760301621
+        },
+        "texts": {
+          "standard_uncertainty": "0.0075",
+          "relative_standard_uncertainty": "0.020"
+        },
+        "refusals": []
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "symbolic/product_rule",
+        "family": "symbolic",
+        "card": "calculus.derivative",
+        "input": "reference_cases/symbolic/product_rule.json",
+        "command": "solve",
+        "oracle": "Regra do produto: (x^2)' sin(x) + x^2 (sin(x))' = 2 x sin(x) + x^2 cos(x). Resposta do oráculo: x^2*cos(x) + 2*x*sin(x), comparada por equivalência matemática.",
+        "exit_code": 0,
+        "verification": "passed",
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": null
+      },
+      "observation": {
+        "exit_code": 0,
+        "card": "calculus.derivative",
+        "verification": "passed",
+        "not_passed": [],
+        "values": {},
+        "texts": {
+          "answer": "diff(x^2*sin(x), x) = x*(x*cos(x) + 2*sin(x))",
+          "structure": "(derivative ordinary x 1 (multiply (power (symbol x) (number 2)) (sin (symbol x))))"
+        },
+        "refusals": []
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "symbolic/reciprocal_primitive",
+        "family": "symbolic",
+        "card": "calculus.antiderivative",
+        "input": "reference_cases/symbolic/reciprocal_primitive.json",
+        "command": "solve",
+        "oracle": "Para x > 0, (ln x)' = 1/x; para x < 0, (ln(-x))' = -1/(-x) = 1/x. As duas se escrevem ln|x|, fora de x = 0. Resposta do oráculo: ln(abs(x)) + C, comparada por equivalência matemática.",
+        "exit_code": 0,
+        "verification": "passed",
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": null
+      },
+      "observation": {
+        "exit_code": 0,
+        "card": "calculus.antiderivative",
+        "verification": "passed",
+        "not_passed": [],
+        "values": {},
+        "texts": {
+          "answer": "integral(1/x, x) = ln(abs(x)) + C",
+          "structure": "(integral x (divide (number 1) (symbol x)))"
+        },
+        "refusals": []
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "symbolic/parabola_area",
+        "family": "symbolic",
+        "card": "calculus.definite_integral",
+        "input": "reference_cases/symbolic/parabola_area.json",
+        "command": "solve",
+        "oracle": "A primitiva de x^2 é x^3/3, contínua em [0, 1]; a diferença entre os extremos é 1/3 - 0. Resposta do oráculo: 1/3, comparada por equivalência matemática.",
+        "exit_code": 0,
+        "verification": "passed",
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": null
+      },
+      "observation": {
+        "exit_code": 0,
+        "card": "calculus.definite_integral",
+        "verification": "passed",
+        "not_passed": [],
+        "values": {},
+        "texts": {
+          "answer": "integral(x^2, x, 0, 1) = 1/3",
+          "structure": "(integral x (power (symbol x) (number 2)) (number 0) (number 1))"
+        },
+        "refusals": []
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "symbolic/decay_general_solution",
+        "family": "symbolic",
+        "card": "ode.first_order_linear.general_solution",
+        "input": "reference_cases/symbolic/decay_general_solution.json",
+        "command": "solve",
+        "oracle": "Separando variáveis em y' = -k y: dy/y = -k dt, ln|y| = -k t + c, y = C exp(-k t); C real cobre também a solução nula. Resposta do oráculo: C*exp(-k*t), comparada por equivalência matemática.",
+        "exit_code": 0,
+        "verification": "passed",
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": null
+      },
+      "observation": {
+        "exit_code": 0,
+        "card": "ode.first_order_linear.general_solution",
+        "verification": "passed",
+        "not_passed": [],
+        "values": {},
+        "texts": {
+          "answer": "y(t) = C*exp(-k*t)",
+          "structure": "(equation (unknown y 1 (symbol t)) (negate (multiply (symbol k) (unknown y 0 (symbol t)))))"
+        },
+        "refusals": []
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "symbolic/decay_initial_value",
+        "family": "symbolic",
+        "card": "ode.first_order_linear.initial_value",
+        "input": "reference_cases/symbolic/decay_initial_value.json",
+        "command": "solve",
+        "oracle": "Da solução geral y = C exp(-k t), a condição y(0) = y_0 dá C = y_0. Resposta do oráculo: y_0*exp(-k*t), comparada por equivalência matemática.",
+        "exit_code": 0,
+        "verification": "passed",
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": null
+      },
+      "observation": {
+        "exit_code": 0,
+        "card": "ode.first_order_linear.initial_value",
+        "verification": "passed",
+        "not_passed": [],
+        "values": {},
+        "texts": {
+          "answer": "y(t) = y_0*exp(-k*t)",
+          "structure": "(equation (unknown y 1 (symbol t)) (negate (multiply (symbol k) (unknown y 0 (symbol t)))))"
+        },
+        "refusals": []
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "symbolic/decay_candidate_correct",
+        "family": "symbolic",
+        "card": "ode.first_order_linear.candidate_review",
+        "input": "reference_cases/symbolic/decay_candidate_correct.json",
+        "command": "solve",
+        "oracle": "y' = -k y_0 exp(-k t) = -k y e y(0) = y_0: a equação e a condição inicial valem. Resposta do oráculo: y_0*exp(-k*t), comparada por equivalência matemática.",
+        "exit_code": 0,
+        "verification": "passed",
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": null
+      },
+      "observation": {
+        "exit_code": 0,
+        "card": "ode.first_order_linear.candidate_review",
+        "verification": "passed",
+        "not_passed": [],
+        "values": {},
+        "texts": {
+          "answer": "y(t) = y_0*exp(-k*t)",
+          "structure": "(equation (unknown y 1 (symbol t)) (negate (multiply (symbol k) (unknown y 0 (symbol t)))))"
+        },
+        "refusals": []
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "symbolic/decay_candidate_wrong_initial_value",
+        "family": "symbolic",
+        "card": "ode.first_order_linear.candidate_review",
+        "input": "reference_cases/symbolic/decay_candidate_wrong_initial_value.json",
+        "command": "solve",
+        "oracle": "y' = -2 k y_0 exp(-k t) = -k y, então a equação vale; mas y(0) = 2 y_0, diferente de y_0 porque y_0 > 0. Resposta do oráculo: 2*y_0*exp(-k*t), comparada por equivalência matemática.",
+        "exit_code": 5,
+        "verification": "failed",
+        "not_passed": [
+          "initial_condition"
+        ],
+        "values": [],
+        "texts": {},
+        "refusal": null
+      },
+      "observation": {
+        "exit_code": 5,
+        "card": "ode.first_order_linear.candidate_review",
+        "verification": "failed",
+        "not_passed": [
+          "initial_condition"
+        ],
+        "values": {},
+        "texts": {
+          "answer": "y(t) = 2*y_0*exp(-k*t)",
+          "structure": "(equation (unknown y 1 (symbol t)) (negate (multiply (symbol k) (unknown y 0 (symbol t)))))"
+        },
+        "refusals": []
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "symbolic/decay_candidate_wrong_sign",
+        "family": "symbolic",
+        "card": "ode.first_order_linear.candidate_review",
+        "input": "reference_cases/symbolic/decay_candidate_wrong_sign.json",
+        "command": "solve",
+        "oracle": "y(0) = y_0, então a condição inicial vale; mas y' = k y, e y' + k y = 2 k y_0 exp(k t) não se anula com k > 0 e y_0 > 0. Resposta do oráculo: y_0*exp(k*t), comparada por equivalência matemática.",
+        "exit_code": 5,
+        "verification": "failed",
+        "not_passed": [
+          "equation_residual"
+        ],
+        "values": [],
+        "texts": {},
+        "refusal": null
+      },
+      "observation": {
+        "exit_code": 5,
+        "card": "ode.first_order_linear.candidate_review",
+        "verification": "failed",
+        "not_passed": [
+          "equation_residual"
+        ],
+        "values": {},
+        "texts": {
+          "answer": "y(t) = y_0*exp(k*t)",
+          "structure": "(equation (unknown y 1 (symbol t)) (negate (multiply (symbol k) (unknown y 0 (symbol t)))))"
+        },
+        "refusals": []
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "numerical/sine_quadrature",
+        "family": "numerical",
+        "card": "calculus.definite_integral.adaptive_quadrature",
+        "input": "reference_cases/numerical/sine_quadrature.json",
+        "command": "solve",
+        "oracle": "A primitiva de sin(x) é -cos(x): -cos(pi) + cos(0) = 2.",
+        "exit_code": 0,
+        "verification": "passed",
+        "not_passed": [],
+        "values": [
+          {
+            "name": "integral",
+            "expected": 2.0,
+            "tolerance": 1e-10,
+            "comparison": "absolute"
+          }
+        ],
+        "texts": {},
+        "refusal": null
+      },
+      "observation": {
+        "exit_code": 0,
+        "card": "calculus.definite_integral.adaptive_quadrature",
+        "verification": "passed",
+        "not_passed": [],
+        "values": {
+          "integral": 2.0
+        },
+        "texts": {},
+        "refusals": []
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "numerical/decay_trajectory",
+        "family": "numerical",
+        "card": "ode.initial_value.explicit_runge_kutta",
+        "input": "reference_cases/numerical/decay_trajectory.json",
+        "command": "solve",
+        "oracle": "y(t) = exp(-k t) com k = 1/s e y(0) = 1: y(5 s) = exp(-5) = 0.006737946999085467.",
+        "exit_code": 0,
+        "verification": "passed",
+        "not_passed": [],
+        "values": [
+          {
+            "name": "final_y",
+            "expected": 0.006737946999085467,
+            "tolerance": 1e-08,
+            "comparison": "absolute"
+          }
+        ],
+        "texts": {},
+        "refusal": null
+      },
+      "observation": {
+        "exit_code": 0,
+        "card": "ode.initial_value.explicit_runge_kutta",
+        "verification": "passed",
+        "not_passed": [],
+        "values": {
+          "final_y": 0.006737946999314139
+        },
+        "texts": {},
+        "refusals": []
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "numerical/spin_half_measurement",
+        "family": "numerical",
+        "card": "quantum.finite_basis.projective_measurement",
+        "input": "reference_cases/numerical/spin_half_measurement.json",
+        "command": "solve",
+        "oracle": "O estado positivo em x é (|+z> + |-z>)/sqrt(2): cada projeção tem módulo ao quadrado 1/2 e o valor esperado de sigma_z é 1/2 - 1/2 = 0.",
+        "exit_code": 0,
+        "verification": "passed",
+        "not_passed": [],
+        "values": [
+          {
+            "name": "probability_1",
+            "expected": 0.5,
+            "tolerance": 1e-12,
+            "comparison": "absolute"
+          },
+          {
+            "name": "probability_2",
+            "expected": 0.5,
+            "tolerance": 1e-12,
+            "comparison": "absolute"
+          },
+          {
+            "name": "expectation_value",
+            "expected": 0.0,
+            "tolerance": 1e-12,
+            "comparison": "absolute"
+          }
+        ],
+        "texts": {},
+        "refusal": null
+      },
+      "observation": {
+        "exit_code": 0,
+        "card": "quantum.finite_basis.projective_measurement",
+        "verification": "passed",
+        "not_passed": [],
+        "values": {
+          "probability_1": 0.4999999999999999,
+          "probability_2": 0.4999999999999999,
+          "expectation_value": 0.0
+        },
+        "texts": {},
+        "refusals": []
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "numerical/spin_half_measurement_rotated",
+        "family": "numerical",
+        "card": "quantum.finite_basis.projective_measurement",
+        "input": "reference_cases/numerical/spin_half_measurement_rotated.json",
+        "command": "solve",
+        "oracle": "O estado positivo em x é (|+z> + |-z>)/sqrt(2): cada projeção tem módulo ao quadrado 1/2 e o valor esperado de sigma_z é 1/2 - 1/2 = 0. A fase global i e a mudança para outra base ortonormal não alteram nenhuma probabilidade.",
+        "exit_code": 0,
+        "verification": "passed",
+        "not_passed": [],
+        "values": [
+          {
+            "name": "probability_1",
+            "expected": 0.5,
+            "tolerance": 1e-12,
+            "comparison": "absolute"
+          },
+          {
+            "name": "probability_2",
+            "expected": 0.5,
+            "tolerance": 1e-12,
+            "comparison": "absolute"
+          },
+          {
+            "name": "expectation_value",
+            "expected": 0.0,
+            "tolerance": 1e-12,
+            "comparison": "absolute"
+          }
+        ],
+        "texts": {},
+        "refusal": null
+      },
+      "observation": {
+        "exit_code": 0,
+        "card": "quantum.finite_basis.projective_measurement",
+        "verification": "passed",
+        "not_passed": [],
+        "values": {
+          "probability_1": 0.5000000000000001,
+          "probability_2": 0.4999999999999999,
+          "expectation_value": -2.220446049250313e-16
+        },
+        "texts": {},
+        "refusals": []
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "numerical/degenerate_measurement",
+        "family": "numerical",
+        "card": "quantum.finite_basis.projective_measurement",
+        "input": "reference_cases/numerical/degenerate_measurement.json",
+        "command": "solve",
+        "oracle": "O projetor no subespaço do autovalor 1 é diag(1, 1, 0). Com o estado (1, 1, 1)/sqrt(3), P(1) = 2/3 e P(-1) = 1/3; o valor esperado é 2/3 - 1/3 = 1/3.",
+        "exit_code": 0,
+        "verification": "passed",
+        "not_passed": [],
+        "values": [
+          {
+            "name": "probability_1",
+            "expected": 0.3333333333333333,
+            "tolerance": 1e-12,
+            "comparison": "absolute"
+          },
+          {
+            "name": "probability_2",
+            "expected": 0.6666666666666666,
+            "tolerance": 1e-12,
+            "comparison": "absolute"
+          },
+          {
+            "name": "expectation_value",
+            "expected": 0.3333333333333333,
+            "tolerance": 1e-12,
+            "comparison": "absolute"
+          }
+        ],
+        "texts": {},
+        "refusal": null
+      },
+      "observation": {
+        "exit_code": 0,
+        "card": "quantum.finite_basis.projective_measurement",
+        "verification": "passed",
+        "not_passed": [],
+        "values": {
+          "probability_1": 0.3333333333333334,
+          "probability_2": 0.6666666666666669,
+          "expectation_value": 0.3333333333333334
+        },
+        "texts": {},
+        "refusals": []
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "numerical/electron_box_1nm_discrete",
+        "family": "numerical",
+        "card": "quantum.infinite_square_well.discrete_spectrum",
+        "input": "reference_cases/numerical/electron_box_1nm_discrete.json",
+        "command": "solve",
+        "oracle": "E_n = n^2 h^2 / (8 m L^2), com E_1 = 0.3760301621 eV de reference_cases/quantum/electron_box_1nm.expected.json; E_2 = 4 E_1 e E_3 = 9 E_1.",
+        "exit_code": 0,
+        "verification": "passed",
+        "not_passed": [],
+        "values": [
+          {
+            "name": "energy_1",
+            "expected": 0.3760301621,
+            "tolerance": 3e-05,
+            "comparison": "relative"
+          },
+          {
+            "name": "energy_2",
+            "expected": 1.5041206484,
+            "tolerance": 3e-05,
+            "comparison": "relative"
+          },
+          {
+            "name": "energy_3",
+            "expected": 3.3842714589,
+            "tolerance": 3e-05,
+            "comparison": "relative"
+          }
+        ],
+        "texts": {},
+        "refusal": null
+      },
+      "observation": {
+        "exit_code": 0,
+        "card": "quantum.infinite_square_well.discrete_spectrum",
+        "verification": "passed",
+        "not_passed": [],
+        "values": {
+          "energy_1": 0.3760289823256918,
+          "energy_2": 1.5041017720270695,
+          "energy_3": 3.3841758977915477
+        },
+        "texts": {},
+        "refusals": []
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "numerical/electron_box_1nm_coarse",
+        "family": "numerical",
+        "card": "quantum.infinite_square_well.discrete_spectrum",
+        "input": "reference_cases/numerical/electron_box_1nm_coarse.json",
+        "command": "solve",
+        "oracle": "E_n = n^2 h^2 / (8 m L^2), com E_1 = 0.3760301621 eV de reference_cases/quantum/electron_box_1nm.expected.json; E_2 = 4 E_1 e E_3 = 9 E_1. Com 16 subintervalos o erro relativo esperado é (n pi / 16)^2 / 12, perto de 3 por cento no terceiro nível.",
+        "exit_code": 5,
+        "verification": "inconclusive",
+        "not_passed": [
+          "mesh_refinement"
+        ],
+        "values": [
+          {
+            "name": "energy_1",
+            "expected": 0.3760301621,
+            "tolerance": 0.005,
+            "comparison": "relative"
+          },
+          {
+            "name": "energy_2",
+            "expected": 1.5041206484,
+            "tolerance": 0.02,
+            "comparison": "relative"
+          },
+          {
+            "name": "energy_3",
+            "expected": 3.3842714589,
+            "tolerance": 0.04,
+            "comparison": "relative"
+          }
+        ],
+        "texts": {},
+        "refusal": null
+      },
+      "observation": {
+        "exit_code": 5,
+        "card": "quantum.infinite_square_well.discrete_spectrum",
+        "verification": "inconclusive",
+        "not_passed": [
+          "mesh_refinement"
+        ],
+        "values": {
+          "energy_1": 0.37482361820656057,
+          "energy_2": 1.4848902113820828,
+          "energy_3": 3.2875405428833413
+        },
+        "texts": {},
+        "refusals": []
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "numerical/harmonic_oscillator_1ev",
+        "family": "numerical",
+        "card": "quantum.harmonic_oscillator.truncated_spectrum",
+        "input": "reference_cases/numerical/harmonic_oscillator_1ev.json",
+        "command": "solve",
+        "oracle": "E_n = hbar omega (n + 1/2) com n = 0, 1, 2 e hbar omega = 1 eV: 0,5, 1,5 e 2,5 eV.",
+        "exit_code": 0,
+        "verification": "passed",
+        "not_passed": [],
+        "values": [
+          {
+            "name": "energy_1",
+            "expected": 0.5,
+            "tolerance": 0.001,
+            "comparison": "relative"
+          },
+          {
+            "name": "energy_2",
+            "expected": 1.5,
+            "tolerance": 0.001,
+            "comparison": "relative"
+          },
+          {
+            "name": "energy_3",
+            "expected": 2.5,
+            "tolerance": 0.001,
+            "comparison": "relative"
+          }
+        ],
+        "texts": {},
+        "refusal": null
+      },
+      "observation": {
+        "exit_code": 0,
+        "card": "quantum.harmonic_oscillator.truncated_spectrum",
+        "verification": "passed",
+        "not_passed": [],
+        "values": {
+          "energy_1": 0.49999237048958967,
+          "energy_2": 1.499961851979649,
+          "energy_3": 2.4999008137962946
+        },
+        "texts": {},
+        "refusals": []
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "numerical/harmonic_oscillator_narrow",
+        "family": "numerical",
+        "card": "quantum.harmonic_oscillator.truncated_spectrum",
+        "input": "reference_cases/numerical/harmonic_oscillator_narrow.json",
+        "command": "solve",
+        "oracle": "E_n = hbar omega (n + 1/2) com n = 0, 1, 2 e hbar omega = 1 eV: 0,5, 1,5 e 2,5 eV. Em meia largura 3 as paredes comprimem os estados e os níveis sobem, mais os de cima: o desvio vem do corte do domínio, não da malha.",
+        "exit_code": 5,
+        "verification": "failed",
+        "not_passed": [
+          "closed_form_agreement",
+          "domain_truncation"
+        ],
+        "values": [
+          {
+            "name": "energy_1",
+            "expected": 0.5,
+            "tolerance": 0.002,
+            "comparison": "relative"
+          },
+          {
+            "name": "energy_2",
+            "expected": 1.5,
+            "tolerance": 0.01,
+            "comparison": "relative"
+          },
+          {
+            "name": "energy_3",
+            "expected": 2.5,
+            "tolerance": 0.03,
+            "comparison": "relative"
+          }
+        ],
+        "texts": {},
+        "refusal": null
+      },
+      "observation": {
+        "exit_code": 5,
+        "card": "quantum.harmonic_oscillator.truncated_spectrum",
+        "verification": "failed",
+        "not_passed": [
+          "closed_form_agreement",
+          "domain_truncation"
+        ],
+        "values": {
+          "energy_1": 0.5003900245144421,
+          "energy_2": 1.5060761700645229,
+          "energy_3": 2.5411122054097257
+        },
+        "texts": {},
+        "refusals": []
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "numerical/electron_box_1nm_beat",
+        "family": "numerical",
+        "card": "quantum.infinite_square_well.time_evolution",
+        "input": "reference_cases/numerical/electron_box_1nm_beat.json",
+        "command": "solve",
+        "oracle": "A evolução fechada conserva a norma, e a fase relativa dos dois modos discretos avança como -(E_2 - E_1) t / hbar: a deriva da norma e o erro de fase esperados são zero.",
+        "exit_code": 0,
+        "verification": "passed",
+        "not_passed": [],
+        "values": [
+          {
+            "name": "norm_drift",
+            "expected": 0.0,
+            "tolerance": 1e-09,
+            "comparison": "absolute"
+          },
+          {
+            "name": "phase_error",
+            "expected": 0.0,
+            "tolerance": 0.001,
+            "comparison": "absolute"
+          }
+        ],
+        "texts": {},
+        "refusal": null
+      },
+      "observation": {
+        "exit_code": 0,
+        "card": "quantum.infinite_square_well.time_evolution",
+        "verification": "passed",
+        "not_passed": [],
+        "values": {
+          "norm_drift": 1.554312234475219e-14,
+          "phase_error": 4.599013435166628e-05
+        },
+        "texts": {},
+        "refusals": []
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "quantum/rejected/negative_mass",
+        "family": "quantum",
+        "card": "quantum.infinite_square_well.energy_level",
+        "input": "reference_cases/quantum/rejected/negative_mass.json",
+        "command": "solve",
+        "oracle": "massa negativa",
+        "exit_code": 3,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "invalid_input",
+          "code": "non_positive_quantity",
+          "pointer": "/parameters/mass/value"
+        }
+      },
+      "observation": {
+        "exit_code": 3,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "invalid_input",
+            "code": "non_positive_quantity",
+            "pointer": "/parameters/mass/value"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "quantum/rejected/zero_mass",
+        "family": "quantum",
+        "card": "quantum.infinite_square_well.energy_level",
+        "input": "reference_cases/quantum/rejected/zero_mass.json",
+        "command": "solve",
+        "oracle": "massa nula",
+        "exit_code": 3,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "invalid_input",
+          "code": "non_positive_quantity",
+          "pointer": "/parameters/mass/value"
+        }
+      },
+      "observation": {
+        "exit_code": 3,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "invalid_input",
+            "code": "non_positive_quantity",
+            "pointer": "/parameters/mass/value"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "quantum/rejected/zero_width",
+        "family": "quantum",
+        "card": "quantum.infinite_square_well.energy_level",
+        "input": "reference_cases/quantum/rejected/zero_width.json",
+        "command": "solve",
+        "oracle": "largura nula",
+        "exit_code": 3,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "invalid_input",
+          "code": "non_positive_quantity",
+          "pointer": "/parameters/width/value"
+        }
+      },
+      "observation": {
+        "exit_code": 3,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "invalid_input",
+            "code": "non_positive_quantity",
+            "pointer": "/parameters/width/value"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "quantum/rejected/fractional_level",
+        "family": "quantum",
+        "card": "quantum.infinite_square_well.energy_level",
+        "input": "reference_cases/quantum/rejected/fractional_level.json",
+        "command": "solve",
+        "oracle": "nível fracionário",
+        "exit_code": 3,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "invalid_input",
+          "code": "not_a_positive_integer",
+          "pointer": "/parameters/level"
+        }
+      },
+      "observation": {
+        "exit_code": 3,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "invalid_input",
+            "code": "not_a_positive_integer",
+            "pointer": "/parameters/level"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "quantum/rejected/zero_level",
+        "family": "quantum",
+        "card": "quantum.infinite_square_well.energy_level",
+        "input": "reference_cases/quantum/rejected/zero_level.json",
+        "command": "solve",
+        "oracle": "nível zero",
+        "exit_code": 3,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "invalid_input",
+          "code": "not_a_positive_integer",
+          "pointer": "/parameters/level"
+        }
+      },
+      "observation": {
+        "exit_code": 3,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "invalid_input",
+            "code": "not_a_positive_integer",
+            "pointer": "/parameters/level"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "quantum/rejected/negative_level",
+        "family": "quantum",
+        "card": "quantum.infinite_square_well.energy_level",
+        "input": "reference_cases/quantum/rejected/negative_level.json",
+        "command": "solve",
+        "oracle": "nível negativo",
+        "exit_code": 3,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "invalid_input",
+          "code": "not_a_positive_integer",
+          "pointer": "/parameters/level"
+        }
+      },
+      "observation": {
+        "exit_code": 3,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "invalid_input",
+            "code": "not_a_positive_integer",
+            "pointer": "/parameters/level"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "quantum/rejected/width_in_seconds",
+        "family": "quantum",
+        "card": "quantum.infinite_square_well.energy_level",
+        "input": "reference_cases/quantum/rejected/width_in_seconds.json",
+        "command": "solve",
+        "oracle": "largura em segundos",
+        "exit_code": 3,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "invalid_input",
+          "code": "dimension_mismatch",
+          "pointer": "/parameters/width/unit"
+        }
+      },
+      "observation": {
+        "exit_code": 3,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "invalid_input",
+            "code": "dimension_mismatch",
+            "pointer": "/parameters/width/unit"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "quantum/rejected/energy_in_nanometers",
+        "family": "quantum",
+        "card": "quantum.infinite_square_well.energy_level",
+        "input": "reference_cases/quantum/rejected/energy_in_nanometers.json",
+        "command": "solve",
+        "oracle": "energia pedida em nanômetros",
+        "exit_code": 3,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "invalid_input",
+          "code": "dimension_mismatch",
+          "pointer": "/requested/unit"
+        }
+      },
+      "observation": {
+        "exit_code": 3,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "invalid_input",
+            "code": "dimension_mismatch",
+            "pointer": "/requested/unit"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "quantum/rejected/non_finite_width",
+        "family": "quantum",
+        "card": "quantum.infinite_square_well.energy_level",
+        "input": "reference_cases/quantum/rejected/non_finite_width.json",
+        "command": "solve",
+        "oracle": "largura infinita",
+        "exit_code": 3,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "invalid_input",
+          "code": "non_finite_number",
+          "pointer": "/parameters/width/value"
+        }
+      },
+      "observation": {
+        "exit_code": 3,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "invalid_input",
+            "code": "non_finite_number",
+            "pointer": "/parameters/width/value"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "quantum/rejected/unconfirmed_boundary",
+        "family": "quantum",
+        "card": "quantum.infinite_square_well.energy_level",
+        "input": "reference_cases/quantum/rejected/unconfirmed_boundary.json",
+        "command": "solve",
+        "oracle": "condição de contorno não confirmada",
+        "exit_code": 3,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "invalid_input",
+          "code": "hypothesis_not_confirmed",
+          "pointer": "/hypotheses/boundary_wavefunction"
+        }
+      },
+      "observation": {
+        "exit_code": 3,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "invalid_input",
+            "code": "hypothesis_not_confirmed",
+            "pointer": "/hypotheses/boundary_wavefunction"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "quantum/rejected/finite_walls",
+        "family": "quantum",
+        "card": "quantum.infinite_square_well.energy_level",
+        "input": "reference_cases/quantum/rejected/finite_walls.json",
+        "command": "solve",
+        "oracle": "paredes finitas",
+        "exit_code": 4,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "unsupported_problem",
+          "code": "unsupported_hypothesis",
+          "pointer": "/hypotheses/walls"
+        }
+      },
+      "observation": {
+        "exit_code": 4,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "unsupported_problem",
+            "code": "unsupported_hypothesis",
+            "pointer": "/hypotheses/walls"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "quantum/rejected/undeclared_covariance",
+        "family": "quantum",
+        "card": "quantum.infinite_square_well.energy_level",
+        "input": "reference_cases/quantum/rejected/undeclared_covariance.json",
+        "command": "solve",
+        "oracle": "incertezas sem hipótese de covariância",
+        "exit_code": 3,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "invalid_input",
+          "code": "missing_field",
+          "pointer": "/uncertainty/covariance"
+        }
+      },
+      "observation": {
+        "exit_code": 3,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "invalid_input",
+            "code": "missing_field",
+            "pointer": "/uncertainty/covariance"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "symbolic/rejected/ambiguous_division",
+        "family": "symbolic",
+        "card": "calculus.derivative",
+        "input": "reference_cases/symbolic/rejected/ambiguous_division.json",
+        "command": "solve",
+        "oracle": "1/2x pode ser (1/2)*x ou 1/(2*x); a calculadora não escolhe.",
+        "exit_code": 6,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "ambiguous_input",
+          "code": "ambiguous_division",
+          "pointer": "/statement"
+        }
+      },
+      "observation": {
+        "exit_code": 6,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "ambiguous_input",
+            "code": "ambiguous_division",
+            "pointer": "/statement"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "symbolic/rejected/unconfirmed_card",
+        "family": "symbolic",
+        "card": "",
+        "input": "reference_cases/symbolic/rejected/unconfirmed_card.json",
+        "command": "solve",
+        "oracle": "Uma candidata sem condição inicial não escolhe entre as três fichas da equação; a ficha precisa ser confirmada.",
+        "exit_code": 6,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "ambiguous_input",
+          "code": "ambiguous_problem",
+          "pointer": "/problem"
+        }
+      },
+      "observation": {
+        "exit_code": 6,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "ambiguous_input",
+            "code": "ambiguous_problem",
+            "pointer": "/problem"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "symbolic/rejected/undeclared_symbol",
+        "family": "symbolic",
+        "card": "calculus.derivative",
+        "input": "reference_cases/symbolic/rejected/undeclared_symbol.json",
+        "command": "solve",
+        "oracle": "Todo símbolo do enunciado precisa de papel, domínio e unidade declarados.",
+        "exit_code": 3,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "invalid_input",
+          "code": "undeclared_symbol",
+          "pointer": "/statement"
+        }
+      },
+      "observation": {
+        "exit_code": 3,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "invalid_input",
+            "code": "undeclared_symbol",
+            "pointer": "/statement"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "symbolic/rejected/dimensional_argument",
+        "family": "symbolic",
+        "card": "calculus.derivative",
+        "input": "reference_cases/symbolic/rejected/dimensional_argument.json",
+        "command": "solve",
+        "oracle": "A exponencial só aceita argumento adimensional, e x foi declarado em segundos.",
+        "exit_code": 3,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "invalid_input",
+          "code": "dimensional_argument",
+          "pointer": "/statement"
+        }
+      },
+      "observation": {
+        "exit_code": 3,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "invalid_input",
+            "code": "dimensional_argument",
+            "pointer": "/statement"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "symbolic/rejected/missing_initial_condition",
+        "family": "symbolic",
+        "card": "ode.first_order_linear.initial_value",
+        "input": "reference_cases/symbolic/rejected/missing_initial_condition.json",
+        "command": "solve",
+        "oracle": "A ficha de valor inicial exige a condição antes de qualquer cálculo.",
+        "exit_code": 3,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "invalid_input",
+          "code": "missing_field",
+          "pointer": "/conditions"
+        }
+      },
+      "observation": {
+        "exit_code": 3,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "invalid_input",
+            "code": "missing_field",
+            "pointer": "/conditions"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "symbolic/rejected/singularity_in_interval",
+        "family": "symbolic",
+        "card": "calculus.definite_integral",
+        "input": "reference_cases/symbolic/rejected/singularity_in_interval.json",
+        "command": "solve",
+        "oracle": "1/x não é integrável através de x = 0; a diferença da primitiva nos extremos daria zero, um valor sem sentido.",
+        "exit_code": 4,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "unsupported_problem",
+          "code": "singularity_in_interval",
+          "pointer": "/statement"
+        }
+      },
+      "observation": {
+        "exit_code": 4,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "unsupported_problem",
+            "code": "singularity_in_interval",
+            "pointer": "/statement"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "symbolic/rejected/no_closed_primitive",
+        "family": "symbolic",
+        "card": "calculus.antiderivative",
+        "input": "reference_cases/symbolic/rejected/no_closed_primitive.json",
+        "command": "solve",
+        "oracle": "A primitiva de exp(-x^2) pede a função erro, que não está registrada, e uma primitiva não tem método numérico homologado.",
+        "exit_code": 4,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "unsupported_problem",
+          "code": "outside_coverage",
+          "pointer": "/statement"
+        }
+      },
+      "observation": {
+        "exit_code": 4,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "unsupported_problem",
+            "code": "outside_coverage",
+            "pointer": "/statement"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "symbolic/rejected/expression_too_deep",
+        "family": "symbolic",
+        "card": "calculus.derivative",
+        "input": "reference_cases/symbolic/rejected/expression_too_deep.json",
+        "command": "solve",
+        "oracle": "Quarenta parênteses aninhados passam do limite de 32 níveis.",
+        "exit_code": 7,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "budget_exceeded",
+          "code": "expression_too_deep",
+          "pointer": "/statement"
+        }
+      },
+      "observation": {
+        "exit_code": 7,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "budget_exceeded",
+            "code": "expression_too_deep",
+            "pointer": "/statement"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "symbolic/rejected/nonlinear_equation",
+        "family": "symbolic",
+        "card": "ode.first_order_linear.general_solution",
+        "input": "reference_cases/symbolic/rejected/nonlinear_equation.json",
+        "command": "solve",
+        "oracle": "y' = -k*y^2 não é linear em y; a solução geral da ficha, uma exponencial, não vale para ela, e nenhum método para equação não linear está homologado.",
+        "exit_code": 4,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "unsupported_problem",
+          "code": "outside_coverage",
+          "pointer": "/statement"
+        }
+      },
+      "observation": {
+        "exit_code": 4,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "unsupported_problem",
+            "code": "outside_coverage",
+            "pointer": "/statement"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "symbolic/rejected/candidate_for_nonlinear_equation",
+        "family": "symbolic",
+        "card": "ode.first_order_linear.candidate_review",
+        "input": "reference_cases/symbolic/rejected/candidate_for_nonlinear_equation.json",
+        "command": "solve",
+        "oracle": "A revisão por substituição só está homologada para a equação linear; para y' = -k*y^2 a candidata não é aprovada nem reprovada.",
+        "exit_code": 4,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "unsupported_problem",
+          "code": "outside_coverage",
+          "pointer": "/statement"
+        }
+      },
+      "observation": {
+        "exit_code": 4,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "unsupported_problem",
+            "code": "outside_coverage",
+            "pointer": "/statement"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "numerical/rejected/non_hermitian_operator",
+        "family": "numerical",
+        "card": "quantum.finite_basis.projective_measurement",
+        "input": "reference_cases/numerical/rejected/non_hermitian_operator.json",
+        "command": "solve",
+        "oracle": "A matriz difere da sua transposta conjugada: não há medição projetiva com resultados reais.",
+        "exit_code": 3,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "invalid_input",
+          "code": "non_hermitian_operator",
+          "pointer": "/observable/matrix"
+        }
+      },
+      "observation": {
+        "exit_code": 3,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "invalid_input",
+            "code": "non_hermitian_operator",
+            "pointer": "/observable/matrix"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "numerical/rejected/zero_state",
+        "family": "numerical",
+        "card": "quantum.finite_basis.projective_measurement",
+        "input": "reference_cases/numerical/rejected/zero_state.json",
+        "command": "solve",
+        "oracle": "O vetor nulo não é um estado e não pode ser normalizado.",
+        "exit_code": 3,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "invalid_input",
+          "code": "zero_state",
+          "pointer": "/state"
+        }
+      },
+      "observation": {
+        "exit_code": 3,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "invalid_input",
+            "code": "zero_state",
+            "pointer": "/state"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "numerical/rejected/unnormalized_state",
+        "family": "numerical",
+        "card": "quantum.finite_basis.projective_measurement",
+        "input": "reference_cases/numerical/rejected/unnormalized_state.json",
+        "command": "solve",
+        "oracle": "O estado (1, 1) tem norma raiz de 2 e a normalização não foi pedida; ela não é aplicada em silêncio.",
+        "exit_code": 3,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "invalid_input",
+          "code": "state_not_normalized",
+          "pointer": "/state"
+        }
+      },
+      "observation": {
+        "exit_code": 3,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "invalid_input",
+            "code": "state_not_normalized",
+            "pointer": "/state"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "numerical/rejected/basis_not_orthonormal",
+        "family": "numerical",
+        "card": "quantum.finite_basis.projective_measurement",
+        "input": "reference_cases/numerical/rejected/basis_not_orthonormal.json",
+        "command": "solve",
+        "oracle": "Os vetores (1, 0) e (1, 1) não são ortonormais; a mudança de base não preservaria probabilidades.",
+        "exit_code": 3,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "invalid_input",
+          "code": "basis_not_orthonormal",
+          "pointer": "/basis"
+        }
+      },
+      "observation": {
+        "exit_code": 3,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "invalid_input",
+            "code": "basis_not_orthonormal",
+            "pointer": "/basis"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "numerical/rejected/incompatible_condition",
+        "family": "numerical",
+        "card": "ode.initial_value.explicit_runge_kutta",
+        "input": "reference_cases/numerical/rejected/incompatible_condition.json",
+        "command": "solve",
+        "oracle": "Duas condições iniciais diferentes para a mesma função de uma equação de primeira ordem.",
+        "exit_code": 3,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "invalid_input",
+          "code": "incompatible_condition",
+          "pointer": "/conditions/1"
+        }
+      },
+      "observation": {
+        "exit_code": 3,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "invalid_input",
+            "code": "incompatible_condition",
+            "pointer": "/conditions/1"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "numerical/rejected/missing_initial_state",
+        "family": "numerical",
+        "card": "quantum.infinite_square_well.time_evolution",
+        "input": "reference_cases/numerical/rejected/missing_initial_state.json",
+        "command": "solve",
+        "oracle": "A evolução temporal não parte de um estado escolhido pela calculadora.",
+        "exit_code": 3,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "invalid_input",
+          "code": "missing_field",
+          "pointer": "/initial_state"
+        }
+      },
+      "observation": {
+        "exit_code": 3,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "invalid_input",
+            "code": "missing_field",
+            "pointer": "/initial_state"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "numerical/rejected/missing_numerics",
+        "family": "numerical",
+        "card": "quantum.infinite_square_well.discrete_spectrum",
+        "input": "reference_cases/numerical/rejected/missing_numerics.json",
+        "command": "solve",
+        "oracle": "A resolução de um resultado aproximado não é escolhida em silêncio.",
+        "exit_code": 3,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "invalid_input",
+          "code": "missing_field",
+          "pointer": "/numerics"
+        }
+      },
+      "observation": {
+        "exit_code": 3,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "invalid_input",
+            "code": "missing_field",
+            "pointer": "/numerics"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "numerical/rejected/unknown_setting",
+        "family": "numerical",
+        "card": "quantum.infinite_square_well.discrete_spectrum",
+        "input": "reference_cases/numerical/rejected/unknown_setting.json",
+        "command": "solve",
+        "oracle": "A ficha não tem um ajuste de ordem; um ajuste ignorado esconderia o método efetivo.",
+        "exit_code": 3,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "invalid_input",
+          "code": "unexpected_field",
+          "pointer": "/numerics/order"
+        }
+      },
+      "observation": {
+        "exit_code": 3,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "invalid_input",
+            "code": "unexpected_field",
+            "pointer": "/numerics/order"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "numerical/rejected/resource_limit",
+        "family": "numerical",
+        "card": "quantum.infinite_square_well.discrete_spectrum",
+        "input": "reference_cases/numerical/rejected/resource_limit.json",
+        "command": "solve",
+        "oracle": "Um milhão de subintervalos passa do perfil homologado de 16384; a recusa vem antes de qualquer alocação.",
+        "exit_code": 7,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "budget_exceeded",
+          "code": "resource_limit_exceeded",
+          "pointer": "/numerics/subintervals"
+        }
+      },
+      "observation": {
+        "exit_code": 7,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "budget_exceeded",
+            "code": "resource_limit_exceeded",
+            "pointer": "/numerics/subintervals"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "numerical/rejected/estimated_work_too_large",
+        "family": "numerical",
+        "card": "quantum.infinite_square_well.time_evolution",
+        "input": "reference_cases/numerical/rejected/estimated_work_too_large.json",
+        "command": "solve",
+        "oracle": "Cada ajuste está dentro do seu limite, mas 16384 subintervalos por 1048576 passos estimam mais de 2e9 operações.",
+        "exit_code": 7,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "budget_exceeded",
+          "code": "resource_limit_exceeded",
+          "pointer": "/numerics"
+        }
+      },
+      "observation": {
+        "exit_code": 7,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "budget_exceeded",
+            "code": "resource_limit_exceeded",
+            "pointer": "/numerics"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "numerical/rejected/empty_domain",
+        "family": "numerical",
+        "card": "quantum.harmonic_oscillator.truncated_spectrum",
+        "input": "reference_cases/numerical/rejected/empty_domain.json",
+        "command": "solve",
+        "oracle": "Meia largura zero não define um domínio.",
+        "exit_code": 3,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "invalid_input",
+          "code": "number_out_of_range",
+          "pointer": "/numerics/half_width"
+        }
+      },
+      "observation": {
+        "exit_code": 3,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "invalid_input",
+            "code": "number_out_of_range",
+            "pointer": "/numerics/half_width"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "numerical/rejected/unrefinable_mesh",
+        "family": "numerical",
+        "card": "quantum.infinite_square_well.discrete_spectrum",
+        "input": "reference_cases/numerical/rejected/unrefinable_mesh.json",
+        "command": "solve",
+        "oracle": "510 subintervalos não permitem o estudo de refinamento em um quarto e na metade da malha.",
+        "exit_code": 3,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "invalid_input",
+          "code": "number_out_of_range",
+          "pointer": "/numerics/subintervals"
+        }
+      },
+      "observation": {
+        "exit_code": 3,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "invalid_input",
+            "code": "number_out_of_range",
+            "pointer": "/numerics/subintervals"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "numerical/rejected/parameter_without_value",
+        "family": "numerical",
+        "card": "ode.initial_value.explicit_runge_kutta",
+        "input": "reference_cases/numerical/rejected/parameter_without_value.json",
+        "command": "solve",
+        "oracle": "Um cálculo numérico precisa do valor de todo parâmetro.",
+        "exit_code": 3,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "invalid_input",
+          "code": "missing_field",
+          "pointer": "/symbols/k/value"
+        }
+      },
+      "observation": {
+        "exit_code": 3,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "invalid_input",
+            "code": "missing_field",
+            "pointer": "/symbols/k/value"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "numerical/rejected/divergent_integral",
+        "family": "numerical",
+        "card": "calculus.definite_integral.adaptive_quadrature",
+        "input": "reference_cases/numerical/rejected/divergent_integral.json",
+        "command": "solve",
+        "oracle": "1/x não é integrável através de x = 0: o integrador não atinge a tolerância e nenhum valor é aprovado.",
+        "exit_code": 9,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "non_convergent",
+          "code": "method_not_converged",
+          "pointer": ""
+        }
+      },
+      "observation": {
+        "exit_code": 9,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "non_convergent",
+            "code": "method_not_converged",
+            "pointer": ""
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "numerical/rejected/blow_up_trajectory",
+        "family": "numerical",
+        "card": "ode.initial_value.explicit_runge_kutta",
+        "input": "reference_cases/numerical/rejected/blow_up_trajectory.json",
+        "command": "solve",
+        "oracle": "A solução 1/(1 - t) explode em t = 1 s, antes do fim do intervalo: o passo adaptativo colapsa.",
+        "exit_code": 9,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "non_convergent",
+          "code": "method_not_converged",
+          "pointer": ""
+        }
+      },
+      "observation": {
+        "exit_code": 9,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "non_convergent",
+            "code": "method_not_converged",
+            "pointer": ""
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/polynomial-derivative",
+        "family": "notation",
+        "card": "calculus.derivative",
+        "input": "reference_cases/notation/corpus.json#polynomial-derivative",
+        "command": "validate",
+        "oracle": "derivada de um polinômio em x",
+        "exit_code": 0,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {
+          "structure": "(derivative ordinary x 1 (add (subtract (multiply (number 3) (power (symbol x) (number 4))) (multiply (number 2) (symbol x))) (number 7)))"
+        },
+        "refusal": null
+      },
+      "observation": {
+        "exit_code": 0,
+        "card": "calculus.derivative",
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {
+          "structure": "(derivative ordinary x 1 (add (subtract (multiply (number 3) (power (symbol x) (number 4))) (multiply (number 2) (symbol x))) (number 7)))"
+        },
+        "refusals": []
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/product-rule",
+        "family": "notation",
+        "card": "calculus.derivative",
+        "input": "reference_cases/notation/corpus.json#product-rule",
+        "command": "validate",
+        "oracle": "derivada de x² sen x em relação a x",
+        "exit_code": 0,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {
+          "structure": "(derivative ordinary x 1 (multiply (power (symbol x) (number 2)) (sin (symbol x))))"
+        },
+        "refusal": null
+      },
+      "observation": {
+        "exit_code": 0,
+        "card": "calculus.derivative",
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {
+          "structure": "(derivative ordinary x 1 (multiply (power (symbol x) (number 2)) (sin (symbol x))))"
+        },
+        "refusals": []
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/product-rule-latex",
+        "family": "notation",
+        "card": "calculus.derivative",
+        "input": "reference_cases/notation/corpus.json#product-rule-latex",
+        "command": "validate",
+        "oracle": "a mesma derivada, digitada em LaTeX",
+        "exit_code": 0,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {
+          "structure": "(derivative ordinary x 1 (multiply (power (symbol x) (number 2)) (sin (symbol x))))"
+        },
+        "refusal": null
+      },
+      "observation": {
+        "exit_code": 0,
+        "card": "calculus.derivative",
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {
+          "structure": "(derivative ordinary x 1 (multiply (power (symbol x) (number 2)) (sin (symbol x))))"
+        },
+        "refusals": []
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/product-rule-unicode",
+        "family": "notation",
+        "card": "calculus.derivative",
+        "input": "reference_cases/notation/corpus.json#product-rule-unicode",
+        "command": "validate",
+        "oracle": "a mesma derivada, com expoente sobrescrito e ponto médio",
+        "exit_code": 0,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {
+          "structure": "(derivative ordinary x 1 (multiply (power (symbol x) (number 2)) (sin (symbol x))))"
+        },
+        "refusal": null
+      },
+      "observation": {
+        "exit_code": 0,
+        "card": "calculus.derivative",
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {
+          "structure": "(derivative ordinary x 1 (multiply (power (symbol x) (number 2)) (sin (symbol x))))"
+        },
+        "refusals": []
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/chain-rule",
+        "family": "notation",
+        "card": "calculus.derivative",
+        "input": "reference_cases/notation/corpus.json#chain-rule",
+        "command": "validate",
+        "oracle": "derivada de uma função composta",
+        "exit_code": 0,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {
+          "structure": "(derivative ordinary x 1 (sin (power (symbol x) (number 2))))"
+        },
+        "refusal": null
+      },
+      "observation": {
+        "exit_code": 0,
+        "card": "calculus.derivative",
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {
+          "structure": "(derivative ordinary x 1 (sin (power (symbol x) (number 2))))"
+        },
+        "refusals": []
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/partial-derivative",
+        "family": "notation",
+        "card": "calculus.derivative",
+        "input": "reference_cases/notation/corpus.json#partial-derivative",
+        "command": "validate",
+        "oracle": "derivada parcial em x, com y fixo",
+        "exit_code": 0,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {
+          "structure": "(derivative partial x 1 (add (multiply (power (symbol x) (number 2)) (symbol y)) (multiply (symbol a) (power (symbol y) (number 3)))))"
+        },
+        "refusal": null
+      },
+      "observation": {
+        "exit_code": 0,
+        "card": "calculus.derivative",
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {
+          "structure": "(derivative partial x 1 (add (multiply (power (symbol x) (number 2)) (symbol y)) (multiply (symbol a) (power (symbol y) (number 3)))))"
+        },
+        "refusals": []
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/partial-derivative-latex",
+        "family": "notation",
+        "card": "calculus.derivative",
+        "input": "reference_cases/notation/corpus.json#partial-derivative-latex",
+        "command": "validate",
+        "oracle": "a mesma derivada parcial, em LaTeX",
+        "exit_code": 0,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {
+          "structure": "(derivative partial x 1 (add (multiply (power (symbol x) (number 2)) (symbol y)) (multiply (symbol a) (power (symbol y) (number 3)))))"
+        },
+        "refusal": null
+      },
+      "observation": {
+        "exit_code": 0,
+        "card": "calculus.derivative",
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {
+          "structure": "(derivative partial x 1 (add (multiply (power (symbol x) (number 2)) (symbol y)) (multiply (symbol a) (power (symbol y) (number 3)))))"
+        },
+        "refusals": []
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/removable-factor",
+        "family": "notation",
+        "card": "calculus.derivative",
+        "input": "reference_cases/notation/corpus.json#removable-factor",
+        "command": "validate",
+        "oracle": "derivada de um quociente com fator cancelável",
+        "exit_code": 0,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {
+          "structure": "(derivative ordinary x 1 (divide (subtract (power (symbol x) (number 2)) (number 1)) (subtract (symbol x) (number 1))))"
+        },
+        "refusal": null
+      },
+      "observation": {
+        "exit_code": 0,
+        "card": "calculus.derivative",
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {
+          "structure": "(derivative ordinary x 1 (divide (subtract (power (symbol x) (number 2)) (number 1)) (subtract (symbol x) (number 1))))"
+        },
+        "refusals": []
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/root-of-square",
+        "family": "notation",
+        "card": "calculus.derivative",
+        "input": "reference_cases/notation/corpus.json#root-of-square",
+        "command": "validate",
+        "oracle": "derivada da raiz do quadrado de uma variável real",
+        "exit_code": 0,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {
+          "structure": "(derivative ordinary x 1 (sqrt (power (symbol x) (number 2))))"
+        },
+        "refusal": null
+      },
+      "observation": {
+        "exit_code": 0,
+        "card": "calculus.derivative",
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {
+          "structure": "(derivative ordinary x 1 (sqrt (power (symbol x) (number 2))))"
+        },
+        "refusals": []
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/greek-parameter",
+        "family": "notation",
+        "card": "calculus.derivative",
+        "input": "reference_cases/notation/corpus.json#greek-parameter",
+        "command": "validate",
+        "oracle": "derivada de uma exponencial com taxa lambda",
+        "exit_code": 0,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {
+          "structure": "(derivative ordinary x 1 (exp (negate (multiply (symbol λ) (symbol x)))))"
+        },
+        "refusal": null
+      },
+      "observation": {
+        "exit_code": 0,
+        "card": "calculus.derivative",
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {
+          "structure": "(derivative ordinary x 1 (exp (negate (multiply (symbol λ) (symbol x)))))"
+        },
+        "refusals": []
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/greek-parameter-unicode",
+        "family": "notation",
+        "card": "calculus.derivative",
+        "input": "reference_cases/notation/corpus.json#greek-parameter-unicode",
+        "command": "validate",
+        "oracle": "a mesma exponencial, com a letra grega e o sinal de menos Unicode",
+        "exit_code": 0,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {
+          "structure": "(derivative ordinary x 1 (exp (negate (multiply (symbol λ) (symbol x)))))"
+        },
+        "refusal": null
+      },
+      "observation": {
+        "exit_code": 0,
+        "card": "calculus.derivative",
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {
+          "structure": "(derivative ordinary x 1 (exp (negate (multiply (symbol λ) (symbol x)))))"
+        },
+        "refusals": []
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/greek-parameter-latex",
+        "family": "notation",
+        "card": "calculus.derivative",
+        "input": "reference_cases/notation/corpus.json#greek-parameter-latex",
+        "command": "validate",
+        "oracle": "a mesma exponencial, em LaTeX",
+        "exit_code": 0,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {
+          "structure": "(derivative ordinary x 1 (exp (negate (multiply (symbol λ) (symbol x)))))"
+        },
+        "refusal": null
+      },
+      "observation": {
+        "exit_code": 0,
+        "card": "calculus.derivative",
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {
+          "structure": "(derivative ordinary x 1 (exp (negate (multiply (symbol λ) (symbol x)))))"
+        },
+        "refusals": []
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/free-fall-velocity",
+        "family": "notation",
+        "card": "calculus.derivative",
+        "input": "reference_cases/notation/corpus.json#free-fall-velocity",
+        "command": "validate",
+        "oracle": "velocidade na queda livre, com unidades declaradas",
+        "exit_code": 0,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {
+          "structure": "(derivative ordinary t 1 (subtract (symbol h) (divide (multiply (symbol g) (power (symbol t) (number 2))) (number 2))))"
+        },
+        "refusal": null
+      },
+      "observation": {
+        "exit_code": 0,
+        "card": "calculus.derivative",
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {
+          "structure": "(derivative ordinary t 1 (subtract (symbol h) (divide (multiply (symbol g) (power (symbol t) (number 2))) (number 2))))"
+        },
+        "refusals": []
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/reciprocal-primitive",
+        "family": "notation",
+        "card": "calculus.antiderivative",
+        "input": "reference_cases/notation/corpus.json#reciprocal-primitive",
+        "command": "validate",
+        "oracle": "primitiva de 1/x",
+        "exit_code": 0,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {
+          "structure": "(integral x (divide (number 1) (symbol x)))"
+        },
+        "refusal": null
+      },
+      "observation": {
+        "exit_code": 0,
+        "card": "calculus.antiderivative",
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {
+          "structure": "(integral x (divide (number 1) (symbol x)))"
+        },
+        "refusals": []
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/reciprocal-primitive-latex",
+        "family": "notation",
+        "card": "calculus.antiderivative",
+        "input": "reference_cases/notation/corpus.json#reciprocal-primitive-latex",
+        "command": "validate",
+        "oracle": "a mesma primitiva, em LaTeX",
+        "exit_code": 0,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {
+          "structure": "(integral x (divide (number 1) (symbol x)))"
+        },
+        "refusal": null
+      },
+      "observation": {
+        "exit_code": 0,
+        "card": "calculus.antiderivative",
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {
+          "structure": "(integral x (divide (number 1) (symbol x)))"
+        },
+        "refusals": []
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/parabola-area",
+        "family": "notation",
+        "card": "calculus.definite_integral",
+        "input": "reference_cases/notation/corpus.json#parabola-area",
+        "command": "validate",
+        "oracle": "área sob a parábola entre 0 e 1",
+        "exit_code": 0,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {
+          "structure": "(integral x (power (symbol x) (number 2)) (number 0) (number 1))"
+        },
+        "refusal": null
+      },
+      "observation": {
+        "exit_code": 0,
+        "card": "calculus.definite_integral",
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {
+          "structure": "(integral x (power (symbol x) (number 2)) (number 0) (number 1))"
+        },
+        "refusals": []
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/parabola-area-latex",
+        "family": "notation",
+        "card": "calculus.definite_integral",
+        "input": "reference_cases/notation/corpus.json#parabola-area-latex",
+        "command": "validate",
+        "oracle": "a mesma integral definida, em LaTeX",
+        "exit_code": 0,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {
+          "structure": "(integral x (power (symbol x) (number 2)) (number 0) (number 1))"
+        },
+        "refusal": null
+      },
+      "observation": {
+        "exit_code": 0,
+        "card": "calculus.definite_integral",
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {
+          "structure": "(integral x (power (symbol x) (number 2)) (number 0) (number 1))"
+        },
+        "refusals": []
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/decay-general-solution",
+        "family": "notation",
+        "card": "ode.first_order_linear.general_solution",
+        "input": "reference_cases/notation/corpus.json#decay-general-solution",
+        "command": "validate",
+        "oracle": "solução geral do decaimento exponencial",
+        "exit_code": 0,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {
+          "structure": "(equation (unknown y 1 (symbol t)) (negate (multiply (symbol k) (unknown y 0 (symbol t)))))"
+        },
+        "refusal": null
+      },
+      "observation": {
+        "exit_code": 0,
+        "card": "ode.first_order_linear.general_solution",
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {
+          "structure": "(equation (unknown y 1 (symbol t)) (negate (multiply (symbol k) (unknown y 0 (symbol t)))))"
+        },
+        "refusals": []
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/decay-general-solution-latex",
+        "family": "notation",
+        "card": "ode.first_order_linear.general_solution",
+        "input": "reference_cases/notation/corpus.json#decay-general-solution-latex",
+        "command": "validate",
+        "oracle": "o mesmo decaimento, em LaTeX",
+        "exit_code": 0,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {
+          "structure": "(equation (unknown y 1 (symbol t)) (negate (multiply (symbol k) (unknown y 0 (symbol t)))))"
+        },
+        "refusal": null
+      },
+      "observation": {
+        "exit_code": 0,
+        "card": "ode.first_order_linear.general_solution",
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {
+          "structure": "(equation (unknown y 1 (symbol t)) (negate (multiply (symbol k) (unknown y 0 (symbol t)))))"
+        },
+        "refusals": []
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/decay-initial-value",
+        "family": "notation",
+        "card": "ode.first_order_linear.initial_value",
+        "input": "reference_cases/notation/corpus.json#decay-initial-value",
+        "command": "validate",
+        "oracle": "decaimento com condição inicial",
+        "exit_code": 0,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {
+          "structure": "(equation (unknown y 1 (symbol t)) (negate (multiply (symbol k) (unknown y 0 (symbol t)))))"
+        },
+        "refusal": null
+      },
+      "observation": {
+        "exit_code": 0,
+        "card": "ode.first_order_linear.initial_value",
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {
+          "structure": "(equation (unknown y 1 (symbol t)) (negate (multiply (symbol k) (unknown y 0 (symbol t)))))"
+        },
+        "refusals": []
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/decay-candidate-review",
+        "family": "notation",
+        "card": "ode.first_order_linear.candidate_review",
+        "input": "reference_cases/notation/corpus.json#decay-candidate-review",
+        "command": "validate",
+        "oracle": "revisão de uma candidata para o decaimento",
+        "exit_code": 0,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {
+          "structure": "(equation (unknown y 1 (symbol t)) (negate (multiply (symbol k) (unknown y 0 (symbol t)))))"
+        },
+        "refusal": null
+      },
+      "observation": {
+        "exit_code": 0,
+        "card": "ode.first_order_linear.candidate_review",
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {
+          "structure": "(equation (unknown y 1 (symbol t)) (negate (multiply (symbol k) (unknown y 0 (symbol t)))))"
+        },
+        "refusals": []
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/relaxation-time",
+        "family": "notation",
+        "card": "ode.first_order_linear.general_solution",
+        "input": "reference_cases/notation/corpus.json#relaxation-time",
+        "command": "validate",
+        "oracle": "relaxação com tempo característico tau",
+        "exit_code": 0,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {
+          "structure": "(equation (unknown y 1 (symbol t)) (negate (divide (unknown y 0 (symbol t)) (symbol τ))))"
+        },
+        "refusal": null
+      },
+      "observation": {
+        "exit_code": 0,
+        "card": "ode.first_order_linear.general_solution",
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {
+          "structure": "(equation (unknown y 1 (symbol t)) (negate (divide (unknown y 0 (symbol t)) (symbol τ))))"
+        },
+        "refusals": []
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/half-x",
+        "family": "notation",
+        "card": "",
+        "input": "reference_cases/notation/corpus.json#half-x",
+        "command": "validate",
+        "oracle": "metade de x, ou um sobre dois x 1/2x pode ser (1/2)*x ou 1/(2*x); a leitura muda a derivada.",
+        "exit_code": 6,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "ambiguous_input",
+          "code": "ambiguous_division",
+          "pointer": "/statement"
+        }
+      },
+      "observation": {
+        "exit_code": 6,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "ambiguous_input",
+            "code": "ambiguous_division",
+            "pointer": "/statement"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/chained-division",
+        "family": "notation",
+        "card": "",
+        "input": "reference_cases/notation/corpus.json#chained-division",
+        "command": "validate",
+        "oracle": "divisões em cadeia a/b/x pode ser (a/b)/x ou a/(b/x).",
+        "exit_code": 6,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "ambiguous_input",
+          "code": "ambiguous_division",
+          "pointer": "/statement"
+        }
+      },
+      "observation": {
+        "exit_code": 6,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "ambiguous_input",
+            "code": "ambiguous_division",
+            "pointer": "/statement"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/power-tower",
+        "family": "notation",
+        "card": "",
+        "input": "reference_cases/notation/corpus.json#power-tower",
+        "command": "validate",
+        "oracle": "torre de potências x^y^a pode ser (x^y)^a ou x^(y^a).",
+        "exit_code": 6,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "ambiguous_input",
+          "code": "ambiguous_power",
+          "pointer": "/statement"
+        }
+      },
+      "observation": {
+        "exit_code": 6,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "ambiguous_input",
+            "code": "ambiguous_power",
+            "pointer": "/statement"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/product-or-application",
+        "family": "notation",
+        "card": "",
+        "input": "reference_cases/notation/corpus.json#product-or-application",
+        "command": "validate",
+        "oracle": "a vezes (x + 1), ou a aplicada a x + 1 a foi declarado como parâmetro, mas a escrita é a de uma aplicação de função.",
+        "exit_code": 6,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "ambiguous_input",
+          "code": "ambiguous_application",
+          "pointer": "/statement"
+        }
+      },
+      "observation": {
+        "exit_code": 6,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "ambiguous_input",
+            "code": "ambiguous_application",
+            "pointer": "/statement"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/undelimited-argument",
+        "family": "notation",
+        "card": "",
+        "input": "reference_cases/notation/corpus.json#undelimited-argument",
+        "command": "validate",
+        "oracle": "seno sem parênteses no argumento Sem delimitador não se sabe onde o argumento do seno termina.",
+        "exit_code": 6,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "ambiguous_input",
+          "code": "ambiguous_argument",
+          "pointer": "/statement"
+        }
+      },
+      "observation": {
+        "exit_code": 6,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "ambiguous_input",
+            "code": "ambiguous_argument",
+            "pointer": "/statement"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/undelimited-operand",
+        "family": "notation",
+        "card": "",
+        "input": "reference_cases/notation/corpus.json#undelimited-operand",
+        "command": "validate",
+        "oracle": "operador de derivada sem parênteses no operando A derivada pode valer só para x² ou para x² + 1.",
+        "exit_code": 6,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "ambiguous_input",
+          "code": "ambiguous_argument",
+          "pointer": "/statement"
+        }
+      },
+      "observation": {
+        "exit_code": 6,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "ambiguous_input",
+            "code": "ambiguous_argument",
+            "pointer": "/statement"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/number-after-symbol",
+        "family": "notation",
+        "card": "",
+        "input": "reference_cases/notation/corpus.json#number-after-symbol",
+        "command": "validate",
+        "oracle": "número logo depois de um símbolo x 2 pode ser x*2, x^2 ou x_2.",
+        "exit_code": 6,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "ambiguous_input",
+          "code": "ambiguous_juxtaposition",
+          "pointer": "/statement"
+        }
+      },
+      "observation": {
+        "exit_code": 6,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "ambiguous_input",
+            "code": "ambiguous_juxtaposition",
+            "pointer": "/statement"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/two-variables",
+        "family": "notation",
+        "card": "",
+        "input": "reference_cases/notation/corpus.json#two-variables",
+        "command": "validate",
+        "oracle": "derivada ordinária de expressão com duas variáveis y também é variável: a derivada ordinária não diz se y fica fixo ou depende de x.",
+        "exit_code": 6,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "ambiguous_input",
+          "code": "ambiguous_derivative",
+          "pointer": "/statement"
+        }
+      },
+      "observation": {
+        "exit_code": 6,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "ambiguous_input",
+            "code": "ambiguous_derivative",
+            "pointer": "/statement"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/bare-expression",
+        "family": "notation",
+        "card": "",
+        "input": "reference_cases/notation/corpus.json#bare-expression",
+        "command": "validate",
+        "oracle": "expressão sem operação A expressão não diz se é para derivar ou integrar.",
+        "exit_code": 6,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "ambiguous_input",
+          "code": "ambiguous_problem",
+          "pointer": "/statement"
+        }
+      },
+      "observation": {
+        "exit_code": 6,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "ambiguous_input",
+            "code": "ambiguous_problem",
+            "pointer": "/statement"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/candidate-without-condition",
+        "family": "notation",
+        "card": "",
+        "input": "reference_cases/notation/corpus.json#candidate-without-condition",
+        "command": "validate",
+        "oracle": "candidata sem condição inicial e sem ficha confirmada Com candidata e sem condição, nenhuma ficha é escolhida sozinha: a revisão exige a condição e a solução geral não usa a candidata.",
+        "exit_code": 6,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "ambiguous_input",
+          "code": "ambiguous_problem",
+          "pointer": "/problem"
+        }
+      },
+      "observation": {
+        "exit_code": 6,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "ambiguous_input",
+            "code": "ambiguous_problem",
+            "pointer": "/problem"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/undeclared-variable",
+        "family": "notation",
+        "card": "",
+        "input": "reference_cases/notation/corpus.json#undeclared-variable",
+        "command": "validate",
+        "oracle": "símbolo que não foi declarado z aparece no enunciado sem papel, domínio nem unidade.",
+        "exit_code": 3,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "invalid_input",
+          "code": "undeclared_symbol",
+          "pointer": "/statement"
+        }
+      },
+      "observation": {
+        "exit_code": 3,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "invalid_input",
+            "code": "undeclared_symbol",
+            "pointer": "/statement"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/truncated",
+        "family": "notation",
+        "card": "",
+        "input": "reference_cases/notation/corpus.json#truncated",
+        "command": "validate",
+        "oracle": "enunciado cortado no meio Faltam os parênteses de fechamento e a variável de derivação.",
+        "exit_code": 3,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "invalid_input",
+          "code": "unexpected_end",
+          "pointer": "/statement"
+        }
+      },
+      "observation": {
+        "exit_code": 3,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "invalid_input",
+            "code": "unexpected_end",
+            "pointer": "/statement"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/truncated-latex",
+        "family": "notation",
+        "card": "",
+        "input": "reference_cases/notation/corpus.json#truncated-latex",
+        "command": "validate",
+        "oracle": "LaTeX cortado no meio O parêntese aberto por \\left( não fecha.",
+        "exit_code": 3,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "invalid_input",
+          "code": "unexpected_end",
+          "pointer": "/statement"
+        }
+      },
+      "observation": {
+        "exit_code": 3,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "invalid_input",
+            "code": "unexpected_end",
+            "pointer": "/statement"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/decimal-comma",
+        "family": "notation",
+        "card": "",
+        "input": "reference_cases/notation/corpus.json#decimal-comma",
+        "command": "validate",
+        "oracle": "vírgula como separador decimal A vírgula separa argumentos; o separador decimal é o ponto.",
+        "exit_code": 3,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "invalid_input",
+          "code": "syntax_error",
+          "pointer": "/statement"
+        }
+      },
+      "observation": {
+        "exit_code": 3,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "invalid_input",
+            "code": "syntax_error",
+            "pointer": "/statement"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/malformed-number",
+        "family": "notation",
+        "card": "",
+        "input": "reference_cases/notation/corpus.json#malformed-number",
+        "command": "validate",
+        "oracle": "número com dois pontos decimais 1.2.3 não é um número.",
+        "exit_code": 3,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "invalid_input",
+          "code": "malformed_number",
+          "pointer": "/statement"
+        }
+      },
+      "observation": {
+        "exit_code": 3,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "invalid_input",
+            "code": "malformed_number",
+            "pointer": "/statement"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/stray-character",
+        "family": "notation",
+        "card": "",
+        "input": "reference_cases/notation/corpus.json#stray-character",
+        "command": "validate",
+        "oracle": "caractere fora da notação $ não é operador nem parte de um nome.",
+        "exit_code": 3,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "invalid_input",
+          "code": "unexpected_character",
+          "pointer": "/statement"
+        }
+      },
+      "observation": {
+        "exit_code": 3,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "invalid_input",
+            "code": "unexpected_character",
+            "pointer": "/statement"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/dimensional-argument",
+        "family": "notation",
+        "card": "",
+        "input": "reference_cases/notation/corpus.json#dimensional-argument",
+        "command": "validate",
+        "oracle": "exponencial de um tempo em segundos O argumento de uma função transcendental precisa ser adimensional; t está em segundos.",
+        "exit_code": 3,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "invalid_input",
+          "code": "dimensional_argument",
+          "pointer": "/statement"
+        }
+      },
+      "observation": {
+        "exit_code": 3,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "invalid_input",
+            "code": "dimensional_argument",
+            "pointer": "/statement"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/dimension-mismatch",
+        "family": "notation",
+        "card": "",
+        "input": "reference_cases/notation/corpus.json#dimension-mismatch",
+        "command": "validate",
+        "oracle": "soma de comprimento com tempo h está em metros e t em segundos.",
+        "exit_code": 3,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "invalid_input",
+          "code": "dimension_mismatch",
+          "pointer": "/statement"
+        }
+      },
+      "observation": {
+        "exit_code": 3,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "invalid_input",
+            "code": "dimension_mismatch",
+            "pointer": "/statement"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/missing-condition",
+        "family": "notation",
+        "card": "ode.first_order_linear.initial_value",
+        "input": "reference_cases/notation/corpus.json#missing-condition",
+        "command": "validate",
+        "oracle": "problema de valor inicial sem a condição A ficha confirmada exige a condição inicial.",
+        "exit_code": 3,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "invalid_input",
+          "code": "missing_field",
+          "pointer": "/conditions"
+        }
+      },
+      "observation": {
+        "exit_code": 3,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "invalid_input",
+            "code": "missing_field",
+            "pointer": "/conditions"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/derivative-in-parameter",
+        "family": "notation",
+        "card": "",
+        "input": "reference_cases/notation/corpus.json#derivative-in-parameter",
+        "command": "validate",
+        "oracle": "derivada em relação a um parâmetro a foi declarado como parâmetro, não como variável.",
+        "exit_code": 3,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "invalid_input",
+          "code": "not_a_variable",
+          "pointer": "/statement"
+        }
+      },
+      "observation": {
+        "exit_code": 3,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "invalid_input",
+            "code": "not_a_variable",
+            "pointer": "/statement"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/bound-variable-in-limit",
+        "family": "notation",
+        "card": "",
+        "input": "reference_cases/notation/corpus.json#bound-variable-in-limit",
+        "command": "validate",
+        "oracle": "variável de integração no limite superior A variável de integração é ligada e não existe fora da integral.",
+        "exit_code": 3,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "invalid_input",
+          "code": "bound_variable_misuse",
+          "pointer": "/statement"
+        }
+      },
+      "observation": {
+        "exit_code": 3,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "invalid_input",
+            "code": "bound_variable_misuse",
+            "pointer": "/statement"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/card-mismatch",
+        "family": "notation",
+        "card": "calculus.derivative",
+        "input": "reference_cases/notation/corpus.json#card-mismatch",
+        "command": "validate",
+        "oracle": "primitiva enviada à ficha de derivada A ficha confirmada cobre derivadas, não primitivas.",
+        "exit_code": 3,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "invalid_input",
+          "code": "card_mismatch",
+          "pointer": "/problem"
+        }
+      },
+      "observation": {
+        "exit_code": 3,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "invalid_input",
+            "code": "card_mismatch",
+            "pointer": "/problem"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/malformed-condition",
+        "family": "notation",
+        "card": "",
+        "input": "reference_cases/notation/corpus.json#malformed-condition",
+        "command": "validate",
+        "oracle": "condição que não fixa um ponto y(t) = y_0 vale para todo t; não é uma condição inicial.",
+        "exit_code": 3,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "invalid_input",
+          "code": "malformed_condition",
+          "pointer": "/conditions/0"
+        }
+      },
+      "observation": {
+        "exit_code": 3,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "invalid_input",
+            "code": "malformed_condition",
+            "pointer": "/conditions/0"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/implicit-candidate",
+        "family": "notation",
+        "card": "",
+        "input": "reference_cases/notation/corpus.json#implicit-candidate",
+        "command": "validate",
+        "oracle": "candidata que usa a própria incógnita A candidata precisa dar y(t) como expressão explícita.",
+        "exit_code": 3,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "invalid_input",
+          "code": "malformed_candidate",
+          "pointer": "/candidate"
+        }
+      },
+      "observation": {
+        "exit_code": 3,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "invalid_input",
+            "code": "malformed_candidate",
+            "pointer": "/candidate"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/hyperbolic-function",
+        "family": "notation",
+        "card": "",
+        "input": "reference_cases/notation/corpus.json#hyperbolic-function",
+        "command": "validate",
+        "oracle": "função fora da lista registrada sinh não está entre as funções registradas.",
+        "exit_code": 4,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "unsupported_problem",
+          "code": "unsupported_operation",
+          "pointer": "/statement"
+        }
+      },
+      "observation": {
+        "exit_code": 4,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "unsupported_problem",
+            "code": "unsupported_operation",
+            "pointer": "/statement"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/latex-sum",
+        "family": "notation",
+        "card": "",
+        "input": "reference_cases/notation/corpus.json#latex-sum",
+        "command": "validate",
+        "oracle": "comando LaTeX fora do subconjunto \\sum não faz parte do subconjunto de LaTeX aceito.",
+        "exit_code": 4,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "unsupported_problem",
+          "code": "unsupported_operation",
+          "pointer": "/statement"
+        }
+      },
+      "observation": {
+        "exit_code": 4,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "unsupported_problem",
+            "code": "unsupported_operation",
+            "pointer": "/statement"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/algebraic-equation",
+        "family": "notation",
+        "card": "",
+        "input": "reference_cases/notation/corpus.json#algebraic-equation",
+        "command": "validate",
+        "oracle": "equação algébrica Nenhuma ficha homologada resolve equações algébricas.",
+        "exit_code": 4,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "unsupported_problem",
+          "code": "no_compatible_card",
+          "pointer": "/statement"
+        }
+      },
+      "observation": {
+        "exit_code": 4,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "unsupported_problem",
+            "code": "no_compatible_card",
+            "pointer": "/statement"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/second-order-equation",
+        "family": "notation",
+        "card": "",
+        "input": "reference_cases/notation/corpus.json#second-order-equation",
+        "command": "validate",
+        "oracle": "equação de segunda ordem A ficha cobre só equações de primeira ordem.",
+        "exit_code": 4,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "unsupported_problem",
+          "code": "outside_coverage",
+          "pointer": "/statement"
+        }
+      },
+      "observation": {
+        "exit_code": 4,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "unsupported_problem",
+            "code": "outside_coverage",
+            "pointer": "/statement"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/nested-derivative",
+        "family": "notation",
+        "card": "",
+        "input": "reference_cases/notation/corpus.json#nested-derivative",
+        "command": "validate",
+        "oracle": "derivada de uma derivada O operando precisa ser explícito; para a segunda derivada use a ordem: diff(x^3, x, 2).",
+        "exit_code": 4,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "unsupported_problem",
+          "code": "outside_coverage",
+          "pointer": "/statement"
+        }
+      },
+      "observation": {
+        "exit_code": 4,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "unsupported_problem",
+            "code": "outside_coverage",
+            "pointer": "/statement"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/unknown-card",
+        "family": "notation",
+        "card": "calculus.limit",
+        "input": "reference_cases/notation/corpus.json#unknown-card",
+        "command": "validate",
+        "oracle": "ficha que não existe no catálogo calculus.limit não é uma ficha homologada.",
+        "exit_code": 4,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "unsupported_problem",
+          "code": "unknown_problem",
+          "pointer": "/problem"
+        }
+      },
+      "observation": {
+        "exit_code": 4,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "unsupported_problem",
+            "code": "unknown_problem",
+            "pointer": "/problem"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/too-deep",
+        "family": "notation",
+        "card": "",
+        "input": "reference_cases/notation/corpus.json#too-deep",
+        "command": "validate",
+        "oracle": "quarenta níveis de parênteses O limite é de 32 níveis de aninhamento.",
+        "exit_code": 7,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "budget_exceeded",
+          "code": "expression_too_deep",
+          "pointer": "/statement"
+        }
+      },
+      "observation": {
+        "exit_code": 7,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "budget_exceeded",
+            "code": "expression_too_deep",
+            "pointer": "/statement"
+          }
+        ]
+      },
+      "disagreements": []
+    },
+    {
+      "expectation": {
+        "identifier": "notation/too-long",
+        "family": "notation",
+        "card": "",
+        "input": "reference_cases/notation/corpus.json#too-long",
+        "command": "validate",
+        "oracle": "enunciado com mais de 512 caracteres O limite é de 512 caracteres.",
+        "exit_code": 7,
+        "verification": null,
+        "not_passed": [],
+        "values": [],
+        "texts": {},
+        "refusal": {
+          "category": "budget_exceeded",
+          "code": "statement_too_long",
+          "pointer": "/statement"
+        }
+      },
+      "observation": {
+        "exit_code": 7,
+        "card": null,
+        "verification": null,
+        "not_passed": [],
+        "values": {},
+        "texts": {},
+        "refusals": [
+          {
+            "category": "budget_exceeded",
+            "code": "statement_too_long",
+            "pointer": "/statement"
+          }
+        ]
+      },
+      "disagreements": []
+    }
+  ],
+  "coverage": [
+    {
+      "card": "quantum.infinite_square_well.energy_level",
+      "version": "1.0.0",
+      "method": "closed_form.infinite_square_well_energy",
+      "example": "reference_cases/quantum/electron_box_1nm.json",
+      "answered_cases": [
+        "quantum/electron_box_1nm",
+        "quantum/electron_box_1nm_uncertainty"
+      ],
+      "refused_cases": [
+        "quantum/rejected/negative_mass",
+        "quantum/rejected/zero_mass",
+        "quantum/rejected/zero_width",
+        "quantum/rejected/fractional_level",
+        "quantum/rejected/zero_level",
+        "quantum/rejected/negative_level",
+        "quantum/rejected/width_in_seconds",
+        "quantum/rejected/energy_in_nanometers",
+        "quantum/rejected/non_finite_width",
+        "quantum/rejected/unconfirmed_boundary",
+        "quantum/rejected/finite_walls",
+        "quantum/rejected/undeclared_covariance"
+      ],
+      "gaps": []
+    },
+    {
+      "card": "calculus.derivative",
+      "version": "1.0.0",
+      "method": "symbolic.differentiation",
+      "example": "reference_cases/symbolic/product_rule.json",
+      "answered_cases": [
+        "symbolic/product_rule"
+      ],
+      "refused_cases": [
+        "symbolic/rejected/ambiguous_division",
+        "symbolic/rejected/undeclared_symbol",
+        "symbolic/rejected/dimensional_argument",
+        "symbolic/rejected/expression_too_deep"
+      ],
+      "gaps": []
+    },
+    {
+      "card": "calculus.antiderivative",
+      "version": "1.0.0",
+      "method": "symbolic.antidifferentiation",
+      "example": "reference_cases/symbolic/reciprocal_primitive.json",
+      "answered_cases": [
+        "symbolic/reciprocal_primitive"
+      ],
+      "refused_cases": [
+        "symbolic/rejected/no_closed_primitive"
+      ],
+      "gaps": []
+    },
+    {
+      "card": "calculus.definite_integral",
+      "version": "1.0.0",
+      "method": "symbolic.fundamental_theorem",
+      "example": "reference_cases/symbolic/parabola_area.json",
+      "answered_cases": [
+        "symbolic/parabola_area"
+      ],
+      "refused_cases": [
+        "symbolic/rejected/singularity_in_interval"
+      ],
+      "gaps": []
+    },
+    {
+      "card": "ode.first_order_linear.general_solution",
+      "version": "1.0.0",
+      "method": "closed_form.first_order_linear_ode",
+      "example": "reference_cases/symbolic/decay_general_solution.json",
+      "answered_cases": [
+        "symbolic/decay_general_solution"
+      ],
+      "refused_cases": [
+        "symbolic/rejected/nonlinear_equation"
+      ],
+      "gaps": []
+    },
+    {
+      "card": "ode.first_order_linear.initial_value",
+      "version": "1.0.0",
+      "method": "closed_form.first_order_linear_ode",
+      "example": "reference_cases/symbolic/decay_initial_value.json",
+      "answered_cases": [
+        "symbolic/decay_initial_value"
+      ],
+      "refused_cases": [
+        "symbolic/rejected/missing_initial_condition"
+      ],
+      "gaps": []
+    },
+    {
+      "card": "ode.first_order_linear.candidate_review",
+      "version": "1.0.0",
+      "method": "substitution.candidate_review",
+      "example": "reference_cases/symbolic/decay_candidate_correct.json",
+      "answered_cases": [
+        "symbolic/decay_candidate_correct",
+        "symbolic/decay_candidate_wrong_initial_value",
+        "symbolic/decay_candidate_wrong_sign"
+      ],
+      "refused_cases": [
+        "symbolic/rejected/candidate_for_nonlinear_equation"
+      ],
+      "gaps": []
+    },
+    {
+      "card": "calculus.definite_integral.adaptive_quadrature",
+      "version": "1.0.0",
+      "method": "numerical.adaptive_quadrature",
+      "example": "reference_cases/numerical/sine_quadrature.json",
+      "answered_cases": [
+        "numerical/sine_quadrature"
+      ],
+      "refused_cases": [
+        "numerical/rejected/divergent_integral"
+      ],
+      "gaps": []
+    },
+    {
+      "card": "ode.initial_value.explicit_runge_kutta",
+      "version": "1.0.0",
+      "method": "numerical.dop853",
+      "example": "reference_cases/numerical/decay_trajectory.json",
+      "answered_cases": [
+        "numerical/decay_trajectory"
+      ],
+      "refused_cases": [
+        "numerical/rejected/incompatible_condition",
+        "numerical/rejected/parameter_without_value",
+        "numerical/rejected/blow_up_trajectory"
+      ],
+      "gaps": []
+    },
+    {
+      "card": "quantum.finite_basis.projective_measurement",
+      "version": "1.0.0",
+      "method": "numerical.hermitian_eigendecomposition",
+      "example": "reference_cases/numerical/spin_half_measurement.json",
+      "answered_cases": [
+        "numerical/spin_half_measurement",
+        "numerical/spin_half_measurement_rotated",
+        "numerical/degenerate_measurement"
+      ],
+      "refused_cases": [
+        "numerical/rejected/non_hermitian_operator",
+        "numerical/rejected/zero_state",
+        "numerical/rejected/unnormalized_state",
+        "numerical/rejected/basis_not_orthonormal"
+      ],
+      "gaps": []
+    },
+    {
+      "card": "quantum.infinite_square_well.discrete_spectrum",
+      "version": "1.0.0",
+      "method": "finite_difference.tridiagonal_eigensolver",
+      "example": "reference_cases/numerical/electron_box_1nm_discrete.json",
+      "answered_cases": [
+        "numerical/electron_box_1nm_discrete",
+        "numerical/electron_box_1nm_coarse"
+      ],
+      "refused_cases": [
+        "numerical/rejected/missing_numerics",
+        "numerical/rejected/unknown_setting",
+        "numerical/rejected/resource_limit",
+        "numerical/rejected/unrefinable_mesh"
+      ],
+      "gaps": []
+    },
+    {
+      "card": "quantum.harmonic_oscillator.truncated_spectrum",
+      "version": "1.0.0",
+      "method": "finite_difference.tridiagonal_eigensolver",
+      "example": "reference_cases/numerical/harmonic_oscillator_1ev.json",
+      "answered_cases": [
+        "numerical/harmonic_oscillator_1ev",
+        "numerical/harmonic_oscillator_narrow"
+      ],
+      "refused_cases": [
+        "numerical/rejected/empty_domain"
+      ],
+      "gaps": []
+    },
+    {
+      "card": "quantum.infinite_square_well.time_evolution",
+      "version": "1.0.0",
+      "method": "finite_difference.crank_nicolson",
+      "example": "reference_cases/numerical/electron_box_1nm_beat.json",
+      "answered_cases": [
+        "numerical/electron_box_1nm_beat"
+      ],
+      "refused_cases": [
+        "numerical/rejected/missing_initial_state",
+        "numerical/rejected/estimated_work_too_large"
+      ],
+      "gaps": []
+    }
+  ]
+}
