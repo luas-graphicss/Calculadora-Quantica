@@ -4,14 +4,14 @@ build-backend = "hatchling.build"
 
 [project]
 name = "quantum-calculator"
-version = "0.4.0"
+version = "1.0.0rc1"
 description = "Bancada de cálculo para físicos: da equação a uma resposta que outra pessoa consegue conferir."
 readme = "README.md"
 requires-python = "==3.12.*"
 license-files = ["LICENSE"]
 keywords = ["physics", "quantum-mechanics", "units", "reproducibility"]
 classifiers = [
-    "Development Status :: 2 - Pre-Alpha",
+    "Development Status :: 4 - Beta",
     "Environment :: Console",
     "Environment :: Web Environment",
     "Intended Audience :: Science/Research",
@@ -30,7 +30,7 @@ dependencies = [
 ]
 
 [project.scripts]
-qcalc = "quantum_calculator.interfaces.cli.main:main"
+qcalc = "quantum_calculator.interfaces.cli.entry:main"
 
 [dependency-groups]
 dev = [

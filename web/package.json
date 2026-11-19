@@ -1,6 +1,6 @@
 {
   "name": "quantum-calculator-web",
-  "version": "0.4.0",
+  "version": "1.0.0-rc.1",
   "private": true,
   "description": "Interface da bancada da Calculadora Quântica, servida como arquivos estáticos pelo qcalc serve.",
   "license": "GPL-3.0-only",
