@@ -27,7 +27,6 @@ from support.workbench import (
     build_bench,
     finish,
     raising,
-    sequential_identifiers,
 )
 
 _GENERATOR = PackageGenerator("quantum-calculator", "0.0.0-test")
@@ -58,7 +57,7 @@ def _importer(bench: Bench) -> ImportPackage:
         bench.runs,
         bench.artifacts,
         ZipPackageArchive(),
-        sequential_identifiers(),
+        bench.new_identifier,
         readable_record_versions=("1.0", "1.1", "1.2"),
     )
 

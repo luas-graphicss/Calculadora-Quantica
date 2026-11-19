@@ -136,6 +136,7 @@ class Bench:
     queue: RecordingQueue
     cancellations: RunCancellations
     clock: SteppingClock
+    new_identifier: Callable[[], str]
     submit: SubmitRun
     execute: ExecuteRun
 
@@ -148,6 +149,7 @@ def build_bench(directory: Path, documents: ScriptedDocuments | None = None) -> 
     queue = RecordingQueue()
     cancellations = RunCancellations()
     clock = SteppingClock()
+    new_identifier = sequential_identifiers()
     return Bench(
         documents=scripted,
         runs=runs,
@@ -155,9 +157,8 @@ def build_bench(directory: Path, documents: ScriptedDocuments | None = None) -> 
         queue=queue,
         cancellations=cancellations,
         clock=clock,
-        submit=SubmitRun(
-            scripted, runs, artifacts, queue, clock, sequential_identifiers(), PACKAGE_VERSION
-        ),
+        new_identifier=new_identifier,
+        submit=SubmitRun(scripted, runs, artifacts, queue, clock, new_identifier, PACKAGE_VERSION),
         execute=ExecuteRun(scripted, runs, artifacts, cancellations, clock),
     )
 
