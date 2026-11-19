@@ -15,6 +15,8 @@ from quantum_calculator.interfaces.cli.problem_commands import ProblemCommands
 from quantum_calculator.interfaces.cli.rendering.renderer import renderer_for
 from quantum_calculator.interfaces.serialization.schema_files import read_schema
 
+_HISTORY_COMMANDS = ("backup", "restore")
+
 
 def main(argv: Sequence[str] | None = None) -> int:
     _write_utf8(sys.stdout, sys.stderr)
@@ -29,6 +31,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         return ExitCode.SUCCESS
     if arguments.command == "serve":
         return _serve(arguments)
+    if arguments.command in _HISTORY_COMMANDS:
+        return _copy_history(arguments)
     calculator = build_calculator(symbolic_budget(arguments.time_limit))
     with interrupt_cancellation() as cancellation:
         commands = ProblemCommands(
@@ -41,6 +45,16 @@ def main(argv: Sequence[str] | None = None) -> int:
         if arguments.command == "validate":
             return commands.validate(arguments.path)
         return commands.solve(arguments.path)
+
+
+def _copy_history(arguments: argparse.Namespace) -> ExitCode:
+    from quantum_calculator.interfaces.cli.history_commands import HistoryCommands
+
+    commands = HistoryCommands(sys.stdout, sys.stderr, metadata.version(PACKAGE_NAME))
+    data_directory = arguments.data_dir or default_data_directory()
+    if arguments.command == "backup":
+        return commands.back_up(data_directory, arguments.archive)
+    return commands.restore(arguments.archive, data_directory)
 
 
 def _serve(arguments: argparse.Namespace) -> ExitCode:

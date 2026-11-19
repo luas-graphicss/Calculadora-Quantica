@@ -45,6 +45,18 @@ def build_parser(version: str) -> argparse.ArgumentParser:
             help="abre a bancada no navegador: catálogo, editor, resultados e histórico",
         )
     )
+    _add_history_command(
+        commands.add_parser(
+            "backup", help="grava uma cópia conferida do histórico e dos artefatos em um arquivo"
+        ),
+        "arquivo ZIP a criar; um arquivo que já existe não é sobrescrito",
+    )
+    _add_history_command(
+        commands.add_parser(
+            "restore", help="restaura uma cópia do histórico em uma pasta nova ou vazia"
+        ),
+        "arquivo ZIP gravado por qcalc backup",
+    )
     return parser
 
 
@@ -63,7 +75,12 @@ def _add_problem_command(command: argparse.ArgumentParser) -> None:
     )
 
 
-def _add_serve_command(command: argparse.ArgumentParser) -> None:
+def _add_history_command(command: argparse.ArgumentParser, archive_help: str) -> None:
+    command.add_argument("archive", type=Path, metavar="ARQUIVO", help=archive_help)
+    _add_data_directory(command)
+
+
+def _add_data_directory(command: argparse.ArgumentParser) -> None:
     command.add_argument(
         "--data-dir",
         type=Path,
@@ -74,6 +91,10 @@ def _add_serve_command(command: argparse.ArgumentParser) -> None:
             "$XDG_DATA_HOME ou de ~/.local/share)"
         ),
     )
+
+
+def _add_serve_command(command: argparse.ArgumentParser) -> None:
+    _add_data_directory(command)
     command.add_argument(
         "--port",
         type=_port,
