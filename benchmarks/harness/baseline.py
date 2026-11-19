@@ -1,4 +1,5 @@
 from benchmarks.harness.report import BenchmarkReport, WorkloadMeasurement
+from benchmarks.harness.stages import STAGE_LABELS
 
 _MEBIBYTE = 1024**2
 _MACHINE_ATTRIBUTES = ("cpu_model", "logical_cpus", "memory_bytes", "operating_system", "python")
@@ -41,7 +42,7 @@ def _machine_line(baseline: BenchmarkReport, candidate: BenchmarkReport) -> str:
 
 def _workload_lines(before: WorkloadMeasurement, after: WorkloadMeasurement) -> list[str]:
     stages = "; ".join(
-        f"{stage} {timed['summary']['p50']:.4f} -> "
+        f"{STAGE_LABELS[stage]} {timed['summary']['p50']:.4f} -> "
         f"{after['staged']['stages'][stage]['summary']['p50']:.4f}"
         for stage, timed in before["staged"]["stages"].items()
     )
