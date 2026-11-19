@@ -1,3 +1,4 @@
+import hashlib
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from datetime import UTC, datetime, timedelta
@@ -7,7 +8,7 @@ from quantum_calculator.adapters.storage.file_artifacts import FileArtifactStore
 from quantum_calculator.adapters.storage.sqlite_runs import SqliteRunRepository
 from quantum_calculator.application.workbench.cancellations import RunCancellations
 from quantum_calculator.application.workbench.execute_run import ExecuteRun
-from quantum_calculator.application.workbench.submit_run import SubmitRun
+from quantum_calculator.application.workbench.submit_run import Submission, SubmitRun
 from quantum_calculator.domain.execution import CancellationSignal
 from quantum_calculator.domain.workbench.documents import Document
 
@@ -141,6 +142,7 @@ class Bench:
 
 def build_bench(directory: Path, documents: ScriptedDocuments | None = None) -> Bench:
     scripted = documents or ScriptedDocuments()
+    directory.mkdir(parents=True, exist_ok=True)
     runs = SqliteRunRepository(directory / "history.sqlite3")
     artifacts = FileArtifactStore(directory / "artifacts")
     queue = RecordingQueue()
@@ -158,3 +160,46 @@ def build_bench(directory: Path, documents: ScriptedDocuments | None = None) -> 
         ),
         execute=ExecuteRun(scripted, runs, artifacts, cancellations, clock),
     )
+
+
+def closed_form_record(
+    source: bytes, numerator: int, denominator: int, decimal: str, unit: str = "eV"
+) -> Document:
+    return {
+        "document": "run_record",
+        "schema_version": "1.2",
+        "input": {"sha256": hashlib.sha256(source).hexdigest(), "text": source.decode()},
+        "problem": {"requested": {"label": "energia do nível"}},
+        "plan": {"rounding": {"mode": "half_even", "significant_digits": 10}},
+        "constants": {"edition": "CODATA 2022"},
+        "units": {"registry_version": "1.0.0"},
+        "result": {
+            "quantity": "energy",
+            "symbol": "E",
+            "nature": "exact",
+            "value": {
+                "decimal": decimal,
+                "numerator": str(numerator),
+                "denominator": str(denominator),
+                "unit": unit,
+            },
+            "uncertainty": {"status": "not_evaluated"},
+        },
+        "verification": {"status": "passed", "checks": []},
+        "environment": {
+            "package": {"name": "quantum-calculator", "version": PACKAGE_VERSION},
+            "python": {"implementation": "CPython", "version": "3.12.0"},
+            "platform": "Linux-test",
+            "dependencies": [{"name": "numpy", "version": "2.5.5"}],
+            "linear_algebra": [
+                {"consumer": "numpy", "interface": "blas", "name": "openblas", "version": "0.3"}
+            ],
+        },
+    }
+
+
+def finish(bench: Bench, key: str, source: bytes, outcome: Document) -> str:
+    bench.documents.calculation = returning(outcome)
+    identifier = bench.submit.execute(Submission(source, key, wall_seconds=30.0)).run.identifier
+    bench.execute.execute(identifier)
+    return identifier

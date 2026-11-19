@@ -14,9 +14,13 @@ from quantum_calculator.domain.workbench.runs import ArtifactRole, RunNotFoundEr
 @dataclass(frozen=True, slots=True)
 class RunDetails:
     run: StoredRun
-    input_text: str
+    source: bytes
     problem: Document
     outcome: Document | None
+
+    @property
+    def input_text(self) -> str:
+        return self.source.decode("utf-8")
 
 
 class TableNotFoundError(LookupError):
@@ -46,7 +50,7 @@ class ReadHistory:
         problem = self._artifacts.read(run.require_artifact(ArtifactRole.PROBLEM))
         return RunDetails(
             run=run,
-            input_text=source.decode("utf-8"),
+            source=source,
             problem=parse_document(problem),
             outcome=self._stored_outcome(run),
         )
