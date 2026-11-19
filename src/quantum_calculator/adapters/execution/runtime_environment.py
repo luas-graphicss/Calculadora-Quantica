@@ -12,7 +12,7 @@ from quantum_calculator.domain.run_record import (
 )
 
 PACKAGE_NAME = "quantum-calculator"
-RUNTIME_DEPENDENCIES = ("sympy", "mpmath", "numpy", "scipy")
+RUNTIME_DEPENDENCIES = ("sympy", "mpmath", "numpy", "scipy", "fastapi", "uvicorn")
 
 _BUILD_DEPENDENCIES = "Build Dependencies"
 _INTERFACES = ("blas", "lapack")

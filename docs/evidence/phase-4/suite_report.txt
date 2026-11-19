@@ -1,0 +1,60 @@
+Relatório da suíte no encerramento da fase 4
+quantum-calculator 0.4.0; CPython 3.12.15; Linux-6.18.56-x86_64-with-glibc2.34
+ruff 0.17.5; mypy 2.4.1; pytest 9.2.0
+Node.js v24.16.0; TypeScript 6.0.3; ESLint 9.39.5; Prettier 3.10.1; Vitest 5.1.1; Playwright 1.65.1; Chrome Headless Shell 159.0.8154.6; axe-core 4.14.1
+
+$ ruff format --check .
+403 files already formatted
+$ ruff check .
+All checks passed!
+$ mypy
+Success: no issues found in 388 source files
+$ pytest tests/contracts
+363 passed, 1 warning in 20.79s
+$ pytest -m algebraic
+127 passed, 1544 deselected, 1 warning in 2.49s
+$ pytest -m numerical
+129 passed, 1542 deselected, 1 warning in 10.80s
+$ pytest -m "not algebraic and not numerical" --ignore=tests/contracts
+1059 passed, 249 deselected, 1 warning in 54.67s
+
+Em web/:
+
+$ npm run format:check
+All matched files use Prettier code style!
+$ npm run lint
+(sem saída)
+$ npm run typecheck
+(sem saída)
+$ npm test
+Test Files  8 passed (8)
+Tests  89 passed (89)
+$ npm run build
+✓ built in 591ms
+
+Em web/, com o wheel instalado em um ambiente limpo e só a interface de loopback ativa:
+
+$ npm run e2e
+Running 21 tests using 2 workers
+  ✓   1 e2e/accessibility.spec.ts:83:1 › gives assistive technology the quantity, the unit and the state of a result in words (8.8s)
+  ✓   3 e2e/calculation-lifecycle.spec.ts:48:1 › cancels a long calculation, frees its process and calculates again (6.4s)
+  ✓   4 e2e/calculation-lifecycle.spec.ts:70:1 › brings back as interrupted, never as verified, a calculation cut by the end of the bench (8.8s)
+  ✓   2 e2e/accessibility.spec.ts:25:1 › meets WCAG 2.2 AA on every screen, in a wide and in a narrow window (30.3s)
+  ✓   5 e2e/calculation-lifecycle.spec.ts:97:1 › ends without a result the calculation whose process is killed and keeps the bench working (8.0s)
+  ✓   7 e2e/calculation-lifecycle.spec.ts:158:1 › points each invalid value at its field and accepts the corrected input (3.0s)
+  ✓   6 e2e/calculation-lifecycle.spec.ts:120:1 › does not create a second run when a submission is repeated after a lost response (5.5s)
+  ✓   8 e2e/calculation-lifecycle.spec.ts:201:1 › reports an under-resolved mesh as inconclusive, never as converged (5.3s)
+  ✓   9 e2e/calculation-lifecycle.spec.ts:221:1 › states the condition under which a conditional answer holds (6.5s)
+  ✓  11 e2e/keyboard-journey.spec.ts:12:1 › goes from the question to the exported package with the keyboard alone, reading and correcting an error on the way (7.7s)
+  ✓  10 e2e/candidate-review.spec.ts:16:1 › explains the unmet initial condition of a wrong candidate, then accepts the right one (10.8s)
+  ✓  13 e2e/reproduction-package.spec.ts:113:1 › refuses a package with an altered artifact before calculating anything (7.6s)
+  ✓  12 e2e/reproduction-package.spec.ts:56:1 › reproduces on an empty profile the package exported by another bench (10.3s)
+  ✓  15 e2e/reproduction-package.spec.ts:182:1 › records through the interface what the command line prints for the same input (7.7s)
+  ✓  14 e2e/reproduction-package.spec.ts:143:1 › shows the version divergence of an imported package before the answers (10.7s)
+  ✓  16 e2e/session.spec.ts:6:1 › shows no calculation to a page that was not opened by the access file (2.5s)
+  ✓  17 e2e/session.spec.ts:20:1 › keeps the session secret out of the address and out of the reach of scripts (2.4s)
+  ✓  18 e2e/tables-and-series.spec.ts:16:1 › shows the spectrum as a table and the eigenfunctions as series with axes, units and the same data in a table (6.3s)
+  ✓  19 e2e/tables-and-series.spec.ts:85:1 › draws the probability density with its own unit, apart from amplitudes and phases (5.9s)
+  ✓  21 e2e/well-energy.spec.ts:94:1 › shows the recorded value in another unit without calculating again (5.7s)
+  ✓  20 e2e/well-energy.spec.ts:18:1 › solves the well, widens it from 1 nm to 2 nm and keeps both results (8.6s)
+  21 passed (1.4m)

@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "problem": "quantum.infinite_square_well.time_evolution",
+  "description": "Evolução longa o bastante para ser cancelada: 4096 subintervalos e 16384 passos.",
+  "hypotheses": {
+    "walls": "infinite",
+    "interior_potential": "zero",
+    "boundary_wavefunction": "zero",
+    "hamiltonian": "time_independent"
+  },
+  "parameters": {
+    "mass": {
+      "constant": "electron_mass"
+    },
+    "width": {
+      "value": 1,
+      "unit": "nm"
+    },
+    "duration": {
+      "value": "3.666077985",
+      "unit": "fs"
+    }
+  },
+  "initial_state": {
+    "coefficients": [1, 1],
+    "normalize": true
+  },
+  "numerics": {
+    "subintervals": 4096,
+    "steps": 16384,
+    "samples": 9
+  },
+  "requested": {
+    "significant_digits": 10
+  }
+}
