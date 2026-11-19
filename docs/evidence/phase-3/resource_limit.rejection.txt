@@ -1,0 +1,4 @@
+Entrada recusada (budget_exceeded)
+  /numerics/subintervals [resource_limit_exceeded]
+    Subintervalos da malha uniforme pede "1000000", acima do perfil homologado, que vai até 16384. Nada foi alocado.
+    esperado: inteiro entre 8 e 16384

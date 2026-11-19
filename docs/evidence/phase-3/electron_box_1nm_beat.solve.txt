@@ -1,0 +1,121 @@
+max | ||psi(t)|| - ||psi(0)|| | = 1.554312234E-14
+max |delta phi| = 0.00004599013435 rad
+resultado approximate; 10 algarismos significativos, arredondamento half_even; verificação: passed
+
+Problema
+  ficha: quantum.infinite_square_well.time_evolution 1.0.0
+  Evolução de uma superposição de estados do poço infinito por Crank-Nicolson
+  área: time_dependent_schrodinger_1d; tipo: time_evolution
+  domínio: Partícula única, não relativística e sem spin, em uma dimensão espacial.
+  domínio: Estado inicial dado por até 16 coeficientes complexos sobre os primeiros modos discretos do poço; duração positiva dividida em passos iguais.
+  descrição: Superposição igualmente ponderada dos dois primeiros estados do elétron no poço de 1 nm, evoluída por um período de batimento do poço contínuo, 8 m L^2 / (3 h), em 1024 passos.
+  entrada (sha256): 9d64d8a005617b6eb61b7155ae5d7c23423e83648b48d4f3559a5fd401721ccd
+
+Hipóteses
+  confirmada: walls = infinite. As paredes do poço são infinitas: a partícula não sai do intervalo.
+  confirmada: interior_potential = zero. O potencial dentro do poço é nulo, o que põe o zero de energia no fundo do poço.
+  confirmada: boundary_wavefunction = zero. A função de onda se anula nas duas extremidades (Dirichlet homogênea).
+  confirmada: hamiltonian = time_independent. O Hamiltoniano não depende do tempo e a evolução é fechada.
+
+Entradas interpretadas
+  massa da partícula (mass): 9.1093837139E-31 kg; constante electron_mass do catálogo
+  largura do poço (width): 1E-9 m; entrada: 1 nm
+  duração da evolução (duration): 3.666077985E-15 s; entrada: 3.666077985 fs
+  coeficientes sobre os primeiros modos discretos do poço (initial_state): (1.0, 1.0); normalização pedida: as amplitudes foram divididas pela norma 1.4142135623730951
+
+Resolução pedida
+  subintervalos da malha uniforme (subintervals): 256
+  passos de tempo iguais (steps): 1024
+  instantes salvos, com o inicial (samples): 9
+
+Estimativa antes de alocar
+  memória: 57920 bytes; operações elementares: 5607424
+  perfil homologado: até 268435456 bytes e 2000000000 operações
+
+Constantes (CODATA 2022)
+  h = 6.62607015E-34 J s; exata; https://physics.nist.gov/cgi-bin/cuu/Value?h
+  m_e = 9.1093837139E-31 kg; medida, u = 2.8E-40 kg; https://physics.nist.gov/cgi-bin/cuu/Value?me
+
+Método e parâmetros efetivos
+  método: finite_difference.crank_nicolson (approximate)
+  O esquema de Crank-Nicolson é unitário e de segunda ordem no tempo; o sistema tridiagonal é fatorado uma vez e reutilizado em todos os passos, sem inversa explícita e sem renormalizar o estado.
+  escala de comprimento (length_scale): 1e-09 m
+  escala de energia (energy_scale): 1.220852862830372e-20 J
+  escala de tempo (time_scale): 8.63799274878451e-15 s
+  passo de tempo (time_step): 3.580154282226563e-18 s
+  passos (steps): 1024
+  normalização do estado inicial (normalization): aplicada a pedido; a norma dos coeficientes informados era 1.4142135623730951
+  sistema linear (linear_solver): tridiagonal complexo fatorado uma vez (LAPACK gttrf) e reutilizado em todos os passos; nenhuma inversa explícita
+  renormalização (renormalization): nenhuma: a norma não é corrigida entre passos
+  estados guardados (stored_states): só os observáveis de 9 instantes e o estado final
+  período de batimento dos modos discretos 1 e 2 (beat_period): 3.666308038206385e-15 s
+
+Tabela observables: Observáveis nos instantes salvos
+  t [s]            ||psi||      |c_1|^2       |c_2|^2       phi [rad]        phi exata dos modos discretos [rad]
+  0.0              1.0          0.5000000000  0.5000000000  0.0              0.0
+  4.582597481E-16  1.000000000  0.5000000000  0.5000000000  -0.7853431325    -0.7853488813
+  9.165194962E-16  1.000000000  0.5000000000  0.5000000000  -1.570686265     -1.570697763
+  1.374779244E-15  1.000000000  0.5000000000  0.5000000000  -2.356029398     -2.356046644
+  1.833038992E-15  1.000000000  0.5000000000  0.5000000000  -3.141372530     -3.141395525
+  2.291298741E-15  1.000000000  0.5000000000  0.5000000000  2.356469645      2.356440901
+  2.749558489E-15  1.000000000  0.5000000000  0.5000000000  1.571126512      1.571092019
+  3.207818237E-15  1.000000000  0.5000000000  0.5000000000  0.7857833795     0.7857431381
+  3.666077985E-15  1.000000000  0.5000000000  0.5000000000  0.0004402469483  0.0003942568140
+
+Tabela time_refinement: Erro da fase relativa no instante final para cada número de passos
+  passos  |delta phi| [rad]
+  256.0   0.0007357296297
+  512.0   0.0001839548974
+  1024.0  0.00004599013435
+
+Tabela final_density: Densidade de probabilidade no instante final
+  x [m]            |psi(x)|^2 [1/m]
+  0.0              0.0
+  6.25E-11         333822496.8
+  1.25E-10         1187642657
+  1.875000000E-10  2188771509
+  2.5E-10          2914213425
+  3.125E-10        3081250471
+  3.750000000E-10  2660116229
+  4.375000000E-10  1859046858
+  5E-10            1000000000
+  5.625000000E-10  357725893.4
+  6.25E-10         46990552.33
+  6.875000000E-10  8539742.239
+  7.500000000E-10  85786574.68
+  8.125E-10        135651839.6
+  8.750000000E-10  105250561.7
+  9.375000000E-10  35191189.52
+  1E-9             0.0
+  257 linhas; mostradas 17, igualmente espaçadas. A tabela completa sai com --format json.
+
+Verificação: passed
+  passed [numerical_evidence] norm_conservation
+    A norma do estado fica constante nos instantes salvos, sem renormalização entre passos.
+    observado: deriva máxima da norma: 1.554e-14, dentro do limite 1.000e-09
+  passed [consistency_test] final_density_integral
+    A integral da densidade final sobre a malha é o quadrado da norma relatada no último instante.
+    observado: diferença entre a integral e o quadrado da norma: 0.000e+00, dentro do limite 1.000e-09
+  passed [numerical_evidence] relative_phase
+    A fase relativa entre os dois modos populados mais baixos acompanha a evolução exata dos modos discretos, o que isola o erro temporal do erro da malha.
+    observado: maior erro de fase, em rad: 4.599e-05, dentro do limite 1.000e-03
+  passed [numerical_evidence] scheme_dispersion
+    A fase relativa relatada é a que o esquema de Crank-Nicolson dá para cada modo discreto, 2 arctan(E dt / 2) por passo: o propagador aplicado é o declarado.
+    observado: maior diferença para a fase prevista pelo esquema, em rad: 5.811e-12, dentro do limite 1.000e-08
+  passed [numerical_evidence] temporal_order
+    Dobrando o número de passos duas vezes, o erro de fase no instante final cai com ordem observada entre 1.8 e 2.2, ou já está no piso de arredondamento.
+    observado: ordem observada 2.000 entre 512 e 1024 passos
+  não realizada: spatial_discretization. O erro da malha não é avaliado aqui: a referência é a evolução exata dos modos discretos. A ficha quantum.infinite_square_well.discrete_spectrum estuda a malha.
+  referência: J. Crank e P. Nicolson, A practical method for numerical evaluation of solutions of partial differential equations of the heat-conduction type, Proc. Cambridge Philos. Soc. 43, 50-67, 1947.
+  referência: A. Goldberg, H. M. Schey e J. L. Schwartz, Computer-generated motion pictures of one-dimensional quantum-mechanical transmission and reflection phenomena, Am. J. Phys. 35, 177-186, 1967.
+
+Limitações
+  A resposta é aproximada. A verificação mede o erro temporal contra a evolução exata dos modos discretos; o erro da malha não é avaliado aqui.
+  Norma e fase estáveis em uma animação não comprovam precisão temporal: valem as checagens de norma, de fase e de ordem.
+  Só os observáveis dos instantes salvos e a densidade final são guardados.
+
+Ambiente
+  quantum-calculator 0.3.0; CPython 3.12.15; Linux-6.18.56-x86_64-with-glibc2.34
+  sympy 1.14.0; mpmath 1.3.0; numpy 2.5.5; scipy 1.18.1
+  álgebra linear: numpy blas scipy-openblas 0.3.34.237.2; numpy lapack scipy-openblas 0.3.34.237.2; scipy blas scipy-openblas 0.3.31.dev; scipy lapack scipy-openblas 0.3.31.dev
+  catálogo 1.2.0; registro de unidades 1.0.0

@@ -1,0 +1,112 @@
+E_1 = 0.3748236182 eV; erro estimado 0.0012 eV (erro de malha estimado por extrapolação de Richardson entre 8 e 16 subintervalos)
+E_2 = 1.484890211 eV; erro estimado 0.019 eV (erro de malha estimado por extrapolação de Richardson entre 8 e 16 subintervalos)
+E_3 = 3.287540543 eV; erro estimado 0.092 eV (erro de malha estimado por extrapolação de Richardson entre 8 e 16 subintervalos)
+resultado approximate; 10 algarismos significativos, arredondamento half_even; verificação: inconclusive
+
+Problema
+  ficha: quantum.infinite_square_well.discrete_spectrum 1.0.0
+  Níveis e autofunções do poço infinito por diferenças finitas
+  área: stationary_schrodinger_1d; tipo: discrete_spectrum
+  domínio: Partícula única, não relativística e sem spin, em uma dimensão espacial.
+  domínio: Massa e largura estritamente positivas; os primeiros níveis, até 32, em uma malha uniforme de até 16384 subintervalos.
+  descrição: O mesmo poço de 1 nm com só 16 subintervalos: caso deliberadamente sub-resolvido, que não pode sair como malha convergida.
+  entrada (sha256): 5c31e16e0cb99d53f00c807e215195b5e155fba795b5dd1dba77a7ce96f0c042
+
+Hipóteses
+  confirmada: walls = infinite. As paredes do poço são infinitas: a partícula não sai do intervalo.
+  confirmada: interior_potential = zero. O potencial dentro do poço é nulo, o que põe o zero de energia no fundo do poço.
+  confirmada: boundary_wavefunction = zero. A função de onda se anula nas duas extremidades (Dirichlet homogênea).
+
+Entradas interpretadas
+  massa da partícula (mass): 9.1093837139E-31 kg; constante electron_mass do catálogo
+  largura do poço (width): 1E-9 m; entrada: 1 nm
+
+Resolução pedida
+  subintervalos da malha uniforme (subintervals): 16
+  níveis pedidos, a partir do fundamental (levels): 3
+
+Estimativa antes de alocar
+  memória: 2304 bytes; operações elementares: 9600
+  perfil homologado: até 268435456 bytes e 2000000000 operações
+
+Constantes (CODATA 2022)
+  h = 6.62607015E-34 J s; exata; https://physics.nist.gov/cgi-bin/cuu/Value?h
+  m_e = 9.1093837139E-31 kg; medida, u = 2.8E-40 kg; https://physics.nist.gov/cgi-bin/cuu/Value?me
+  eV = 1.602176634E-19 J; exata; https://physics.nist.gov/cgi-bin/cuu/Value?evj
+
+Método e parâmetros efetivos
+  método: finite_difference.tridiagonal_eigensolver (approximate)
+  O Hamiltoniano é discretizado por diferenças centrais de segunda ordem nos nós internos de uma malha uniforme; os níveis pedidos saem das diagonais, sem matriz densa, e o erro de malha é estimado por refinamento.
+  escala de comprimento (length_scale): 1e-09 m
+  escala de energia (energy_scale): 1.220852862830372e-20 J
+  escala de tempo (time_scale): 8.63799274878451e-15 s
+  espaçamento da malha (spacing): 6.25e-11 m
+  incógnitas internas (unknowns): 15
+  diagonalização (eigensolver): scipy.linalg.eigh_tridiagonal sobre as diagonais, só os níveis 1 a 3; nenhuma matriz densa
+  motivo de término (termination): os níveis pedidos convergiram no LAPACK
+
+Tabela eigenfunctions: Autofunções normalizadas pela integral na malha, com os extremos nulos restaurados
+  x [m]            psi_1(x) [m^-1/2]  psi_2(x) [m^-1/2]  psi_3(x) [m^-1/2]
+  0.0              0.0                0.0                0.0
+  6.25E-11         8724.704436        17114.12337        24845.85615
+  1.25E-10         17114.12337        31622.77660        41317.14875
+  1.875000000E-10  24845.85615        41317.14875        43862.05117
+  2.5E-10          31622.77660        44721.35955        31622.77660
+  3.125E-10        37184.45149        41317.14875        8724.704436
+  3.750000000E-10  41317.14875        31622.77660        -17114.12337
+  4.375000000E-10  43862.05117        17114.12337        -37184.45149
+  5E-10            44721.35955        -2.837407076E-11   -44721.35955
+  5.625000000E-10  43862.05117        -17114.12337       -37184.45149
+  6.25E-10         41317.14875        -31622.77660       -17114.12337
+  6.875000000E-10  37184.45149        -41317.14875       8724.704436
+  7.500000000E-10  31622.77660        -44721.35955       31622.77660
+  8.125E-10        24845.85615        -41317.14875       43862.05117
+  8.750000000E-10  17114.12337        -31622.77660       41317.14875
+  9.375000000E-10  8724.704436        -17114.12337       24845.85615
+  1E-9             0.0                0.0                0.0
+
+Tabela refinement: Energia de cada nível em cada malha do estudo de refinamento
+  nível  N     E [eV]
+  1.0    4.0   0.3570937357
+  1.0    8.0   0.3712225528
+  1.0    16.0  0.3748236182
+  2.0    4.0   1.219194276
+  2.0    8.0   1.428374943
+  2.0    16.0  1.484890211
+  3.0    4.0   2.081294815
+  3.0    8.0   3.010515302
+  3.0    16.0  3.287540543
+
+Verificação: inconclusive
+  passed [numerical_evidence] discrete_residual
+    Cada par relatado satisfaz o problema discreto: o resíduo ||H psi - E psi|| / ((||H||_inf + |E|) ||psi||) fica abaixo do limite. Isso confere o operador discreto, não a convergência da malha.
+    observado: maior resíduo adimensional: 1.071e-16, dentro do limite 1.000e-10
+  passed [numerical_evidence] weighted_orthonormality
+    As autofunções relatadas são ortonormais com o peso da malha: a integral discreta de psi_i psi_j difere da identidade menos que o limite.
+    observado: maior desvio da identidade: 3.197e-16, dentro do limite 1.000e-10
+  passed [consistency_test] dirichlet_boundary
+    As autofunções relatadas se anulam nos dois extremos do domínio.
+    observado: maior valor nos extremos: 0.000e+00, dentro do limite 0.000e+00
+  passed [numerical_evidence] level_placement
+    Abaixo da energia relatada do nível k há exatamente k - 1 autovalores do operador discreto, contados pela inércia sem diagonalizar: nenhum nível foi pulado.
+    observado: a contagem confirma os níveis 1 a 3
+  inconclusive [numerical_evidence] mesh_refinement
+    Dobrando a malha duas vezes, a diferença entre energias cai com ordem observada entre 1.8 e 2.2 em todos os níveis, o que indica o regime assintótico de segunda ordem.
+    observado: ordem observada entre 1.746 e 1.972 com 4, 8 e 16 subintervalos: a malha não está no regime assintótico e não é declarada convergida
+  passed [numerical_evidence] closed_form_agreement
+    As energias discretas concordam com a expressão fechada do modelo dentro de duas vezes o erro de malha estimado.
+    observado: maior diferença, em unidades do erro de malha estimado: 1.048e+00, dentro do limite 2.000e+00
+  não realizada: domain_truncation. As paredes fazem parte do modelo: não há domínio a ampliar.
+  referência: D. J. Griffiths e D. F. Schroeter, Introduction to Quantum Mechanics, 3ª ed., Cambridge University Press, 2018, seções 2.2 e 2.3.
+  referência: R. J. LeVeque, Finite Difference Methods for Ordinary and Partial Differential Equations, SIAM, 2007, capítulo 2.
+
+Limitações
+  A resposta é aproximada: o erro de malha cai com o quadrado do espaçamento e só é declarado convergido quando o refinamento mostra a ordem esperada.
+  A expressão fechada do poço, da ficha quantum.infinite_square_well.energy_level, é usada só como referência independente na verificação.
+  Incertezas dos parâmetros não são propagadas por esta ficha: a incerteza experimental fica não avaliada.
+
+Ambiente
+  quantum-calculator 0.3.0; CPython 3.12.15; Linux-6.18.56-x86_64-with-glibc2.34
+  sympy 1.14.0; mpmath 1.3.0; numpy 2.5.5; scipy 1.18.1
+  álgebra linear: numpy blas scipy-openblas 0.3.34.237.2; numpy lapack scipy-openblas 0.3.34.237.2; scipy blas scipy-openblas 0.3.31.dev; scipy lapack scipy-openblas 0.3.31.dev
+  catálogo 1.2.0; registro de unidades 1.0.0

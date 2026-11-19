@@ -1,0 +1,355 @@
+{
+  "document": "numerical_run_record",
+  "schema_version": "1.2",
+  "input": {
+    "sha256": "a87e372bee1474a5a9115bd967f440fd59fd5d1f714d90be49d61888c86222a4",
+    "schema_version": "1.0",
+    "description": "Decaimento exponencial: quantidade inicial adimensional 1, taxa de 1 por segundo, de 0 a 5 s em 51 instantes.",
+    "text": "{\n  \"schema_version\": \"1.0\",\n  \"problem\": \"ode.initial_value.explicit_runge_kutta\",\n  \"description\": \"Decaimento exponencial: quantidade inicial adimensional 1, taxa de 1 por segundo, de 0 a 5 s em 51 instantes.\",\n  \"notation\": \"text\",\n  \"symbols\": {\n    \"t\": {\n      \"role\": \"variable\",\n      \"domain\": \"real\",\n      \"unit\": \"s\"\n    },\n    \"k\": {\n      \"role\": \"parameter\",\n      \"domain\": \"positive\",\n      \"unit\": \"1/s\",\n      \"value\": 1\n    },\n    \"y\": {\n      \"role\": \"function\",\n      \"domain\": \"real\",\n      \"unit\": \"1\",\n      \"argument\": \"t\"\n    }\n  },\n  \"equations\": [\n    \"y' = -k*y\"\n  ],\n  \"conditions\": [\n    \"y(0) = 1\"\n  ],\n  \"numerics\": {\n    \"end\": 5,\n    \"samples\": 51,\n    \"relative_tolerance\": \"1e-10\",\n    \"absolute_tolerance\": \"1e-12\"\n  },\n  \"requested\": {\n    \"significant_digits\": 12\n  }\n}\n"
+  },
+  "problem": {
+    "card": {
+      "identifier": "ode.initial_value.explicit_runge_kutta",
+      "version": "1.0.0",
+      "area": "ordinary_differential_equations",
+      "problem_type": "numerical_initial_value_problem",
+      "title": "Trajetória de um problema de valor inicial explícito e não rígido",
+      "family": "initial_value"
+    },
+    "domain": [
+      "Uma equação de primeira ordem por função incógnita, na forma y' = f(t, y, ...), com lado direito explícito e suave; sistemas de até oito componentes.",
+      "Uma condição inicial por função, todas no mesmo instante, e todo parâmetro com valor numérico."
+    ],
+    "hypotheses": [],
+    "inputs": [
+      {
+        "name": "equation_y",
+        "label": "equação lida",
+        "value": "y'(t) = -k*y(t)",
+        "origin": "entrada (text): y' = -k*y"
+      },
+      {
+        "name": "condition_y",
+        "label": "condição inicial lida",
+        "value": "y(0) = 1",
+        "origin": "entrada (text): y(0) = 1"
+      },
+      {
+        "name": "interval",
+        "label": "intervalo da variável independente em unidades coerentes do SI",
+        "value": "de 0.0 a 5.0 s",
+        "origin": "instante das condições iniciais e valor final pedido"
+      },
+      {
+        "name": "k",
+        "label": "parâmetro k",
+        "value": "1 s^-1",
+        "origin": "entrada: 1 1/s"
+      }
+    ],
+    "resolution": [
+      {
+        "name": "end",
+        "label": "valor final da variável independente, na unidade declarada",
+        "value": "5"
+      },
+      {
+        "name": "samples",
+        "label": "instantes uniformes da trajetória",
+        "value": "51"
+      },
+      {
+        "name": "relative_tolerance",
+        "label": "tolerância relativa por passo",
+        "value": "1e-10"
+      },
+      {
+        "name": "absolute_tolerance",
+        "label": "tolerância absoluta por passo, na unidade coerente do SI de cada componente",
+        "value": "1e-12"
+      }
+    ],
+    "estimate": {
+      "memory_bytes": 2448,
+      "operations": 3060
+    },
+    "rounding": {
+      "mode": "half_even",
+      "significant_digits": 12
+    }
+  },
+  "plan": {
+    "method": "numerical.dop853",
+    "nature": "approximate",
+    "justification": "O DOP853 é um método de Runge-Kutta explícito de ordem 8 com passo adaptativo, adequado a problemas suaves e não rígidos; a trajetória é aproximada, dentro das tolerâncias pedidas por passo.",
+    "budget": {
+      "wall_seconds": 30.0,
+      "cpu_seconds": 30,
+      "memory_bytes": 2147483648
+    }
+  },
+  "catalog": {
+    "version": "1.2.0"
+  },
+  "constants": {
+    "edition": "CODATA 2022",
+    "used": []
+  },
+  "units": {
+    "registry_version": "1.0.0"
+  },
+  "result": {
+    "nature": "approximate",
+    "answers": [
+      {
+        "name": "final_y",
+        "symbol": "y(t final)",
+        "label": "valor de y no fim do intervalo",
+        "value": 0.006737946999314139,
+        "display": "0.00673794699931",
+        "unit": "1",
+        "estimate": null
+      }
+    ],
+    "tables": [
+      {
+        "name": "trajectory",
+        "title": "Trajetória nos instantes pedidos",
+        "rows": 51,
+        "columns": [
+          {
+            "name": "t",
+            "symbol": "t",
+            "unit": "s",
+            "values": [
+              0.0,
+              0.1,
+              0.2,
+              0.30000000000000004,
+              0.4,
+              0.5,
+              0.6000000000000001,
+              0.7000000000000001,
+              0.8,
+              0.9,
+              1.0,
+              1.1,
+              1.2000000000000002,
+              1.3,
+              1.4000000000000001,
+              1.5,
+              1.6,
+              1.7000000000000002,
+              1.8,
+              1.9000000000000001,
+              2.0,
+              2.1,
+              2.2,
+              2.3000000000000003,
+              2.4000000000000004,
+              2.5,
+              2.6,
+              2.7,
+              2.8000000000000003,
+              2.9000000000000004,
+              3.0,
+              3.1,
+              3.2,
+              3.3000000000000003,
+              3.4000000000000004,
+              3.5,
+              3.6,
+              3.7,
+              3.8000000000000003,
+              3.9000000000000004,
+              4.0,
+              4.1000000000000005,
+              4.2,
+              4.3,
+              4.4,
+              4.5,
+              4.6000000000000005,
+              4.7,
+              4.800000000000001,
+              4.9,
+              5.0
+            ]
+          },
+          {
+            "name": "y",
+            "symbol": "y(t)",
+            "unit": "1",
+            "values": [
+              1.0,
+              0.9048374180349286,
+              0.8187307531447224,
+              0.7408182205767659,
+              0.6703200460368205,
+              0.6065306597582956,
+              0.5488116360259441,
+              0.49658530379413257,
+              0.4493289641491333,
+              0.40656965969694303,
+              0.3678794411746755,
+              0.3328710837185942,
+              0.3011942118887985,
+              0.2725317930368823,
+              0.2465969639537983,
+              0.2231301601394841,
+              0.2018965179968318,
+              0.18268352405944605,
+              0.16529888822164363,
+              0.14956861922390424,
+              0.1353352832400914,
+              0.12245642825771508,
+              0.11080315835929005,
+              0.10025884372462612,
+              0.0907179532957972,
+              0.0820849986175816,
+              0.07427357821547251,
+              0.06720551274591996,
+              0.06081006261827132,
+              0.05502322005735435,
+              0.049787068372855306,
+              0.04504920238800521,
+              0.040762203979266436,
+              0.036883167404728676,
+              0.033373269957100986,
+              0.03019738342310379,
+              0.027323722449379622,
+              0.02472352646944045,
+              0.022370771856739267,
+              0.02024191144684921,
+              0.018315638889537182,
+              0.016572675401464097,
+              0.01499557682095358,
+              0.013568559013782748,
+              0.012277339901428593,
+              0.011108996538565669,
+              0.010051835746101537,
+              0.009095277100266202,
+              0.008229747049299454,
+              0.00744658307121713,
+              0.006737946999314139
+            ]
+          }
+        ]
+      }
+    ],
+    "effective": [
+      {
+        "name": "relative_tolerance",
+        "label": "tolerância relativa",
+        "value": "1e-10"
+      },
+      {
+        "name": "absolute_tolerance",
+        "label": "tolerância absoluta",
+        "value": "1e-12"
+      },
+      {
+        "name": "evaluations",
+        "label": "avaliações do lado direito",
+        "value": "257"
+      },
+      {
+        "name": "termination",
+        "label": "motivo de término",
+        "value": "fim do intervalo alcançado dentro das tolerâncias (status 0)"
+      }
+    ],
+    "warnings": []
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "identifier": "initial_condition",
+        "kind": "consistency_test",
+        "status": "passed",
+        "statement": "A trajetória começa no valor inicial declarado.",
+        "observed": "desvio no primeiro instante 0.000e+00, dentro do limite 1.000e-12"
+      },
+      {
+        "identifier": "tolerance_refinement",
+        "kind": "numerical_evidence",
+        "status": "passed",
+        "statement": "Reintegrar com tolerâncias cem vezes mais apertadas muda a trajetória menos que 100 vezes a tolerância pedida, em cada instante e componente.",
+        "observed": "maior mudança, em unidades da tolerância pedida: 1.403e+00, dentro do limite 1.000e+02"
+      }
+    ],
+    "not_performed": [
+      {
+        "identifier": "closed_form_solution",
+        "reason": "Nenhuma solução fechada foi usada: a comparação é por refinamento das tolerâncias. Para a EDO linear de coeficientes constantes, a ficha ode.first_order_linear.initial_value dá a solução exata."
+      },
+      {
+        "identifier": "stiffness_detection",
+        "reason": "A rigidez não é diagnosticada nem tratada: um problema rígido esgota o orçamento ou o passo, e nenhuma resposta é aprovada."
+      }
+    ],
+    "references": [
+      "E. Hairer, S. P. Nørsett e G. Wanner, Solving Ordinary Differential Equations I: Nonstiff Problems, 2ª ed., Springer, 1993, seção II.5."
+    ]
+  },
+  "limitations": [
+    "A rigidez não é diagnosticada nem tratada: um problema rígido esgota o passo ou o orçamento e termina sem resposta aprovada.",
+    "As tolerâncias controlam o erro local de cada passo; o erro acumulado é conferido por refinamento, não demonstrado.",
+    "A tolerância absoluta vale na unidade coerente do SI de cada componente."
+  ],
+  "environment": {
+    "package": {
+      "name": "quantum-calculator",
+      "version": "0.3.0"
+    },
+    "python": {
+      "implementation": "CPython",
+      "version": "3.12.15"
+    },
+    "platform": "Linux-6.18.56-x86_64-with-glibc2.34",
+    "dependencies": [
+      {
+        "name": "sympy",
+        "version": "1.14.0"
+      },
+      {
+        "name": "mpmath",
+        "version": "1.3.0"
+      },
+      {
+        "name": "numpy",
+        "version": "2.5.5"
+      },
+      {
+        "name": "scipy",
+        "version": "1.18.1"
+      }
+    ],
+    "linear_algebra": [
+      {
+        "consumer": "numpy",
+        "interface": "blas",
+        "name": "scipy-openblas",
+        "version": "0.3.34.237.2"
+      },
+      {
+        "consumer": "numpy",
+        "interface": "lapack",
+        "name": "scipy-openblas",
+        "version": "0.3.34.237.2"
+      },
+      {
+        "consumer": "scipy",
+        "interface": "blas",
+        "name": "scipy-openblas",
+        "version": "0.3.31.dev"
+      },
+      {
+        "consumer": "scipy",
+        "interface": "lapack",
+        "name": "scipy-openblas",
+        "version": "0.3.31.dev"
+      }
+    ]
+  }
+}

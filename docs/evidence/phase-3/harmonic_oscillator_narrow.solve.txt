@@ -1,0 +1,125 @@
+E_1 = 0.5003900245 eV; erro estimado 0.0000011 eV (erro de malha estimado por extrapolação de Richardson entre 512 e 1024 subintervalos)
+E_2 = 1.506076170 eV; erro estimado 0.0000054 eV (erro de malha estimado por extrapolação de Richardson entre 512 e 1024 subintervalos)
+E_3 = 2.541112205 eV; erro estimado 0.000015 eV (erro de malha estimado por extrapolação de Richardson entre 512 e 1024 subintervalos)
+resultado approximate; 10 algarismos significativos, arredondamento half_even; verificação: failed
+
+Problema
+  ficha: quantum.harmonic_oscillator.truncated_spectrum 1.0.0
+  Níveis e autofunções do oscilador harmônico em domínio truncado
+  área: stationary_schrodinger_1d; tipo: truncated_spectrum
+  domínio: Partícula única, não relativística e sem spin, em uma dimensão espacial.
+  domínio: Massa e quantum de energia hbar omega estritamente positivos; domínio simétrico de meia largura dada em comprimentos do oscilador, sqrt(hbar / (m omega)).
+  descrição: O mesmo oscilador de 1 eV com o domínio cortado em três comprimentos do oscilador: a malha é fina, mas o corte do domínio altera os níveis.
+  entrada (sha256): 0cd4c4cbc93138318416f4b5d6b30000c0c88248a78e6e72c27d9d95ecf398ab
+
+Hipóteses
+  confirmada: potential = harmonic. O potencial é m omega^2 x^2 / 2, centrado no meio do domínio.
+  confirmada: domain = truncated. O domínio infinito é truncado em um intervalo simétrico: os níveis valem enquanto a função de onda for desprezível nos extremos.
+  confirmada: boundary_wavefunction = zero. A função de onda se anula nas duas extremidades (Dirichlet homogênea).
+
+Entradas interpretadas
+  massa da partícula (mass): 9.1093837139E-31 kg; constante electron_mass do catálogo
+  quantum de energia do oscilador (level_spacing): 1.602176634E-19 J; entrada: 1 eV
+
+Resolução pedida
+  subintervalos da malha uniforme (subintervals): 1024
+  níveis pedidos, a partir do fundamental (levels): 3
+  meia largura do domínio, em comprimentos do oscilador (half_width): 3
+
+Estimativa antes de alocar
+  memória: 331776 bytes; operações elementares: 1382400
+  perfil homologado: até 268435456 bytes e 2000000000 operações
+
+Constantes (CODATA 2022)
+  h = 6.62607015E-34 J s; exata; https://physics.nist.gov/cgi-bin/cuu/Value?h
+  m_e = 9.1093837139E-31 kg; medida, u = 2.8E-40 kg; https://physics.nist.gov/cgi-bin/cuu/Value?me
+  eV = 1.602176634E-19 J; exata; https://physics.nist.gov/cgi-bin/cuu/Value?evj
+
+Método e parâmetros efetivos
+  método: finite_difference.tridiagonal_eigensolver (approximate)
+  O Hamiltoniano é discretizado por diferenças centrais de segunda ordem nos nós internos de uma malha uniforme; os níveis pedidos saem das diagonais, sem matriz densa, e o erro de malha é estimado por refinamento.
+  escala de comprimento (length_scale): 2.760428267848518e-10 m
+  escala de energia (energy_scale): 1.602176634e-19 J
+  escala de tempo (time_scale): 6.582119569509067e-16 s
+  espaçamento da malha (spacing): 1.617438438192491e-12 m
+  incógnitas internas (unknowns): 1023
+  diagonalização (eigensolver): scipy.linalg.eigh_tridiagonal sobre as diagonais, só os níveis 1 a 3; nenhuma matriz densa
+  motivo de término (termination): os níveis pedidos convergiram no LAPACK
+
+Tabela eigenfunctions: Autofunções normalizadas pela integral na malha, com os extremos nulos restaurados
+  x [m]             psi_1(x) [m^-1/2]  psi_2(x) [m^-1/2]  psi_3(x) [m^-1/2]
+  -8.281284804E-10  0.0                0.0                0.0
+  -7.246124203E-10  1237.820180        4336.223271        9831.118799
+  -6.210963603E-10  3500.183947        10914.20188        21744.15694
+  -5.175803002E-10  7744.393065        20431.08611        33186.52842
+  -4.140642402E-10  14651.98417        31126.78727        37274.30404
+  -3.105481801E-10  24003.70112        38365.35883        27180.84646
+  -2.070321201E-10  34134.30824        36429.77343        3558.449629
+  -1.035160600E-10  42159.17529        22514.72721        -21861.04962
+  0.0               45232.82162        2.382491148E-8     -32882.77806
+  1.035160600E-10   42159.17529        -22514.72721       -21861.04962
+  2.070321201E-10   34134.30824        -36429.77343       3558.449629
+  3.105481801E-10   24003.70112        -38365.35883       27180.84646
+  4.140642402E-10   14651.98417        -31126.78727       37274.30404
+  5.175803002E-10   7744.393065        -20431.08611       33186.52842
+  6.210963603E-10   3500.183947        -10914.20188       21744.15694
+  7.246124203E-10   1237.820180        -4336.223271       9831.118799
+  8.281284804E-10   0.0                0.0                0.0
+  1025 linhas; mostradas 17, igualmente espaçadas. A tabela completa sai com --format json.
+
+Tabela refinement: Energia de cada nível em cada malha do estudo de refinamento
+  nível  N       E [eV]
+  1.0    256.0   0.5003741477
+  1.0    512.0   0.5003868493
+  1.0    1024.0  0.5003900245
+  2.0    256.0   1.505995806
+  2.0    512.0   1.506060098
+  2.0    1024.0  1.506076170
+  3.0    256.0   2.540886374
+  3.0    512.0   2.541067042
+  3.0    1024.0  2.541112205
+
+Tabela truncation: Energia de cada nível no domínio pedido e no domínio ampliado, com o mesmo espaçamento
+  nível  a [m]            E [eV]
+  1.0    8.281284804E-10  0.5003900245
+  1.0    1.035160600E-9   0.5000021049
+  2.0    8.281284804E-10  1.506076170
+  2.0    1.035160600E-9   1.500076699
+  3.0    8.281284804E-10  2.541112205
+  3.0    1.035160600E-9   2.500953749
+
+Verificação: failed
+  passed [numerical_evidence] discrete_residual
+    Cada par relatado satisfaz o problema discreto: o resíduo ||H psi - E psi|| / ((||H||_inf + |E|) ||psi||) fica abaixo do limite. Isso confere o operador discreto, não a convergência da malha.
+    observado: maior resíduo adimensional: 4.036e-16, dentro do limite 1.000e-10
+  passed [numerical_evidence] weighted_orthonormality
+    As autofunções relatadas são ortonormais com o peso da malha: a integral discreta de psi_i psi_j difere da identidade menos que o limite.
+    observado: maior desvio da identidade: 4.441e-16, dentro do limite 1.000e-10
+  passed [consistency_test] dirichlet_boundary
+    As autofunções relatadas se anulam nos dois extremos do domínio.
+    observado: maior valor nos extremos: 0.000e+00, dentro do limite 0.000e+00
+  passed [numerical_evidence] level_placement
+    Abaixo da energia relatada do nível k há exatamente k - 1 autovalores do operador discreto, contados pela inércia sem diagonalizar: nenhum nível foi pulado.
+    observado: a contagem confirma os níveis 1 a 3
+  passed [numerical_evidence] mesh_refinement
+    Dobrando a malha duas vezes, a diferença entre energias cai com ordem observada entre 1.8 e 2.2 em todos os níveis, o que indica o regime assintótico de segunda ordem.
+    observado: ordem observada entre 2.000 e 2.000 com 256, 512 e 1024 subintervalos; erro de malha relativo estimado até 5.924e-06
+  failed [numerical_evidence] domain_truncation
+    Ampliar o domínio em 25%, com o mesmo espaçamento, não muda as energias além do limite relativo: o corte do domínio não contamina os níveis pedidos.
+    observado: maior mudança relativa: 1.580e-02, acima do limite 1.000e-09
+  failed [numerical_evidence] closed_form_agreement
+    As energias discretas concordam com a expressão fechada do modelo dentro de duas vezes o erro de malha estimado.
+    observado: maior diferença, em unidades do erro de malha estimado: 2.731e+03, acima do limite 2.000e+00
+  referência: D. J. Griffiths e D. F. Schroeter, Introduction to Quantum Mechanics, 3ª ed., Cambridge University Press, 2018, seções 2.2 e 2.3.
+  referência: R. J. LeVeque, Finite Difference Methods for Ordinary and Partial Differential Equations, SIAM, 2007, capítulo 2.
+
+Limitações
+  A resposta é aproximada: o erro de malha cai com o quadrado do espaçamento e só é declarado convergido quando o refinamento mostra a ordem esperada.
+  Ampliar o domínio e refinar a malha são experimentos separados: o primeiro mede o corte do domínio, o segundo o erro de discretização.
+  Incertezas dos parâmetros não são propagadas por esta ficha: a incerteza experimental fica não avaliada.
+
+Ambiente
+  quantum-calculator 0.3.0; CPython 3.12.15; Linux-6.18.56-x86_64-with-glibc2.34
+  sympy 1.14.0; mpmath 1.3.0; numpy 2.5.5; scipy 1.18.1
+  álgebra linear: numpy blas scipy-openblas 0.3.34.237.2; numpy lapack scipy-openblas 0.3.34.237.2; scipy blas scipy-openblas 0.3.31.dev; scipy lapack scipy-openblas 0.3.31.dev
+  catálogo 1.2.0; registro de unidades 1.0.0

@@ -1,0 +1,317 @@
+{
+  "document": "numerical_run_record",
+  "schema_version": "1.2",
+  "input": {
+    "sha256": "755d5af766881e96272257eeafc7d448cb5abf2d30fa4e9c8fd58c05ba9994b5",
+    "schema_version": "1.0",
+    "description": "Spin 1/2 preparado no estado positivo em x e medido em z, com a matriz de Pauli sigma_z.",
+    "text": "{\n  \"schema_version\": \"1.0\",\n  \"problem\": \"quantum.finite_basis.projective_measurement\",\n  \"description\": \"Spin 1/2 preparado no estado positivo em x e medido em z, com a matriz de Pauli sigma_z.\",\n  \"hypotheses\": {\n    \"state\": \"pure\",\n    \"measurement\": \"projective\"\n  },\n  \"state\": {\n    \"components\": [1, 1],\n    \"normalize\": true\n  },\n  \"observable\": {\n    \"matrix\": [\n      [1, 0],\n      [0, -1]\n    ],\n    \"unit\": \"1\"\n  },\n  \"numerics\": {\n    \"tolerance\": \"1e-12\"\n  },\n  \"requested\": {\n    \"significant_digits\": 12\n  }\n}\n"
+  },
+  "problem": {
+    "card": {
+      "identifier": "quantum.finite_basis.projective_measurement",
+      "version": "1.0.0",
+      "area": "finite_basis_quantum_mechanics",
+      "problem_type": "projective_measurement",
+      "title": "Medição projetiva de um observável em um estado puro de base finita",
+      "family": "finite_basis"
+    },
+    "domain": [
+      "Estado puro dado por até 16 amplitudes complexas em uma base ortonormal.",
+      "Observável hermitiano dado pela matriz na mesma base; uma mudança para outra base ortonormal é opcional."
+    ],
+    "hypotheses": [
+      {
+        "key": "state",
+        "value": "pure",
+        "statement": "O estado é puro: um vetor de amplitudes, não uma matriz densidade."
+      },
+      {
+        "key": "measurement",
+        "value": "projective",
+        "statement": "A medição é projetiva, sobre os autoespaços do observável."
+      }
+    ],
+    "inputs": [
+      {
+        "name": "state",
+        "label": "estado informado",
+        "value": "(1.0, 1.0)",
+        "origin": "normalização pedida: as amplitudes foram divididas pela norma 1.4142135623730951"
+      },
+      {
+        "name": "observable",
+        "label": "observável",
+        "value": "matriz hermitiana 2 x 2, autovalores na unidade 1",
+        "origin": "matriz informada na base do estado"
+      }
+    ],
+    "resolution": [
+      {
+        "name": "tolerance",
+        "label": "tolerância das checagens de norma, hermiticidade e base",
+        "value": "1e-12"
+      }
+    ],
+    "estimate": {
+      "memory_bytes": 512,
+      "operations": 240
+    },
+    "rounding": {
+      "mode": "half_even",
+      "significant_digits": 12
+    }
+  },
+  "plan": {
+    "method": "numerical.hermitian_eigendecomposition",
+    "nature": "approximate",
+    "justification": "A matriz hermitiana é diagonalizada em dupla precisão e cada probabilidade é a norma da projeção do estado no autoespaço do autovalor; forma, norma, base e hermiticidade são conferidas antes.",
+    "budget": {
+      "wall_seconds": 30.0,
+      "cpu_seconds": 30,
+      "memory_bytes": 2147483648
+    }
+  },
+  "catalog": {
+    "version": "1.2.0"
+  },
+  "constants": {
+    "edition": "CODATA 2022",
+    "used": []
+  },
+  "units": {
+    "registry_version": "1.0.0"
+  },
+  "result": {
+    "nature": "approximate",
+    "answers": [
+      {
+        "name": "probability_1",
+        "symbol": "P(a = -1)",
+        "label": "probabilidade do resultado 1, em ordem crescente de autovalor",
+        "value": 0.4999999999999999,
+        "display": "0.500000000000",
+        "unit": "1",
+        "estimate": null
+      },
+      {
+        "name": "probability_2",
+        "symbol": "P(a = 1)",
+        "label": "probabilidade do resultado 2, em ordem crescente de autovalor",
+        "value": 0.4999999999999999,
+        "display": "0.500000000000",
+        "unit": "1",
+        "estimate": null
+      },
+      {
+        "name": "expectation_value",
+        "symbol": "<A>",
+        "label": "valor esperado do observável",
+        "value": 0.0,
+        "display": "0.0",
+        "unit": "1",
+        "estimate": null
+      }
+    ],
+    "tables": [
+      {
+        "name": "measurement",
+        "title": "Resultados possíveis da medição e suas probabilidades",
+        "rows": 2,
+        "columns": [
+          {
+            "name": "eigenvalue",
+            "symbol": "a",
+            "unit": "1",
+            "values": [
+              -1.0,
+              1.0
+            ]
+          },
+          {
+            "name": "degeneracy",
+            "symbol": "g",
+            "unit": "1",
+            "values": [
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "name": "probability",
+            "symbol": "p",
+            "unit": "1",
+            "values": [
+              0.4999999999999999,
+              0.4999999999999999
+            ]
+          }
+        ]
+      },
+      {
+        "name": "prepared_state",
+        "title": "Componentes do estado normalizado, na base em que a medição foi calculada",
+        "rows": 2,
+        "columns": [
+          {
+            "name": "real",
+            "symbol": "Re c",
+            "unit": "1",
+            "values": [
+              0.7071067811865475,
+              0.7071067811865475
+            ]
+          },
+          {
+            "name": "imaginary",
+            "symbol": "Im c",
+            "unit": "1",
+            "values": [
+              0.0,
+              0.0
+            ]
+          }
+        ]
+      }
+    ],
+    "effective": [
+      {
+        "name": "normalization",
+        "label": "normalização do estado",
+        "value": "aplicada a pedido; a norma do estado informado era 1.4142135623730951"
+      },
+      {
+        "name": "basis",
+        "label": "base do cálculo",
+        "value": "computacional, a da entrada"
+      },
+      {
+        "name": "tolerance",
+        "label": "tolerância das checagens",
+        "value": "1e-12"
+      },
+      {
+        "name": "degeneracy_separation",
+        "label": "separação abaixo da qual autovalores formam um subespaço",
+        "value": "1e-12"
+      },
+      {
+        "name": "eigensolver",
+        "label": "diagonalização",
+        "value": "numpy.linalg.eigh, matriz hermitiana densa"
+      }
+    ],
+    "warnings": []
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "identifier": "hermitian_operator",
+        "kind": "consistency_test",
+        "status": "passed",
+        "statement": "O observável é igual ao seu adjunto conjugado.",
+        "observed": "maior diferença entre o observável e o adjunto: 0.000e+00, dentro do limite 1.000e-12"
+      },
+      {
+        "identifier": "normalized_state",
+        "kind": "consistency_test",
+        "status": "passed",
+        "statement": "O estado usado no cálculo tem norma 1.",
+        "observed": "desvio da norma: 1.110e-16, dentro do limite 1.000e-12"
+      },
+      {
+        "identifier": "total_probability",
+        "kind": "consistency_test",
+        "status": "passed",
+        "statement": "As probabilidades dos resultados somam 1.",
+        "observed": "desvio da soma: 2.220e-16, dentro do limite 1.000e-12"
+      },
+      {
+        "identifier": "subspace_projectors",
+        "kind": "numerical_evidence",
+        "status": "passed",
+        "statement": "Cada probabilidade é o valor esperado do projetor sobre o subespaço do autovalor, construído do próprio observável sem usar os autovetores do solver, com o posto igual à degenerescência relatada.",
+        "observed": "maior desvio em probabilidade ou em posto: 0.000e+00, dentro do limite 1.000e-12"
+      },
+      {
+        "identifier": "direct_expectation_value",
+        "kind": "numerical_evidence",
+        "status": "passed",
+        "statement": "O valor esperado relatado é o produto direto do estado pelo observável, na base da entrada.",
+        "observed": "diferença para o produto direto: 2.237e-17, dentro do limite 1.000e-12"
+      },
+      {
+        "identifier": "global_phase_invariance",
+        "kind": "consistency_test",
+        "status": "passed",
+        "statement": "Multiplicar o estado por uma fase global não muda as probabilidades.",
+        "observed": "maior mudança de probabilidade: 1.110e-16, dentro do limite 1.000e-12"
+      }
+    ],
+    "not_performed": [],
+    "references": [
+      "J. J. Sakurai e J. Napolitano, Modern Quantum Mechanics, 3ª ed., Cambridge University Press, 2020, seções 1.2 a 1.5."
+    ]
+  },
+  "limitations": [
+    "Estados mistos, medições generalizadas e evolução temporal ficam fora desta ficha.",
+    "Autovalores mais próximos que a tolerância são tratados como um único subespaço.",
+    "As amplitudes entram como números: uma raiz quadrada vem como decimal ou com a normalização pedida, que fica registrada."
+  ],
+  "environment": {
+    "package": {
+      "name": "quantum-calculator",
+      "version": "0.3.0"
+    },
+    "python": {
+      "implementation": "CPython",
+      "version": "3.12.15"
+    },
+    "platform": "Linux-6.18.56-x86_64-with-glibc2.34",
+    "dependencies": [
+      {
+        "name": "sympy",
+        "version": "1.14.0"
+      },
+      {
+        "name": "mpmath",
+        "version": "1.3.0"
+      },
+      {
+        "name": "numpy",
+        "version": "2.5.5"
+      },
+      {
+        "name": "scipy",
+        "version": "1.18.1"
+      }
+    ],
+    "linear_algebra": [
+      {
+        "consumer": "numpy",
+        "interface": "blas",
+        "name": "scipy-openblas",
+        "version": "0.3.34.237.2"
+      },
+      {
+        "consumer": "numpy",
+        "interface": "lapack",
+        "name": "scipy-openblas",
+        "version": "0.3.34.237.2"
+      },
+      {
+        "consumer": "scipy",
+        "interface": "blas",
+        "name": "scipy-openblas",
+        "version": "0.3.31.dev"
+      },
+      {
+        "consumer": "scipy",
+        "interface": "lapack",
+        "name": "scipy-openblas",
+        "version": "0.3.31.dev"
+      }
+    ]
+  }
+}

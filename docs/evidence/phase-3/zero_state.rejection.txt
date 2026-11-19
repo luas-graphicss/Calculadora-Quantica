@@ -1,0 +1,4 @@
+Entrada recusada (invalid_input)
+  /state [zero_state]
+    Todas as amplitudes são nulas: o vetor nulo não é um estado físico.
+    esperado: ao menos uma amplitude diferente de zero
