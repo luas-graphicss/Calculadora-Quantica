@@ -1,7 +1,7 @@
 {
   "document": "catalog",
-  "schema_version": "1.1",
-  "version": "1.1.0",
+  "schema_version": "1.2",
+  "version": "1.2.0",
   "cards": [
     {
       "identifier": "quantum.infinite_square_well.energy_level",
@@ -151,6 +151,138 @@
         "Concordância em pontos amostrados não é relatada como prova: sem demonstração, o resultado é inconclusivo."
       ],
       "example": "reference_cases/symbolic/decay_candidate_correct.json"
+    },
+    {
+      "identifier": "calculus.definite_integral.adaptive_quadrature",
+      "version": "1.0.0",
+      "area": "differential_integral_calculus",
+      "problem_type": "numerical_definite_integral",
+      "title": "Aproximação de uma integral definida por quadratura adaptativa",
+      "domain": [
+        "Integrando real explícito, escrito com as operações e funções registradas, finito em todo o intervalo fechado.",
+        "Intervalo finito; todo parâmetro do integrando e dos limites tem valor numérico."
+      ],
+      "method": {
+        "identifier": "numerical.adaptive_quadrature",
+        "nature": "approximate",
+        "justification": "O QUADPACK subdivide o intervalo onde o integrando varia mais, com regras de Gauss-Kronrod, e devolve o valor e uma estimativa de erro; a resposta é aproximada, dentro das tolerâncias pedidas."
+      },
+      "limitations": [
+        "A resposta é aproximada. A estimativa do integrador não é uma cota demonstrada nem uma incerteza experimental.",
+        "Um integrando não finito no intervalo ou que o limite de subdivisões não resolve termina sem resposta aprovada; integrais impróprias não são cobertas.",
+        "A tolerância absoluta vale na unidade coerente do SI do resultado."
+      ],
+      "example": "reference_cases/numerical/sine_quadrature.json"
+    },
+    {
+      "identifier": "ode.initial_value.explicit_runge_kutta",
+      "version": "1.0.0",
+      "area": "ordinary_differential_equations",
+      "problem_type": "numerical_initial_value_problem",
+      "title": "Trajetória de um problema de valor inicial explícito e não rígido",
+      "domain": [
+        "Uma equação de primeira ordem por função incógnita, na forma y' = f(t, y, ...), com lado direito explícito e suave; sistemas de até oito componentes.",
+        "Uma condição inicial por função, todas no mesmo instante, e todo parâmetro com valor numérico."
+      ],
+      "method": {
+        "identifier": "numerical.dop853",
+        "nature": "approximate",
+        "justification": "O DOP853 é um método de Runge-Kutta explícito de ordem 8 com passo adaptativo, adequado a problemas suaves e não rígidos; a trajetória é aproximada, dentro das tolerâncias pedidas por passo."
+      },
+      "limitations": [
+        "A rigidez não é diagnosticada nem tratada: um problema rígido esgota o passo ou o orçamento e termina sem resposta aprovada.",
+        "As tolerâncias controlam o erro local de cada passo; o erro acumulado é conferido por refinamento, não demonstrado.",
+        "A tolerância absoluta vale na unidade coerente do SI de cada componente."
+      ],
+      "example": "reference_cases/numerical/decay_trajectory.json"
+    },
+    {
+      "identifier": "quantum.finite_basis.projective_measurement",
+      "version": "1.0.0",
+      "area": "finite_basis_quantum_mechanics",
+      "problem_type": "projective_measurement",
+      "title": "Medição projetiva de um observável em um estado puro de base finita",
+      "domain": [
+        "Estado puro dado por até 16 amplitudes complexas em uma base ortonormal.",
+        "Observável hermitiano dado pela matriz na mesma base; uma mudança para outra base ortonormal é opcional."
+      ],
+      "method": {
+        "identifier": "numerical.hermitian_eigendecomposition",
+        "nature": "approximate",
+        "justification": "A matriz hermitiana é diagonalizada em dupla precisão e cada probabilidade é a norma da projeção do estado no autoespaço do autovalor; forma, norma, base e hermiticidade são conferidas antes."
+      },
+      "limitations": [
+        "Estados mistos, medições generalizadas e evolução temporal ficam fora desta ficha.",
+        "Autovalores mais próximos que a tolerância são tratados como um único subespaço.",
+        "As amplitudes entram como números: uma raiz quadrada vem como decimal ou com a normalização pedida, que fica registrada."
+      ],
+      "example": "reference_cases/numerical/spin_half_measurement.json"
+    },
+    {
+      "identifier": "quantum.infinite_square_well.discrete_spectrum",
+      "version": "1.0.0",
+      "area": "stationary_schrodinger_1d",
+      "problem_type": "discrete_spectrum",
+      "title": "Níveis e autofunções do poço infinito por diferenças finitas",
+      "domain": [
+        "Partícula única, não relativística e sem spin, em uma dimensão espacial.",
+        "Massa e largura estritamente positivas; os primeiros níveis, até 32, em uma malha uniforme de até 16384 subintervalos."
+      ],
+      "method": {
+        "identifier": "finite_difference.tridiagonal_eigensolver",
+        "nature": "approximate",
+        "justification": "O Hamiltoniano é discretizado por diferenças centrais de segunda ordem nos nós internos de uma malha uniforme; os níveis pedidos saem das diagonais, sem matriz densa, e o erro de malha é estimado por refinamento."
+      },
+      "limitations": [
+        "A resposta é aproximada: o erro de malha cai com o quadrado do espaçamento e só é declarado convergido quando o refinamento mostra a ordem esperada.",
+        "A expressão fechada do poço, da ficha quantum.infinite_square_well.energy_level, é usada só como referência independente na verificação.",
+        "Incertezas dos parâmetros não são propagadas por esta ficha: a incerteza experimental fica não avaliada."
+      ],
+      "example": "reference_cases/numerical/electron_box_1nm_discrete.json"
+    },
+    {
+      "identifier": "quantum.harmonic_oscillator.truncated_spectrum",
+      "version": "1.0.0",
+      "area": "stationary_schrodinger_1d",
+      "problem_type": "truncated_spectrum",
+      "title": "Níveis e autofunções do oscilador harmônico em domínio truncado",
+      "domain": [
+        "Partícula única, não relativística e sem spin, em uma dimensão espacial.",
+        "Massa e quantum de energia hbar omega estritamente positivos; domínio simétrico de meia largura dada em comprimentos do oscilador, sqrt(hbar / (m omega))."
+      ],
+      "method": {
+        "identifier": "finite_difference.tridiagonal_eigensolver",
+        "nature": "approximate",
+        "justification": "O Hamiltoniano é discretizado por diferenças centrais de segunda ordem nos nós internos de uma malha uniforme; os níveis pedidos saem das diagonais, sem matriz densa, e o erro de malha é estimado por refinamento."
+      },
+      "limitations": [
+        "A resposta é aproximada: o erro de malha cai com o quadrado do espaçamento e só é declarado convergido quando o refinamento mostra a ordem esperada.",
+        "Ampliar o domínio e refinar a malha são experimentos separados: o primeiro mede o corte do domínio, o segundo o erro de discretização.",
+        "Incertezas dos parâmetros não são propagadas por esta ficha: a incerteza experimental fica não avaliada."
+      ],
+      "example": "reference_cases/numerical/harmonic_oscillator_1ev.json"
+    },
+    {
+      "identifier": "quantum.infinite_square_well.time_evolution",
+      "version": "1.0.0",
+      "area": "time_dependent_schrodinger_1d",
+      "problem_type": "time_evolution",
+      "title": "Evolução de uma superposição de estados do poço infinito por Crank-Nicolson",
+      "domain": [
+        "Partícula única, não relativística e sem spin, em uma dimensão espacial.",
+        "Estado inicial dado por até 16 coeficientes complexos sobre os primeiros modos discretos do poço; duração positiva dividida em passos iguais."
+      ],
+      "method": {
+        "identifier": "finite_difference.crank_nicolson",
+        "nature": "approximate",
+        "justification": "O esquema de Crank-Nicolson é unitário e de segunda ordem no tempo; o sistema tridiagonal é fatorado uma vez e reutilizado em todos os passos, sem inversa explícita e sem renormalizar o estado."
+      },
+      "limitations": [
+        "A resposta é aproximada. A verificação mede o erro temporal contra a evolução exata dos modos discretos; o erro da malha não é avaliado aqui.",
+        "Norma e fase estáveis em uma animação não comprovam precisão temporal: valem as checagens de norma, de fase e de ordem.",
+        "Só os observáveis dos instantes salvos e a densidade final são guardados."
+      ],
+      "example": "reference_cases/numerical/electron_box_1nm_beat.json"
     }
   ]
 }

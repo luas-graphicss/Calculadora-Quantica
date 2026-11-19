@@ -28,6 +28,8 @@ Também ficam aqui o registro com incertezas independentes (`electron_box_1nm_un
 
 Os arquivos foram gerados em Amazon Linux 2023 (kernel 6.18, glibc 2.34) com CPython 3.12.15, como o manifesto registra, e não na plataforma de referência. A CI repete os mesmos passos em Ubuntu 24.04 e compara o registro JSON com o daqui, ignorando só o campo `environment`. O teste `tests/contracts/test_recorded_evidence.py` faz a mesma comparação a cada execução da suíte: mudar a saída sem regenerar estes arquivos quebra o build.
 
+Os arquivos foram regenerados nas fases 2 e 3, quando o esquema de saída passou a 1.1 e depois a 1.2; o conteúdo científico do caso não mudou.
+
 ## Critérios de aceite
 
 - Uma instalação limpa reproduz o caso com expressão, valor, unidade, constantes e hipóteses: campos `result`, `constants` e `problem.hypotheses` de `electron_box_1nm.run_record.json`.
