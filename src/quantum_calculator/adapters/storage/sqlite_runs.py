@@ -85,7 +85,7 @@ class SqliteRunRepository:
                 ),
             )
             _link(connection, run.identifier, run.artifacts)
-        return run
+            return _require(connection, run.identifier)
 
     def find(self, identifier: str) -> StoredRun | None:
         with self._transaction(writing=False) as connection:
@@ -134,7 +134,7 @@ class SqliteRunRepository:
             )
             if outcome is not None:
                 _link(connection, change.identifier, outcome.artifacts)
-            return _find(connection, _SELECT_BY_IDENTIFIER, change.identifier)
+            return _require(connection, change.identifier)
 
     def interrupt_active(self, at: datetime) -> int:
         with self._transaction(writing=True) as connection:
@@ -187,6 +187,13 @@ def _find(connection: sqlite3.Connection, query: str, key: str) -> StoredRun | N
         )
     )
     return _stored_run(row, artifacts)
+
+
+def _require(connection: sqlite3.Connection, identifier: str) -> StoredRun:
+    stored = _find(connection, _SELECT_BY_IDENTIFIER, identifier)
+    if stored is None:
+        raise LookupError(f"run {identifier} disappeared inside its own transaction")
+    return stored
 
 
 def _link(
