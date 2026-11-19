@@ -41,6 +41,9 @@ dev = [
     "ruff==0.17.5",
     "types-jsonschema==4.26.0.20261006",
 ]
+distribution = [
+    "pip==26.3",
+]
 
 [tool.hatch.build]
 artifacts = ["src/quantum_calculator/interfaces/api/static/**"]
@@ -88,7 +91,7 @@ known-first-party = ["quantum_calculator"]
 python_version = "3.12"
 strict = true
 warn_unreachable = true
-files = ["src", "tests", "benchmarks", "qualification"]
+files = ["src", "tests", "benchmarks", "qualification", "distribution"]
 mypy_path = "src:tests:."
 explicit_package_bases = true
 
