@@ -2,7 +2,11 @@ import logging
 
 from quantum_calculator.application.workbench.cancellations import RunCancellations
 from quantum_calculator.application.workbench.canonical_documents import canonical_json
-from quantum_calculator.application.workbench.failures import internal_failure, process_failure
+from quantum_calculator.application.workbench.failures import (
+    INTERNAL_ERROR,
+    internal_failure,
+    process_failure,
+)
 from quantum_calculator.application.workbench.sample_tables import detach_tables
 from quantum_calculator.application.workbench.summaries import is_failure, summarize
 from quantum_calculator.domain.execution import (
@@ -30,6 +34,9 @@ from quantum_calculator.domain.workbench.runs import (
 _LOGGER = logging.getLogger(__name__)
 _QUEUED = frozenset({RunState.QUEUED})
 _RUNNING = frozenset({RunState.RUNNING})
+_NOT_RECORDED = RunOutcome(
+    artifacts=(), verification_status=None, failure_category=INTERNAL_ERROR, headline=None
+)
 
 
 class ExecuteRun:
@@ -63,8 +70,18 @@ class ExecuteRun:
             state, outcome = self._attempt(run, cancellation)
             self._conclude(run, state, outcome)
         except Exception:
-            self._conclude(run, RunState.FAILED, internal_failure())
+            self._fail(run)
             raise
+
+    def _fail(self, run: StoredRun) -> None:
+        try:
+            self._conclude(run, RunState.FAILED, internal_failure())
+        except OSError:
+            self._runs.transition(
+                StateChange(
+                    run.identifier, _RUNNING, RunState.FAILED, self._clock.now(), _NOT_RECORDED
+                )
+            )
 
     def _attempt(
         self, run: StoredRun, cancellation: CancellationSignal

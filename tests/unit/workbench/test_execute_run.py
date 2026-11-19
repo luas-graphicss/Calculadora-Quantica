@@ -1,8 +1,11 @@
+import errno
+from collections.abc import Collection
 from pathlib import Path
 
 import pytest
 
 from quantum_calculator.application.workbench.cancel_run import CancelRun
+from quantum_calculator.application.workbench.execute_run import ExecuteRun
 from quantum_calculator.application.workbench.read_history import ReadHistory
 from quantum_calculator.application.workbench.submit_run import Submission
 from quantum_calculator.domain.execution import (
@@ -10,7 +13,9 @@ from quantum_calculator.domain.execution import (
     CalculationFailedError,
     CancellationSignal,
 )
+from quantum_calculator.domain.workbench.artifacts import ArtifactReference
 from quantum_calculator.domain.workbench.documents import Document, text_member
+from quantum_calculator.domain.workbench.ports import ArtifactStore
 from quantum_calculator.domain.workbench.runs import (
     ArtifactRole,
     RunNotFoundError,
@@ -206,3 +211,57 @@ def test_cancelling_an_unknown_run_is_refused(tmp_path: Path) -> None:
 
     with pytest.raises(RunNotFoundError):
         CancelRun(bench.runs, bench.cancellations, bench.clock).execute("run-404")
+
+
+class _FullDisk:
+    def __init__(self, artifacts: ArtifactStore) -> None:
+        self._artifacts = artifacts
+
+    def publish(self, _content: bytes, _media_type: str) -> ArtifactReference:
+        raise OSError(errno.ENOSPC, "No space left on device")
+
+    def read(self, reference: ArtifactReference) -> bytes:
+        return self._artifacts.read(reference)
+
+    def remove_unreferenced(self, referenced: Collection[str]) -> int:
+        return self._artifacts.remove_unreferenced(referenced)
+
+
+def test_a_full_disk_fails_the_run_without_a_record_and_keeps_earlier_results(
+    tmp_path: Path,
+) -> None:
+    bench = build_bench(tmp_path)
+    first = _queued(bench, "submission-key-0001")
+    bench.execute.execute(first.identifier)
+    completed = _settled(bench, first.identifier)
+    second = _queued(bench, "submission-key-0002")
+    on_a_full_disk = ExecuteRun(
+        bench.documents, bench.runs, _FullDisk(bench.artifacts), bench.cancellations, bench.clock
+    )
+
+    with pytest.raises(OSError, match="No space left on device"):
+        on_a_full_disk.execute(second.identifier)
+
+    failed = _settled(bench, second.identifier)
+    assert (failed.state, failed.failure_category) == (RunState.FAILED, "internal_error")
+    assert failed.finished_at is not None
+    assert failed.artifact(ArtifactRole.OUTCOME) is None
+    assert (failed.verification_status, failed.headline) == (None, None)
+    assert _settled(bench, first.identifier) == completed
+    assert ReadHistory(bench.runs, bench.artifacts).complete_outcome(first.identifier) == RECORD
+
+
+def test_the_bench_calculates_again_after_the_disk_has_room(tmp_path: Path) -> None:
+    bench = build_bench(tmp_path)
+    refused = _queued(bench, "submission-key-0001")
+    on_a_full_disk = ExecuteRun(
+        bench.documents, bench.runs, _FullDisk(bench.artifacts), bench.cancellations, bench.clock
+    )
+    with pytest.raises(OSError, match="No space left on device"):
+        on_a_full_disk.execute(refused.identifier)
+    retried = _queued(bench, "submission-key-0002")
+
+    bench.execute.execute(retried.identifier)
+
+    assert _settled(bench, refused.identifier).state is RunState.FAILED
+    assert _settled(bench, retried.identifier).state is RunState.SUCCEEDED
