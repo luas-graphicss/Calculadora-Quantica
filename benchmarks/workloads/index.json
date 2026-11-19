@@ -1,0 +1,67 @@
+{
+  "schema": "benchmark_workloads",
+  "schema_version": "1.0",
+  "description": "Cargas congeladas da medição de desempenho. Cada resposta medida é comparada com o oráculo abaixo, uma expressão fechada, dentro da tolerância: uma medição que perde precisão não conta.",
+  "workloads": [
+    {
+      "identifier": "well_six_levels_4096",
+      "title": "poço infinito, seis níveis, 4096 subintervalos",
+      "input": "benchmarks/workloads/well_six_levels_4096.json",
+      "oracle": "E_n = n^2 h^2 / (8 m L^2), com E_1 = 0.3760301621 eV de reference_cases/quantum/electron_box_1nm.expected.json. O erro relativo de diferenças finitas de segunda ordem é (n pi / N)^2 / 12, até 1.8e-6 para n = 6 e N = 4096; a tolerância é 3e-6.",
+      "verification": "passed",
+      "answers": [
+        {"name": "energy_1", "expected": 0.3760301621, "tolerance": 3e-06, "comparison": "relative"},
+        {"name": "energy_2", "expected": 1.5041206484, "tolerance": 3e-06, "comparison": "relative"},
+        {"name": "energy_3", "expected": 3.3842714589, "tolerance": 3e-06, "comparison": "relative"},
+        {"name": "energy_4", "expected": 6.0164825936, "tolerance": 3e-06, "comparison": "relative"},
+        {"name": "energy_5", "expected": 9.4007540525, "tolerance": 3e-06, "comparison": "relative"},
+        {"name": "energy_6", "expected": 13.5370858356, "tolerance": 3e-06, "comparison": "relative"}
+      ]
+    },
+    {
+      "identifier": "oscillator_six_levels_4096",
+      "title": "oscilador harmônico truncado, seis níveis, 4096 subintervalos",
+      "input": "benchmarks/workloads/oscillator_six_levels_4096.json",
+      "oracle": "E_n = hbar omega (n + 1/2) com n = 0 a 5 e hbar omega = 1 eV. O erro de diferenças finitas é -(h^2 / 32)(2 n^2 + 2 n + 1) hbar omega, com h = 16 / 4096 comprimentos do oscilador: até 5.3e-6 relativo para n = 5; a tolerância é 1e-5.",
+      "verification": "passed",
+      "answers": [
+        {"name": "energy_1", "expected": 0.5, "tolerance": 1e-05, "comparison": "relative"},
+        {"name": "energy_2", "expected": 1.5, "tolerance": 1e-05, "comparison": "relative"},
+        {"name": "energy_3", "expected": 2.5, "tolerance": 1e-05, "comparison": "relative"},
+        {"name": "energy_4", "expected": 3.5, "tolerance": 1e-05, "comparison": "relative"},
+        {"name": "energy_5", "expected": 4.5, "tolerance": 1e-05, "comparison": "relative"},
+        {"name": "energy_6", "expected": 5.5, "tolerance": 1e-05, "comparison": "relative"}
+      ]
+    },
+    {
+      "identifier": "decay_trajectory",
+      "title": "EDO de valor inicial, decaimento exponencial por DOP853",
+      "input": "reference_cases/numerical/decay_trajectory.json",
+      "oracle": "y(t) = exp(-k t) com k = 1/s e y(0) = 1: y(5 s) = exp(-5) = 0.006737946999085467. Tolerância do caso de referência.",
+      "verification": "passed",
+      "answers": [
+        {"name": "final_y", "expected": 0.006737946999085467, "tolerance": 1e-08, "comparison": "absolute"}
+      ]
+    },
+    {
+      "identifier": "well_beat_evolution",
+      "title": "propagação temporal, batimento de dois estados do poço por Crank-Nicolson",
+      "input": "reference_cases/numerical/electron_box_1nm_beat.json",
+      "oracle": "A evolução fechada conserva a norma, e a fase relativa dos dois modos discretos avança como -(E_2 - E_1) t / hbar: a deriva da norma e o erro de fase esperados são zero. Tolerâncias do caso de referência.",
+      "verification": "passed",
+      "answers": [
+        {"name": "norm_drift", "expected": 0.0, "tolerance": 1e-09, "comparison": "absolute"},
+        {"name": "phase_error", "expected": 0.0, "tolerance": 0.001, "comparison": "absolute"}
+      ]
+    }
+  ],
+  "refused_requests": [
+    {
+      "identifier": "evolution_over_profile",
+      "title": "propagação temporal com trabalho estimado acima do perfil homologado",
+      "input": "reference_cases/numerical/rejected/estimated_work_too_large.json",
+      "exit_code": 7,
+      "diagnostic": "resource_limit_exceeded"
+    }
+  ]
+}

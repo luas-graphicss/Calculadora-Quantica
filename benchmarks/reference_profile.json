@@ -1,0 +1,30 @@
+{
+  "schema": "benchmark_profile",
+  "schema_version": "1.0",
+  "frozen_on": "2026-11-19",
+  "machine": {
+    "architecture": "x86_64",
+    "logical_cpus": 4,
+    "memory_gibibytes": 8,
+    "operating_system": "Ubuntu 24.04",
+    "python": "CPython 3.12"
+  },
+  "execution": {
+    "concurrent_runs": 1,
+    "linear_algebra_threads": 1,
+    "result_cache": false
+  },
+  "protocol": {
+    "cold_runs": 5,
+    "warmup_runs": 5,
+    "measured_runs": 30,
+    "percentile_method": "nearest_rank"
+  },
+  "targets": [
+    {
+      "workload": "well_six_levels_4096",
+      "warm_p95_seconds": 2.0,
+      "worker_peak_rss_mebibytes": 512
+    }
+  ]
+}
