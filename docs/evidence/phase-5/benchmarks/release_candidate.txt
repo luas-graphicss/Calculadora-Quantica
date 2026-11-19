@@ -1,0 +1,54 @@
+Medição de desempenho: quantum-calculator 1.0.0rc1
+Gerada em 2026-11-19T05:37:24+00:00
+
+Máquina
+  CPU: Intel(R) Xeon(R) Processor @ 2.90GHz; 2 CPUs lógicas; x86_64
+  Memória: 3.84 GiB; limite do grupo de controle: 4.00 GiB
+  Sistema: Amazon Linux 2023.12.20261112; kernel 6.18.56
+  Python: CPython 3.12.15
+  Threads de álgebra linear: OPENBLAS_NUM_THREADS=1, OMP_NUM_THREADS=1, MKL_NUM_THREADS=1
+  BLAS e LAPACK: numpy blas: scipy-openblas 0.3.34.237.2; numpy lapack: scipy-openblas 0.3.34.237.2; scipy blas: scipy-openblas 0.3.31.dev; scipy lapack: scipy-openblas 0.3.31.dev
+  Dependências: sympy 1.14.0, mpmath 1.3.0, numpy 2.5.5, scipy 1.18.1, fastapi 0.165.0, uvicorn 0.54.0
+
+Perfil de referência, congelado em 2026-11-19: 4 CPUs lógicas x86_64, 8 GiB, Ubuntu 24.04, CPython 3.12, uma execução por vez, 1 thread de álgebra linear, sem cache de resultados
+  Esta máquina não é o perfil de referência:
+    logical_cpus: 2 aqui, 4 no perfil
+    memory_gibibytes: 3.84 aqui, 8 no perfil
+    operating_system: Amazon Linux 2023.12.20261112 aqui, Ubuntu 24.04 no perfil
+
+Cargas, em segundos: 5 execuções frias, 5 aquecimentos e 30 execuções medidas por percurso; percentil pelo posto mais próximo
+
+  poço infinito, seis níveis, 4096 subintervalos [well_six_levels_4096]
+    frio, qcalc solve em processo novo: p50 1.168, máximo 1.326
+    quente, bancada, do envio ao relatório: p50 0.400, p95 0.452, máximo 0.508
+    estágios, p50 / p95: interpretação 0.0004 / 0.0005; preparação 0.2760 / 0.2986; solver 0.0153 / 0.0162; verificação 0.0096 / 0.0106; serialização 0.0184 / 0.0312; soma 0.3242 / 0.3454
+    pico de memória do worker: 58.6 MiB na bancada, 58.6 MiB no percurso por estágios
+    precisão: 75 registros conferidos, verificação passed; maior desvio relativo 1.765e-06 em energy_6, tolerância 3.000e-06
+
+  oscilador harmônico truncado, seis níveis, 4096 subintervalos [oscillator_six_levels_4096]
+    frio, qcalc solve em processo novo: p50 1.159, máximo 1.182
+    quente, bancada, do envio ao relatório: p50 0.404, p95 0.472, máximo 0.480
+    estágios, p50 / p95: interpretação 0.0004 / 0.0005; preparação 0.2728 / 0.2942; solver 0.0243 / 0.0250; verificação 0.0149 / 0.0172; serialização 0.0188 / 0.0307; soma 0.3312 / 0.3620
+    pico de memória do worker: 58.7 MiB na bancada, 58.7 MiB no percurso por estágios
+    precisão: 75 registros conferidos, verificação passed; maior desvio relativo 5.289e-06 em energy_6, tolerância 1.000e-05
+
+  EDO de valor inicial, decaimento exponencial por DOP853 [decay_trajectory]
+    frio, qcalc solve em processo novo: p50 1.267, máximo 1.311
+    quente, bancada, do envio ao relatório: p50 0.508, p95 0.556, máximo 0.564
+    estágios, p50 / p95: interpretação 0.0007 / 0.0008; preparação 0.4166 / 0.4318; solver 0.0049 / 0.0054; verificação 0.0075 / 0.0080; serialização 0.0054 / 0.0082; soma 0.4358 / 0.4504
+    pico de memória do worker: 76.7 MiB na bancada, 76.8 MiB no percurso por estágios
+    precisão: 75 registros conferidos, verificação passed; maior desvio absoluto 2.287e-13 em final_y, tolerância 1.000e-08
+
+  propagação temporal, batimento de dois estados do poço por Crank-Nicolson [well_beat_evolution]
+    frio, qcalc solve em processo novo: p50 1.097, máximo 1.162
+    quente, bancada, do envio ao relatório: p50 0.392, p95 0.420, máximo 0.452
+    estágios, p50 / p95: interpretação 0.0004 / 0.0005; preparação 0.2739 / 0.3311; solver 0.0202 / 0.0217; verificação 0.0004 / 0.0005; serialização 0.0058 / 0.0102; soma 0.3008 / 0.3579
+    pico de memória do worker: 56.7 MiB na bancada, 56.6 MiB no percurso por estágios
+    precisão: 75 registros conferidos, verificação passed; maior desvio absoluto 4.599e-05 em phase_error, tolerância 1.000e-03
+
+Pedidos acima do perfil
+  propagação temporal com trabalho estimado acima do perfil homologado [evolution_over_profile]: código de saída 7 em 0.744 s
+    resource_limit_exceeded em /numerics: O pedido estima 3670592 bytes de memória e 360783806464 operações elementares, acima do perfil homologado. Nada foi alocado.
+
+Metas
+  well_six_levels_4096: p95 quente 0.452 s, limite 2.000 s; pico do worker 58.6 MiB, limite 512 MiB: atingida nesta máquina

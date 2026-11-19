@@ -1,0 +1,32 @@
+Comparação com a linha de base congelada
+  linha de base: quantum-calculator 0.4.0, gerada em 2026-11-19T05:21:23+00:00
+  candidata: quantum-calculator 1.0.0rc1, gerada em 2026-11-19T05:37:24+00:00
+  mesma CPU, memória, sistema e Python nas duas medições
+
+  poço infinito, seis níveis, 4096 subintervalos [well_six_levels_4096]
+    frio p50: 1.645 -> 1.168 s (0.71 vezes)
+    quente p50: 0.864 -> 0.400 s (0.46 vezes)
+    quente p95: 1.024 -> 0.452 s (0.44 vezes)
+    estágios p50: interpretação 0.0004 -> 0.0004; preparação 0.2914 -> 0.2760; solver 0.0172 -> 0.0153; verificação 0.0275 -> 0.0096; serialização 0.0189 -> 0.0184
+    pico do worker na bancada: 111.0 -> 58.6 MiB
+
+  oscilador harmônico truncado, seis níveis, 4096 subintervalos [oscillator_six_levels_4096]
+    frio p50: 1.675 -> 1.159 s (0.69 vezes)
+    quente p50: 0.876 -> 0.404 s (0.46 vezes)
+    quente p95: 1.092 -> 0.472 s (0.43 vezes)
+    estágios p50: interpretação 0.0004 -> 0.0004; preparação 0.2830 -> 0.2728; solver 0.0264 -> 0.0243; verificação 0.0457 -> 0.0149; serialização 0.0199 -> 0.0188
+    pico do worker na bancada: 111.0 -> 58.7 MiB
+
+  EDO de valor inicial, decaimento exponencial por DOP853 [decay_trajectory]
+    frio p50: 1.557 -> 1.267 s (0.81 vezes)
+    quente p50: 0.820 -> 0.508 s (0.62 vezes)
+    quente p95: 0.856 -> 0.556 s (0.65 vezes)
+    estágios p50: interpretação 0.0007 -> 0.0007; preparação 0.4485 -> 0.4166; solver 0.0051 -> 0.0049; verificação 0.0077 -> 0.0075; serialização 0.0060 -> 0.0054
+    pico do worker na bancada: 108.2 -> 76.7 MiB
+
+  propagação temporal, batimento de dois estados do poço por Crank-Nicolson [well_beat_evolution]
+    frio p50: 1.717 -> 1.097 s (0.64 vezes)
+    quente p50: 0.820 -> 0.392 s (0.48 vezes)
+    quente p95: 0.944 -> 0.420 s (0.44 vezes)
+    estágios p50: interpretação 0.0004 -> 0.0004; preparação 0.2836 -> 0.2739; solver 0.0207 -> 0.0202; verificação 0.0005 -> 0.0004; serialização 0.0060 -> 0.0058
+    pico do worker na bancada: 108.9 -> 56.7 MiB
