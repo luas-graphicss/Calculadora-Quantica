@@ -20,7 +20,6 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 
 def _measure(output: Path, command: Path) -> int:
-    # Each worker re-imports this module, so the measuring code stays out of its start-up.
     from benchmarks.harness.measurement import measure
     from benchmarks.harness.summary import render_summary
 

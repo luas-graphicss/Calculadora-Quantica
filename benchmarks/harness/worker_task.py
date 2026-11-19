@@ -29,6 +29,5 @@ def solve_and_verify_measured(
         outcome=NumericalOutcome(report, verification),
         solver_seconds=solved - started,
         verification_seconds=verified - solved,
-        # ru_maxrss also counts the parent's size at the fork; VmHWM is this process alone.
         peak_rss_bytes=own_peak_rss_bytes(),
     )
