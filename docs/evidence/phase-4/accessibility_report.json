@@ -1,0 +1,234 @@
+{
+  "document": "accessibility_report",
+  "standard": [
+    "wcag2a",
+    "wcag2aa",
+    "wcag21a",
+    "wcag21aa",
+    "wcag22aa"
+  ],
+  "audits": [
+    {
+      "screen": "sessão não aberta",
+      "viewport": "janela larga, 1280 x 720",
+      "engine": "axe-core 4.14.1",
+      "rules_passed": 19,
+      "needing_manual_review": [],
+      "violations": [],
+      "horizontal_overflow_px": 0
+    },
+    {
+      "screen": "sessão não aberta",
+      "viewport": "janela estreita, 320 x 640",
+      "engine": "axe-core 4.14.1",
+      "rules_passed": 19,
+      "needing_manual_review": [],
+      "violations": [],
+      "horizontal_overflow_px": 0
+    },
+    {
+      "screen": "catálogo de problemas",
+      "viewport": "janela larga, 1280 x 720",
+      "engine": "axe-core 4.14.1",
+      "rules_passed": 20,
+      "needing_manual_review": [],
+      "violations": [],
+      "horizontal_overflow_px": 0
+    },
+    {
+      "screen": "catálogo de problemas",
+      "viewport": "janela estreita, 320 x 640",
+      "engine": "axe-core 4.14.1",
+      "rules_passed": 20,
+      "needing_manual_review": [],
+      "violations": [],
+      "horizontal_overflow_px": 0
+    },
+    {
+      "screen": "formulário da ficha",
+      "viewport": "janela larga, 1280 x 720",
+      "engine": "axe-core 4.14.1",
+      "rules_passed": 28,
+      "needing_manual_review": [],
+      "violations": [],
+      "horizontal_overflow_px": 0
+    },
+    {
+      "screen": "formulário da ficha",
+      "viewport": "janela estreita, 320 x 640",
+      "engine": "axe-core 4.14.1",
+      "rules_passed": 28,
+      "needing_manual_review": [],
+      "violations": [],
+      "horizontal_overflow_px": 0
+    },
+    {
+      "screen": "entrada recusada",
+      "viewport": "janela larga, 1280 x 720",
+      "engine": "axe-core 4.14.1",
+      "rules_passed": 30,
+      "needing_manual_review": [],
+      "violations": [],
+      "horizontal_overflow_px": 0
+    },
+    {
+      "screen": "entrada recusada",
+      "viewport": "janela estreita, 320 x 640",
+      "engine": "axe-core 4.14.1",
+      "rules_passed": 30,
+      "needing_manual_review": [],
+      "violations": [],
+      "horizontal_overflow_px": 0
+    },
+    {
+      "screen": "interpretação conferida",
+      "viewport": "janela larga, 1280 x 720",
+      "engine": "axe-core 4.14.1",
+      "rules_passed": 32,
+      "needing_manual_review": [],
+      "violations": [],
+      "horizontal_overflow_px": 0
+    },
+    {
+      "screen": "interpretação conferida",
+      "viewport": "janela estreita, 320 x 640",
+      "engine": "axe-core 4.14.1",
+      "rules_passed": 33,
+      "needing_manual_review": [
+        {
+          "rule": "color-contrast",
+          "elements": 2,
+          "reasons": [
+            "Element's background color could not be determined because it's partially obscured by another element"
+          ]
+        }
+      ],
+      "violations": [],
+      "horizontal_overflow_px": 0
+    },
+    {
+      "screen": "resultado com uma grandeza",
+      "viewport": "janela larga, 1280 x 720",
+      "engine": "axe-core 4.14.1",
+      "rules_passed": 30,
+      "needing_manual_review": [
+        {
+          "rule": "color-contrast",
+          "elements": 5,
+          "reasons": [
+            "Element content is too short to determine if it is actual text content"
+          ]
+        }
+      ],
+      "violations": [],
+      "horizontal_overflow_px": 0
+    },
+    {
+      "screen": "resultado com uma grandeza",
+      "viewport": "janela estreita, 320 x 640",
+      "engine": "axe-core 4.14.1",
+      "rules_passed": 31,
+      "needing_manual_review": [
+        {
+          "rule": "color-contrast",
+          "elements": 6,
+          "reasons": [
+            "Element content is too short to determine if it is actual text content",
+            "Element's background color could not be determined because it's partially obscured by another element"
+          ]
+        }
+      ],
+      "violations": [],
+      "horizontal_overflow_px": 0
+    },
+    {
+      "screen": "comparação de execuções",
+      "viewport": "janela larga, 1280 x 720",
+      "engine": "axe-core 4.14.1",
+      "rules_passed": 25,
+      "needing_manual_review": [],
+      "violations": [],
+      "horizontal_overflow_px": 0
+    },
+    {
+      "screen": "comparação de execuções",
+      "viewport": "janela estreita, 320 x 640",
+      "engine": "axe-core 4.14.1",
+      "rules_passed": 26,
+      "needing_manual_review": [
+        {
+          "rule": "color-contrast",
+          "elements": 3,
+          "reasons": [
+            "Element's background color could not be determined because it's partially obscured by another element"
+          ]
+        }
+      ],
+      "violations": [],
+      "horizontal_overflow_px": 0
+    },
+    {
+      "screen": "resultado com tabelas e séries",
+      "viewport": "janela larga, 1280 x 720",
+      "engine": "axe-core 4.14.1",
+      "rules_passed": 31,
+      "needing_manual_review": [
+        {
+          "rule": "color-contrast",
+          "elements": 13,
+          "reasons": [
+            "Element content is too short to determine if it is actual text content",
+            "Element's background color could not be determined because element contains an image node"
+          ]
+        }
+      ],
+      "violations": [],
+      "horizontal_overflow_px": 0
+    },
+    {
+      "screen": "resultado com tabelas e séries",
+      "viewport": "janela estreita, 320 x 640",
+      "engine": "axe-core 4.14.1",
+      "rules_passed": 32,
+      "needing_manual_review": [
+        {
+          "rule": "color-contrast",
+          "elements": 24,
+          "reasons": [
+            "Element content is too short to determine if it is actual text content",
+            "Element's background color could not be determined because element contains an image node",
+            "Element's background color could not be determined because it's partially obscured by another element"
+          ]
+        }
+      ],
+      "violations": [],
+      "horizontal_overflow_px": 0
+    },
+    {
+      "screen": "histórico",
+      "viewport": "janela larga, 1280 x 720",
+      "engine": "axe-core 4.14.1",
+      "rules_passed": 26,
+      "needing_manual_review": [],
+      "violations": [],
+      "horizontal_overflow_px": 0
+    },
+    {
+      "screen": "histórico",
+      "viewport": "janela estreita, 320 x 640",
+      "engine": "axe-core 4.14.1",
+      "rules_passed": 27,
+      "needing_manual_review": [
+        {
+          "rule": "color-contrast",
+          "elements": 20,
+          "reasons": [
+            "Element's background color could not be determined because it's partially obscured by another element"
+          ]
+        }
+      ],
+      "violations": [],
+      "horizontal_overflow_px": 0
+    }
+  ]
+}
