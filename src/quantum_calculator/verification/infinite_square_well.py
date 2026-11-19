@@ -25,8 +25,9 @@ _NOT_PERFORMED = (
     SkippedCheck(
         identifier="independent_discrete_solution",
         reason=(
-            "Nenhum método numérico está homologado nesta versão para comparar com uma "
-            "solução discreta independente."
+            "A comparação com uma solução discreta independente é feita pela ficha "
+            "quantum.infinite_square_well.discrete_spectrum, que usa esta expressão como "
+            "referência; esta ficha não a repete."
         ),
     ),
 )

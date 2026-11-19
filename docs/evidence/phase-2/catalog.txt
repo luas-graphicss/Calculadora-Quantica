@@ -28,7 +28,7 @@ calculus.antiderivative 1.0.0
   domínio: Expressões reais explícitas, escritas com as operações e funções registradas, sobre símbolos com domínio real declarado.
   domínio: A primitiva vale em cada intervalo em que o integrando está definido.
   limitação: Integrandos cuja primitiva pede funções especiais, como erf ou a integral seno, ficam fora da cobertura.
-  limitação: Nenhum método numérico está homologado nesta versão: sem primitiva coberta, nenhuma aproximação é oferecida.
+  limitação: Sem primitiva coberta, nenhuma aproximação é oferecida: uma primitiva não tem método numérico homologado.
   limitação: Quando o domínio tem exclusões, a constante de integração pode ser diferente em cada intervalo.
   exemplo: reference_cases/symbolic/reciprocal_primitive.json
 
@@ -39,7 +39,7 @@ calculus.definite_integral 1.0.0
   domínio: Expressões reais explícitas, escritas com as operações e funções registradas, sobre símbolos com domínio real declarado.
   domínio: Intervalo finito, com o integrando definido e uma primitiva contínua em todo o intervalo fechado.
   limitação: Uma singularidade do integrando ou da primitiva no intervalo fechado é recusada; integrais impróprias não são cobertas.
-  limitação: Nenhum método numérico está homologado nesta versão: sem primitiva coberta, nenhuma aproximação é oferecida.
+  limitação: Sem primitiva coberta, esta ficha não aproxima: a aproximação é pedida pela ficha calculus.definite_integral.adaptive_quadrature, com as tolerâncias escritas.
   exemplo: reference_cases/symbolic/parabola_area.json
 
 ode.first_order_linear.general_solution 1.0.0

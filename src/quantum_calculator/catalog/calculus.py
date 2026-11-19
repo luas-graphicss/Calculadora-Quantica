@@ -6,9 +6,13 @@ _EXPLICIT_REAL_EXPRESSIONS = (
     "Expressões reais explícitas, escritas com as operações e funções registradas, sobre "
     "símbolos com domínio real declarado."
 )
-_NO_NUMERICAL_ALTERNATIVE = (
-    "Nenhum método numérico está homologado nesta versão: sem primitiva coberta, nenhuma "
-    "aproximação é oferecida."
+_NO_APPROXIMATE_PRIMITIVE = (
+    "Sem primitiva coberta, nenhuma aproximação é oferecida: uma primitiva não tem método "
+    "numérico homologado."
+)
+_APPROXIMATION_IS_ANOTHER_CARD = (
+    "Sem primitiva coberta, esta ficha não aproxima: a aproximação é pedida pela ficha "
+    "calculus.definite_integral.adaptive_quadrature, com as tolerâncias escritas."
 )
 
 DERIVATIVE = StatementCard(
@@ -65,7 +69,7 @@ ANTIDERIVATIVE = StatementCard(
     limitations=(
         "Integrandos cuja primitiva pede funções especiais, como erf ou a integral seno, "
         "ficam fora da cobertura.",
-        _NO_NUMERICAL_ALTERNATIVE,
+        _NO_APPROXIMATE_PRIMITIVE,
         "Quando o domínio tem exclusões, a constante de integração pode ser diferente em "
         "cada intervalo.",
     ),
@@ -97,7 +101,7 @@ DEFINITE_INTEGRAL = StatementCard(
     limitations=(
         "Uma singularidade do integrando ou da primitiva no intervalo fechado é recusada; "
         "integrais impróprias não são cobertas.",
-        _NO_NUMERICAL_ALTERNATIVE,
+        _APPROXIMATION_IS_ANOTHER_CARD,
     ),
     example="reference_cases/symbolic/parabola_area.json",
 )

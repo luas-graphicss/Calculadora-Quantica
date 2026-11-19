@@ -362,7 +362,7 @@
     "not_performed": [
       {
         "identifier": "independent_discrete_solution",
-        "reason": "Nenhum método numérico está homologado nesta versão para comparar com uma solução discreta independente."
+        "reason": "A comparação com uma solução discreta independente é feita pela ficha quantum.infinite_square_well.discrete_spectrum, que usa esta expressão como referência; esta ficha não a repete."
       }
     ],
     "references": [
@@ -377,7 +377,7 @@
   "environment": {
     "package": {
       "name": "quantum-calculator",
-      "version": "0.3.0"
+      "version": "1.0.0rc1"
     },
     "python": {
       "implementation": "CPython",
@@ -400,6 +400,14 @@
       {
         "name": "scipy",
         "version": "1.18.1"
+      },
+      {
+        "name": "fastapi",
+        "version": "0.165.0"
+      },
+      {
+        "name": "uvicorn",
+        "version": "0.54.0"
       }
     ],
     "linear_algebra": [

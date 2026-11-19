@@ -51,7 +51,7 @@
       "category": "unsupported_problem",
       "code": "outside_coverage",
       "pointer": "/statement",
-      "reason": "A primitiva de exp(-x^2) pede a função erro, que não está registrada, e nenhum método numérico está homologado."
+      "reason": "A primitiva de exp(-x^2) pede a função erro, que não está registrada, e uma primitiva não tem método numérico homologado."
     },
     {
       "file": "expression_too_deep.json",

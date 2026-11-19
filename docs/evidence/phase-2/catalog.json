@@ -63,7 +63,7 @@
       },
       "limitations": [
         "Integrandos cuja primitiva pede funções especiais, como erf ou a integral seno, ficam fora da cobertura.",
-        "Nenhum método numérico está homologado nesta versão: sem primitiva coberta, nenhuma aproximação é oferecida.",
+        "Sem primitiva coberta, nenhuma aproximação é oferecida: uma primitiva não tem método numérico homologado.",
         "Quando o domínio tem exclusões, a constante de integração pode ser diferente em cada intervalo."
       ],
       "example": "reference_cases/symbolic/reciprocal_primitive.json"
@@ -85,7 +85,7 @@
       },
       "limitations": [
         "Uma singularidade do integrando ou da primitiva no intervalo fechado é recusada; integrais impróprias não são cobertas.",
-        "Nenhum método numérico está homologado nesta versão: sem primitiva coberta, nenhuma aproximação é oferecida."
+        "Sem primitiva coberta, esta ficha não aproxima: a aproximação é pedida pela ficha calculus.definite_integral.adaptive_quadrature, com as tolerâncias escritas."
       ],
       "example": "reference_cases/symbolic/parabola_area.json"
     },
