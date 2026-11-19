@@ -52,6 +52,95 @@ jobs:
           path: test-reports/
           if-no-files-found: error
 
+  interface:
+    name: Interface format, lint, types and unit tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Install Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: "24"
+      - name: Install the locked dependencies
+        run: npm ci
+      - name: Check formatting
+        run: npm run format:check
+      - name: Lint
+        run: npm run lint
+      - name: Check types
+        run: npm run typecheck
+      - name: Run the unit tests
+        run: npm test
+      - name: Build the interface
+        run: npm run build
+
+  workbench:
+    name: Drive the bench end to end from a clean install, network unplugged
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      QCALC_COMMAND: ${{ github.workspace }}/clean-environment/bin/qcalc
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Install uv
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2
+        with:
+          version: "0.13.5"
+          enable-cache: false
+      - name: Install Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: "24"
+      - name: Build the interface into the package
+        working-directory: web
+        run: |
+          npm ci
+          npm run build
+      - name: Build the wheel and confirm it carries the interface
+        run: |
+          uv build --wheel --out-dir dist
+          unzip -l dist/*.whl | grep --quiet 'quantum_calculator/interfaces/api/static/index.html'
+      - name: Install the wheel with the locked runtime dependencies only
+        run: |
+          uv export --locked --no-dev --no-emit-project --output-file runtime-requirements.txt
+          uv venv --python 3.12 clean-environment
+          uv pip install --python clean-environment/bin/python --require-hashes --requirement runtime-requirements.txt
+          uv pip install --python clean-environment/bin/python --no-deps dist/*.whl
+      - name: Install the browser
+        working-directory: web
+        run: npx playwright install --with-deps chromium
+      - name: Run the end-to-end journeys with only the loopback interface up
+        working-directory: web
+        run: |
+          sudo unshare --net -- sh -c '
+            ip link set lo up
+            if curl --silent --max-time 5 --output /dev/null https://github.com; then
+              echo "::error::the network namespace still reaches the network"
+              exit 1
+            fi
+            exec sudo --set-home --user "$1" env "PATH=$2" "QCALC_COMMAND=$3" "QCALC_ACCESSIBILITY_REPORT=$4" CI=true npm run e2e
+          ' unplugged "$(id -un)" "$PATH" "$QCALC_COMMAND" "$PWD/accessibility_report.json"
+      - name: Publish the end-to-end report
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: phase-4-workbench
+          path: |
+            web/test-results/
+            web/playwright-report/
+            web/accessibility_report.json
+          if-no-files-found: error
+
   clean-install:
     name: Reproduce the reference cases from a clean install
     runs-on: ubuntu-24.04
