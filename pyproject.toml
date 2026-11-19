@@ -88,7 +88,7 @@ known-first-party = ["quantum_calculator"]
 python_version = "3.12"
 strict = true
 warn_unreachable = true
-files = ["src", "tests", "benchmarks"]
+files = ["src", "tests", "benchmarks", "qualification"]
 mypy_path = "src:tests:."
 explicit_package_bases = true
 
