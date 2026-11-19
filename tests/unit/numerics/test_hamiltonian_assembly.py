@@ -12,7 +12,7 @@ from quantum_calculator.numerics.grid import (
     widened,
     with_boundary_nodes,
 )
-from quantum_calculator.numerics.hamiltonian import discrete_hamiltonian
+from quantum_calculator.numerics.hamiltonian import TridiagonalOperator, discrete_hamiltonian
 
 UNIT_WELL = ScaledGrid(left=0.0, right=1.0, subintervals=8)
 OSCILLATOR_DOMAIN = ScaledGrid(left=-2.0, right=2.0, subintervals=8)
@@ -111,3 +111,27 @@ def test_widening_keeps_the_spacing_and_the_center() -> None:
 
     assert (wider.left, wider.right, wider.subintervals) == (-2.5, 2.5, 10)
     assert spacing(wider) == spacing(OSCILLATOR_DOMAIN)
+
+
+def test_inertia_count_survives_a_threshold_that_zeroes_a_pivot() -> None:
+    operator = TridiagonalOperator(
+        diagonal=numpy.array([1.0, 1.0]), off_diagonal=numpy.array([-0.5])
+    )
+
+    assert [operator.eigenvalues_below(threshold) for threshold in (0.4, 1.0, 1.6)] == [0, 1, 2]
+
+
+@pytest.mark.parametrize("potential", [PotentialModel.ZERO, PotentialModel.HARMONIC])
+def test_inertia_count_agrees_with_a_dense_diagonalization(potential: PotentialModel) -> None:
+    operator = discrete_hamiltonian(ScaledGrid(-4.0, 4.0, 64), potential)
+    dense = (
+        numpy.diag(operator.diagonal)
+        + numpy.diag(operator.off_diagonal, 1)
+        + numpy.diag(operator.off_diagonal, -1)
+    )
+    eigenvalues = numpy.linalg.eigvalsh(dense)
+    thresholds = (eigenvalues[:-1] + eigenvalues[1:]) / 2
+
+    counted = [operator.eigenvalues_below(float(threshold)) for threshold in thresholds]
+
+    assert counted == list(range(1, len(eigenvalues)))

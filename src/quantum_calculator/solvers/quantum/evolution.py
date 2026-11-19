@@ -249,9 +249,9 @@ def _density_table(problem: EvolutionProblem, final_state: Amplitudes) -> Sample
                 POSITION,
                 "x",
                 "m",
-                tuple(float(value) for value in node_positions(problem.grid) * length),
+                tuple((node_positions(problem.grid) * length).tolist()),
             ),
-            SampleColumn(DENSITY, "|psi(x)|^2", "1/m", tuple(float(value) for value in density)),
+            SampleColumn(DENSITY, "|psi(x)|^2", "1/m", tuple(density.tolist())),
         ),
     )
 

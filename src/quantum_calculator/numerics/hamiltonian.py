@@ -1,3 +1,4 @@
+import sys
 from dataclasses import dataclass
 
 import numpy
@@ -6,6 +7,8 @@ from numpy.typing import NDArray
 from quantum_calculator.domain.numerical.problems import PotentialModel, ScaledGrid
 from quantum_calculator.numerics.evaluation import Samples
 from quantum_calculator.numerics.grid import interior_positions, spacing
+
+_BELOW_ZERO = -sys.float_info.min
 
 
 @dataclass(frozen=True, slots=True)
@@ -30,13 +33,14 @@ class TridiagonalOperator:
         return float(numpy.max(row_sums))
 
     def eigenvalues_below(self, threshold: float) -> int:
+        shifted: list[float] = (self.diagonal - threshold).tolist()
+        couplings: list[float] = [0.0, *(self.off_diagonal**2).tolist()]
         count = 0
         pivot = 1.0
-        for index, entry in enumerate(self.diagonal):
-            coupling = 0.0 if index == 0 else float(self.off_diagonal[index - 1]) ** 2 / pivot
-            pivot = float(entry) - threshold - coupling
+        for entry, coupling in zip(shifted, couplings, strict=True):
+            pivot = entry - coupling / pivot
             if pivot == 0.0:
-                pivot = -numpy.finfo(numpy.float64).tiny
+                pivot = _BELOW_ZERO
             count += pivot < 0.0
         return count
 

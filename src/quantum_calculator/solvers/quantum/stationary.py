@@ -184,7 +184,7 @@ def _effective(problem: SpectrumProblem) -> tuple[EffectiveParameter, ...]:
 
 
 def _as_tuple(values: Samples) -> tuple[float, ...]:
-    return tuple(float(value) for value in values)
+    return tuple(values.tolist())
 
 
 def _spectrum(problem: NumericalProblem) -> SpectrumProblem:

@@ -102,7 +102,7 @@ def _effective(problem: InitialValueProblem, evaluations: int) -> tuple[Effectiv
 
 
 def _as_tuple(values: Samples) -> tuple[float, ...]:
-    return tuple(float(value) for value in values)
+    return tuple(values.tolist())
 
 
 def _initial_value(problem: NumericalProblem) -> InitialValueProblem:
