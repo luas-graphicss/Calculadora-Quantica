@@ -132,12 +132,16 @@ class BenchSession:
     ) -> _RunDocument:
         if self._connection is None:
             raise BenchError("the bench session is not open")
-        self._connection.request(method, path, body, {**self._headers, **(headers or {})})
-        response = self._connection.getresponse()
-        content = response.read()
-        if response.status >= _FIRST_ERROR_STATUS:
+        sent = {**self._headers, **(headers or {})}
+        try:
+            status, content = _answer(self._connection, method, path, body, sent)
+        except ConnectionError:
+            # The bench closes an idle connection; the idempotency key makes resending safe.
+            self._connection.close()
+            status, content = _answer(self._connection, method, path, body, sent)
+        if status >= _FIRST_ERROR_STATUS:
             raise BenchError(
-                f"{method} {path} answered {response.status}: {content.decode('utf-8', 'replace')}"
+                f"{method} {path} answered {status}: {content.decode('utf-8', 'replace')}"
             )
         document: _RunDocument = json.loads(content)
         return document
@@ -154,3 +158,15 @@ class BenchSession:
         if self._server.stdout is not None:
             self._server.stdout.close()
         self._data.cleanup()
+
+
+def _answer(
+    connection: http.client.HTTPConnection,
+    method: str,
+    path: str,
+    body: bytes | None,
+    headers: dict[str, str],
+) -> tuple[int, bytes]:
+    connection.request(method, path, body, headers)
+    response = connection.getresponse()
+    return response.status, response.read()
