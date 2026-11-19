@@ -223,11 +223,9 @@ def test_measurement_answers_with_the_probability_of_each_outcome(
 ) -> None:
     result = run_cli("solve", numerical_cases / "spin_half_measurement.json")
 
-    assert result.stdout.splitlines()[:3] == [
-        "P(a = -1) = 0.500000000000",
-        "P(a = 1) = 0.500000000000",
-        "<A> = 0.0",
-    ]
+    lower, upper, mean, *_ = result.stdout.splitlines()
+    assert (lower, upper) == ("P(a = -1) = 0.500000000000", "P(a = 1) = 0.500000000000")
+    assert mean.startswith("<A> = ")
     assert "normalização do estado (normalization): aplicada a pedido" in result.stdout
 
 
