@@ -18,6 +18,18 @@ Cada caso é uma entrada que o CLI resolve e um oráculo escrito sem chamar o c�
         expectations.json                          categoria, código, campo, trecho e motivo
     reference_cases/notation/
       corpus.json                                  corpus rotulado: entrada, leitura pretendida e classificação
+    reference_cases/numerical/
+      sine_quadrature.json, decay_trajectory.json  integral do seno e decaimento exponencial
+      spin_half_measurement*.json                  spin 1/2 positivo em x medido em z, direto e em outra base com fase global
+      degenerate_measurement.json                  autovalor degenerado, conferido por projetor de subespaço
+      electron_box_1nm_discrete.json               três níveis do poço com 512 subintervalos
+      electron_box_1nm_coarse.json                 o mesmo poço com 16 subintervalos, deliberadamente sub-resolvido
+      harmonic_oscillator_1ev.json                 três níveis do oscilador entre menos e mais oito comprimentos
+      harmonic_oscillator_narrow.json              o mesmo oscilador com o domínio cortado em três comprimentos
+      electron_box_1nm_beat.json                   superposição dos dois primeiros estados por um período de batimento
+      expectations.json                            valor esperado, conta do oráculo, tolerância e veredito de cada caso
+      rejected/                                    entradas que devem ser recusadas, na validação ou pelo método
+        expectations.json                          categoria, código, campo e motivo
 
 Contrato de reprodução da fase 1:
 
@@ -30,6 +42,15 @@ Contrato de reprodução da fase 2:
     qcalc solve reference_cases/symbolic/decay_initial_value.json --format json
     qcalc solve reference_cases/symbolic/decay_candidate_wrong_initial_value.json --format json
 
+Contrato de reprodução da fase 3:
+
+    qcalc validate reference_cases/numerical/electron_box_1nm_discrete.json
+    qcalc solve reference_cases/numerical/electron_box_1nm_discrete.json --format json
+    qcalc solve reference_cases/numerical/electron_box_1nm_beat.json --format json
+    qcalc solve reference_cases/numerical/electron_box_1nm_coarse.json --format json
+
+O último termina com código 5: o resultado sai, mas a malha não é declarada convergida.
+
 Regras:
 
 - O valor esperado vem de uma fonte ou de uma derivação registrada neste diretório. Nunca da saída do método que ele confere.
@@ -37,3 +58,5 @@ Regras:
 - Cada entrada em `rejected/` difere do caso aceito por um único defeito, para que o diagnóstico esperado seja inequívoco.
 - Uma resposta simbólica é comparada por equivalência matemática com a de `expectations.json`, não pela forma do texto.
 - Os rótulos do corpus foram escritos à mão. Um item novo entra com a leitura pretendida e, se for recusado, com o motivo.
+- Uma resposta numérica é comparada com o oráculo dentro da tolerância declarada, nunca bit a bit. O oráculo é uma expressão fechada ou uma conta registrada, não a saída de outro método numérico da calculadora.
+- Um caso que deve sair sem aprovação declara o veredito e as checagens que não passam; ele continua tendo oráculo para os valores.
