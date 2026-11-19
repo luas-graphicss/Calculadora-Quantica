@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0",
+  "problem": "quantum.infinite_square_well.discrete_spectrum",
+  "description": "Elétron de massa livre em um poço infinito de 1 nm: três primeiros níveis por diferenças finitas, com 512 subintervalos.",
+  "hypotheses": {
+    "walls": "infinite",
+    "interior_potential": "zero",
+    "boundary_wavefunction": "zero"
+  },
+  "parameters": {
+    "mass": {
+      "constant": "electron_mass"
+    },
+    "width": {
+      "value": 1,
+      "unit": "nm"
+    }
+  },
+  "numerics": {
+    "subintervals": 512,
+    "levels": 3,
+    "order": 4
+  },
+  "requested": {
+    "unit": "eV",
+    "significant_digits": 10
+  }
+}

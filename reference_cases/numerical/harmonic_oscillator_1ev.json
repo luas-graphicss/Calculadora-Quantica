@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0",
+  "problem": "quantum.harmonic_oscillator.truncated_spectrum",
+  "description": "Elétron em um oscilador harmônico com quantum de 1 eV: três primeiros níveis entre menos e mais oito comprimentos do oscilador, com 1024 subintervalos.",
+  "hypotheses": {
+    "potential": "harmonic",
+    "domain": "truncated",
+    "boundary_wavefunction": "zero"
+  },
+  "parameters": {
+    "mass": {
+      "constant": "electron_mass"
+    },
+    "level_spacing": {
+      "value": 1,
+      "unit": "eV"
+    }
+  },
+  "numerics": {
+    "subintervals": 1024,
+    "levels": 3,
+    "half_width": 8
+  },
+  "requested": {
+    "unit": "eV",
+    "significant_digits": 10
+  }
+}

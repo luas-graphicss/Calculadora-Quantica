@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0",
+  "problem": "quantum.harmonic_oscillator.truncated_spectrum",
+  "description": "O mesmo oscilador de 1 eV com o domínio cortado em três comprimentos do oscilador: a malha é fina, mas o corte do domínio altera os níveis.",
+  "hypotheses": {
+    "potential": "harmonic",
+    "domain": "truncated",
+    "boundary_wavefunction": "zero"
+  },
+  "parameters": {
+    "mass": {
+      "constant": "electron_mass"
+    },
+    "level_spacing": {
+      "value": 1,
+      "unit": "eV"
+    }
+  },
+  "numerics": {
+    "subintervals": 1024,
+    "levels": 3,
+    "half_width": 3
+  },
+  "requested": {
+    "unit": "eV",
+    "significant_digits": 10
+  }
+}

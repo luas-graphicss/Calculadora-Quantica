@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0",
+  "problem": "quantum.finite_basis.projective_measurement",
+  "description": "Spin 1/2 preparado no estado positivo em x e medido em z, com a matriz de Pauli sigma_z.",
+  "hypotheses": {
+    "state": "pure",
+    "measurement": "projective"
+  },
+  "state": {
+    "components": [
+      0,
+      0
+    ],
+    "normalize": true
+  },
+  "observable": {
+    "matrix": [
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        -1
+      ]
+    ],
+    "unit": "1"
+  },
+  "numerics": {
+    "tolerance": "1e-12"
+  },
+  "requested": {
+    "significant_digits": 12
+  }
+}

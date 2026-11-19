@@ -1,0 +1,110 @@
+{
+  "description": "Cada entrada difere de um caso aceito por um único defeito. O CLI deve recusar com esta categoria, este código e este campo, sem imprimir resultado. As duas últimas passam na validação e são recusadas pelo método, em solve.",
+  "cases": [
+    {
+      "file": "non_hermitian_operator.json",
+      "category": "invalid_input",
+      "code": "non_hermitian_operator",
+      "pointer": "/observable/matrix",
+      "reason": "A matriz difere da sua transposta conjugada: não há medição projetiva com resultados reais."
+    },
+    {
+      "file": "zero_state.json",
+      "category": "invalid_input",
+      "code": "zero_state",
+      "pointer": "/state",
+      "reason": "O vetor nulo não é um estado e não pode ser normalizado."
+    },
+    {
+      "file": "unnormalized_state.json",
+      "category": "invalid_input",
+      "code": "state_not_normalized",
+      "pointer": "/state",
+      "reason": "O estado (1, 1) tem norma raiz de 2 e a normalização não foi pedida; ela não é aplicada em silêncio."
+    },
+    {
+      "file": "basis_not_orthonormal.json",
+      "category": "invalid_input",
+      "code": "basis_not_orthonormal",
+      "pointer": "/basis",
+      "reason": "Os vetores (1, 0) e (1, 1) não são ortonormais; a mudança de base não preservaria probabilidades."
+    },
+    {
+      "file": "incompatible_condition.json",
+      "category": "invalid_input",
+      "code": "incompatible_condition",
+      "pointer": "/conditions/1",
+      "reason": "Duas condições iniciais diferentes para a mesma função de uma equação de primeira ordem."
+    },
+    {
+      "file": "missing_initial_state.json",
+      "category": "invalid_input",
+      "code": "missing_field",
+      "pointer": "/initial_state",
+      "reason": "A evolução temporal não parte de um estado escolhido pela calculadora."
+    },
+    {
+      "file": "missing_numerics.json",
+      "category": "invalid_input",
+      "code": "missing_field",
+      "pointer": "/numerics",
+      "reason": "A resolução de um resultado aproximado não é escolhida em silêncio."
+    },
+    {
+      "file": "unknown_setting.json",
+      "category": "invalid_input",
+      "code": "unexpected_field",
+      "pointer": "/numerics/order",
+      "reason": "A ficha não tem um ajuste de ordem; um ajuste ignorado esconderia o método efetivo."
+    },
+    {
+      "file": "resource_limit.json",
+      "category": "budget_exceeded",
+      "code": "resource_limit_exceeded",
+      "pointer": "/numerics/subintervals",
+      "reason": "Um milhão de subintervalos passa do perfil homologado de 16384; a recusa vem antes de qualquer alocação."
+    },
+    {
+      "file": "estimated_work_too_large.json",
+      "category": "budget_exceeded",
+      "code": "resource_limit_exceeded",
+      "pointer": "/numerics",
+      "reason": "Cada ajuste está dentro do seu limite, mas 16384 subintervalos por 1048576 passos estimam mais de 2e9 operações."
+    },
+    {
+      "file": "empty_domain.json",
+      "category": "invalid_input",
+      "code": "number_out_of_range",
+      "pointer": "/numerics/half_width",
+      "reason": "Meia largura zero não define um domínio."
+    },
+    {
+      "file": "unrefinable_mesh.json",
+      "category": "invalid_input",
+      "code": "number_out_of_range",
+      "pointer": "/numerics/subintervals",
+      "reason": "510 subintervalos não permitem o estudo de refinamento em um quarto e na metade da malha."
+    },
+    {
+      "file": "parameter_without_value.json",
+      "category": "invalid_input",
+      "code": "missing_field",
+      "pointer": "/symbols/k/value",
+      "reason": "Um cálculo numérico precisa do valor de todo parâmetro."
+    },
+    {
+      "file": "divergent_integral.json",
+      "category": "non_convergent",
+      "code": "method_not_converged",
+      "pointer": "",
+      "reason": "1/x não é integrável através de x = 0: o integrador não atinge a tolerância e nenhum valor é aprovado."
+    },
+    {
+      "file": "blow_up_trajectory.json",
+      "category": "non_convergent",
+      "code": "method_not_converged",
+      "pointer": "",
+      "reason": "A solução 1/(1 - t) explode em t = 1 s, antes do fim do intervalo: o passo adaptativo colapsa."
+    }
+  ]
+}
