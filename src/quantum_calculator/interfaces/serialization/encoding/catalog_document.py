@@ -7,11 +7,11 @@ def encode_catalog(listing: CatalogListing) -> JsonObject:
     return {
         **document_header("catalog"),
         "version": listing.version,
-        "cards": [_encode_entry(entry) for entry in listing.entries],
+        "cards": [encode_catalog_entry(entry) for entry in listing.entries],
     }
 
 
-def _encode_entry(entry: CatalogEntry) -> JsonObject:
+def encode_catalog_entry(entry: CatalogEntry) -> JsonObject:
     return {
         "identifier": entry.identifier,
         "version": entry.version,
