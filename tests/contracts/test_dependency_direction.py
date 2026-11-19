@@ -80,6 +80,18 @@ def test_numpy_and_scipy_are_confined_to_numerical_code_and_the_environment_prob
             "algebra",
             ("application", "interfaces", "adapters", "catalog", "solvers", "verification"),
         ),
+        (
+            "numerics",
+            (
+                "application",
+                "interfaces",
+                "adapters",
+                "catalog",
+                "algebra",
+                "solvers",
+                "verification",
+            ),
+        ),
         ("solvers", ("application", "interfaces", "adapters", "catalog", "verification")),
         ("verification", ("application", "interfaces", "adapters", "catalog", "solvers")),
         (
