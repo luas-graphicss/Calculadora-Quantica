@@ -13,6 +13,7 @@ keywords = ["physics", "quantum-mechanics", "units", "reproducibility"]
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
     "Environment :: Console",
+    "Environment :: Web Environment",
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
     "Natural Language :: Portuguese (Brazilian)",
@@ -40,6 +41,9 @@ dev = [
     "ruff==0.17.5",
     "types-jsonschema==4.26.0.20261006",
 ]
+
+[tool.hatch.build]
+artifacts = ["src/quantum_calculator/interfaces/api/static/**"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/quantum_calculator"]
