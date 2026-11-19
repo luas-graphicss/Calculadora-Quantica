@@ -2,6 +2,9 @@ from quantum_calculator.domain.expressions import Statement
 from quantum_calculator.domain.ports import UnitRegistry
 from quantum_calculator.domain.statements import BoundSymbol, ValidatedStatement
 from quantum_calculator.domain.symbolic_solution import StatementPlan, SymbolicSolverReport
+from quantum_calculator.interfaces.serialization.encoding.common_sections import (
+    encode_budgeted_plan,
+)
 from quantum_calculator.interfaces.serialization.encoding.exact_values import JsonObject
 from quantum_calculator.interfaces.serialization.encoding.notated import (
     encode_condition,
@@ -64,16 +67,7 @@ class StatementEncoder:
 
 
 def encode_statement_plan(plan: StatementPlan) -> JsonObject:
-    return {
-        "method": plan.method.identifier,
-        "nature": plan.method.nature.value,
-        "justification": plan.method.justification,
-        "budget": {
-            "wall_seconds": plan.budget.wall_seconds,
-            "cpu_seconds": plan.budget.cpu_seconds,
-            "memory_bytes": plan.budget.memory_bytes,
-        },
-    }
+    return encode_budgeted_plan(plan.method, plan.budget)
 
 
 def _encode_read(source: str, statement: Statement) -> JsonObject:

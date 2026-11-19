@@ -73,6 +73,20 @@ class ObjectReader:
         )
         return tuple(items.text(index, expected, max_length) for index in items.keys)
 
+    def sequence(self, key: str, expected: str, max_length: int) -> Self:
+        return self._as_sequence(key, self._required(key, expected), expected, max_length)
+
+    def optional_sequence(self, key: str, expected: str, max_length: int) -> Self | None:
+        value = self._optional(key)
+        return None if value is None else self._as_sequence(key, value, expected, max_length)
+
+    def optional_flag(self, key: str, expected: str) -> bool | None:
+        value = self._optional(key)
+        if value is None or isinstance(value, bool):
+            return value
+        self.report(DiagnosticCode.INVALID_TYPE, key, "O campo deve ser true ou false.", expected)
+        return None
+
     def number(self, key: str, expected: str) -> ExactNumber:
         return self._as_number(key, self._required(key, expected), expected)
 
@@ -147,6 +161,19 @@ class ObjectReader:
                 NUMBER_EXPECTATION,
             )
             return _PLACEHOLDER_NUMBER
+
+    def _as_sequence(self, key: str, value: object, expected: str, max_length: int) -> Self:
+        if isinstance(value, list) and 0 < len(value) <= max_length:
+            items = {str(index): item for index, item in enumerate(value)}
+            return type(self)(items, self._pointer_to(key), self._diagnostics)
+        if value is not _MISSING:
+            self.report(
+                DiagnosticCode.INVALID_TYPE,
+                key,
+                f"O campo deve ser uma lista de 1 a {max_length} itens.",
+                expected,
+            )
+        return type(self)({}, self._pointer_to(key), [])
 
     def _as_reader(self, key: str, value: object, expected: str) -> Self:
         if isinstance(value, dict):

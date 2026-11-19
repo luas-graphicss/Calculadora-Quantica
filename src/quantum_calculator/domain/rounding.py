@@ -32,5 +32,9 @@ def render_square_root(value: Fraction, significant_digits: int) -> Decimal:
     return _half_even_context(significant_digits).plus(working.sqrt(quotient))
 
 
+def render_float(value: float, significant_digits: int) -> Decimal:
+    return _half_even_context(significant_digits).create_decimal(repr(float(value)))
+
+
 def _half_even_context(significant_digits: int) -> Context:
     return Context(prec=significant_digits, rounding=ROUND_HALF_EVEN)

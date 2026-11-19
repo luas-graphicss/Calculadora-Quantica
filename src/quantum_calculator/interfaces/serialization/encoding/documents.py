@@ -1,4 +1,3 @@
-from quantum_calculator.domain.constants import PhysicalConstant
 from quantum_calculator.domain.diagnostics import Diagnostic, ProblemRejectedError
 from quantum_calculator.domain.ports import UnitRegistry
 from quantum_calculator.domain.rounding import ROUNDING_MODE
@@ -11,10 +10,10 @@ from quantum_calculator.interfaces.serialization.encoding.common_sections import
     encode_input,
     encode_verification,
 )
+from quantum_calculator.interfaces.serialization.encoding.constants import encode_constant
 from quantum_calculator.interfaces.serialization.encoding.exact_values import (
     JsonObject,
     QuantityEncoder,
-    encode_exact,
 )
 from quantum_calculator.interfaces.serialization.encoding.problem_encoding import ProblemEncoder
 from quantum_calculator.interfaces.serialization.encoding.result_encoding import ResultEncoder
@@ -42,29 +41,15 @@ class DocumentEncoder:
             "plan": _encode_plan(record.plan),
             "constants": {
                 "edition": record.constants_edition,
-                "used": [self._encode_constant(constant) for constant in record.constants],
+                "used": [
+                    encode_constant(constant, self._quantities) for constant in record.constants
+                ],
             },
             "units": {"registry_version": record.unit_registry_version},
             "result": self._results.encode(record),
             "verification": encode_verification(record.verification),
             "limitations": list(record.problem.card.limitations),
             "environment": encode_environment(record.environment),
-        }
-
-    def _encode_constant(self, constant: PhysicalConstant) -> JsonObject:
-        uncertainty = constant.standard_uncertainty
-        return {
-            "identifier": constant.identifier,
-            "symbol": constant.symbol,
-            "name": constant.name,
-            "value": self._quantities.encode(constant.value),
-            "exactness": constant.exactness.value,
-            "standard_uncertainty": (
-                None
-                if uncertainty is None
-                else encode_exact(uncertainty, self._quantities.unit_of(constant.value))
-            ),
-            "source": constant.source,
         }
 
 

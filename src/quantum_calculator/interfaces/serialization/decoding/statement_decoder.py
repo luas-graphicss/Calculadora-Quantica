@@ -53,13 +53,17 @@ def _decode_symbols(fields: ObjectReader) -> tuple[SymbolDeclaration, ...]:
     return tuple(_decode_symbol(name, fields.nested(name, _SYMBOL_FORM)) for name in fields.keys)
 
 
-def _decode_symbol(name: str, fields: ObjectReader) -> SymbolDeclaration:
-    declaration = SymbolDeclaration(
+def read_symbol_declaration(name: str, fields: ObjectReader) -> SymbolDeclaration:
+    return SymbolDeclaration(
         name=name,
         role=fields.text("role", '"variable", "parameter" ou "function"'),
         domain=fields.text("domain", "o domínio do símbolo, por exemplo real ou positive"),
         unit=fields.text("unit", 'a unidade do símbolo, ou "1" para grandeza adimensional'),
         argument=fields.optional_text("argument", "a variável de que a função depende"),
     )
+
+
+def _decode_symbol(name: str, fields: ObjectReader) -> SymbolDeclaration:
+    declaration = read_symbol_declaration(name, fields)
     fields.reject_unknown_fields()
     return declaration
