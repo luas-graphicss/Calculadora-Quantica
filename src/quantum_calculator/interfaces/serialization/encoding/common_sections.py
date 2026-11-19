@@ -8,6 +8,7 @@ from quantum_calculator.domain.verification import VerificationReport
 from quantum_calculator.interfaces.serialization.encoding.exact_values import JsonObject
 
 OUTPUT_SCHEMA_VERSION = "1.2"
+READABLE_OUTPUT_SCHEMA_VERSIONS = ("1.0", "1.1", OUTPUT_SCHEMA_VERSION)
 
 
 def document_header(document: str) -> JsonObject:
