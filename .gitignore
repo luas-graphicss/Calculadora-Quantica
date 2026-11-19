@@ -13,3 +13,5 @@ node_modules/
 src/quantum_calculator/interfaces/api/static/
 web/playwright-report/
 web/test-results/
+*.sqlite3-shm
+*.sqlite3-wal
