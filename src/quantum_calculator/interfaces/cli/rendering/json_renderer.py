@@ -1,9 +1,11 @@
 import json
 
+from quantum_calculator.application.review_numerical import NumericalReview
 from quantum_calculator.application.review_problem import ProblemReview
 from quantum_calculator.application.review_statement import StatementReview
 from quantum_calculator.domain.cards import CatalogListing
 from quantum_calculator.domain.diagnostics import ProblemRejectedError
+from quantum_calculator.domain.numerical.report import NumericalRunRecord
 from quantum_calculator.domain.ports import UnitRegistry
 from quantum_calculator.domain.run_record import RunRecord
 from quantum_calculator.domain.symbolic_solution import StatementRunRecord
@@ -13,6 +15,9 @@ from quantum_calculator.interfaces.serialization.encoding.documents import (
     encode_rejection,
 )
 from quantum_calculator.interfaces.serialization.encoding.exact_values import JsonObject
+from quantum_calculator.interfaces.serialization.encoding.numerical_documents import (
+    NumericalDocumentEncoder,
+)
 from quantum_calculator.interfaces.serialization.encoding.statement_documents import (
     StatementDocumentEncoder,
 )
@@ -22,6 +27,7 @@ class JsonRenderer:
     def __init__(self, units: UnitRegistry) -> None:
         self._problems = DocumentEncoder(units)
         self._statements = StatementDocumentEncoder(units)
+        self._numerical = NumericalDocumentEncoder(units)
 
     def validation(self, review: ProblemReview) -> str:
         return _dump(self._problems.validation(review.problem, review.plan))
@@ -34,6 +40,12 @@ class JsonRenderer:
 
     def statement_run_record(self, record: StatementRunRecord) -> str:
         return _dump(self._statements.run_record(record))
+
+    def numerical_validation(self, review: NumericalReview) -> str:
+        return _dump(self._numerical.validation(review.problem, review.plan))
+
+    def numerical_run_record(self, record: NumericalRunRecord) -> str:
+        return _dump(self._numerical.run_record(record))
 
     def catalog(self, listing: CatalogListing) -> str:
         return _dump(encode_catalog(listing))

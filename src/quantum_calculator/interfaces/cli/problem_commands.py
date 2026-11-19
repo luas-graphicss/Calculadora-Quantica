@@ -9,6 +9,7 @@ from quantum_calculator.domain.execution import (
     CalculationFailedError,
     CancellationSignal,
 )
+from quantum_calculator.domain.numerical.spec import NumericalSpec
 from quantum_calculator.domain.statements import StatementSpec
 from quantum_calculator.domain.verification import VerificationReport, VerificationStatus
 from quantum_calculator.interfaces.cli.exit_codes import ExitCode
@@ -24,6 +25,7 @@ _EXIT_CODE_BY_CATEGORY = {
     DiagnosticCategory.UNSUPPORTED_PROBLEM: ExitCode.UNSUPPORTED_PROBLEM,
     DiagnosticCategory.AMBIGUOUS_INPUT: ExitCode.AMBIGUOUS_INPUT,
     DiagnosticCategory.BUDGET_EXCEEDED: ExitCode.BUDGET_EXCEEDED,
+    DiagnosticCategory.NON_CONVERGENT: ExitCode.NON_CONVERGENT,
 }
 _NOTHING_KEPT = "nenhum resultado parcial foi aproveitado"
 
@@ -50,16 +52,21 @@ class ProblemCommands:
         return self._run(path, self._solve)
 
     def _review(self, spec: InputSpec) -> ExitCode:
-        if isinstance(spec, StatementSpec):
-            review = self._calculator.review_statement.execute(spec)
-            self._stdout.write(self._renderer.statement_validation(review))
+        calculator, renderer = self._calculator, self._renderer
+        if isinstance(spec, NumericalSpec):
+            report = renderer.numerical_validation(calculator.review_numerical.execute(spec))
+        elif isinstance(spec, StatementSpec):
+            report = renderer.statement_validation(calculator.review_statement.execute(spec))
         else:
-            self._stdout.write(
-                self._renderer.validation(self._calculator.review_problem.execute(spec))
-            )
+            report = renderer.validation(calculator.review_problem.execute(spec))
+        self._stdout.write(report)
         return ExitCode.SUCCESS
 
     def _solve(self, spec: InputSpec) -> ExitCode:
+        if isinstance(spec, NumericalSpec):
+            computed = self._calculator.solve_numerical.execute(spec, self._cancellation)
+            self._stdout.write(self._renderer.numerical_run_record(computed))
+            return _exit_code_for(computed.verification)
         if isinstance(spec, StatementSpec):
             solved = self._calculator.solve_statement.execute(spec, self._cancellation)
             self._stdout.write(self._renderer.statement_run_record(solved))
@@ -75,7 +82,7 @@ class ProblemCommands:
             self._stderr.write(f"qcalc: não foi possível ler {path}: {error.strerror}\n")
             return ExitCode.INPUT_UNREADABLE
         try:
-            return command(decode_input(raw))
+            return command(decode_input(raw, self._calculator.numerical_cards))
         except ProblemRejectedError as rejection:
             self._stderr.write(self._renderer.rejection(rejection))
             return _EXIT_CODE_BY_CATEGORY[rejection.category]

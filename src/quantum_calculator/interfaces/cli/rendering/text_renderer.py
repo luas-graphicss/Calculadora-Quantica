@@ -1,8 +1,10 @@
+from quantum_calculator.application.review_numerical import NumericalReview
 from quantum_calculator.application.review_problem import ProblemReview
 from quantum_calculator.application.review_statement import StatementReview
 from quantum_calculator.application.statements.budget import describe_budget
 from quantum_calculator.domain.cards import CatalogListing
 from quantum_calculator.domain.diagnostics import ProblemRejectedError
+from quantum_calculator.domain.numerical.report import NumericalRunRecord
 from quantum_calculator.domain.ports import UnitRegistry
 from quantum_calculator.domain.rounding import ROUNDING_MODE
 from quantum_calculator.domain.run_record import RunRecord
@@ -14,6 +16,13 @@ from quantum_calculator.interfaces.cli.rendering.text.common_sections import (
     verification_section,
 )
 from quantum_calculator.interfaces.cli.rendering.text.formatting import QuantityFormatter, section
+from quantum_calculator.interfaces.cli.rendering.text.numerical_sections import (
+    numerical_answer_lines,
+    numerical_constants_section,
+    numerical_method_section,
+    numerical_problem_sections,
+)
+from quantum_calculator.interfaces.cli.rendering.text.numerical_tables import table_sections
 from quantum_calculator.interfaces.cli.rendering.text.problem_sections import (
     problem_sections,
     request_section,
@@ -92,6 +101,39 @@ class TextRenderer:
                 *solution_sections(record),
                 *verification_section(record.verification),
                 *limitations_section(record.problem.card.limitations),
+                *environment_section(
+                    record.environment,
+                    f"catálogo {record.catalog_version}; "
+                    f"registro de unidades {record.unit_registry_version}",
+                ),
+            ]
+        )
+
+    def numerical_validation(self, review: NumericalReview) -> str:
+        context = review.problem.context
+        method = review.plan.method
+        return _join(
+            [
+                f"Problema numérico válido: {context.card.identifier} {context.card.version}",
+                f"plano: {method.identifier}, resultado {method.nature.value}, "
+                f"{context.rounding.significant_digits} algarismos significativos, "
+                f"arredondamento {ROUNDING_MODE}; limites: {describe_budget(review.plan.budget)}",
+                *numerical_problem_sections(review.problem),
+                *limitations_section(context.card.limitations),
+            ]
+        )
+
+    def numerical_run_record(self, record: NumericalRunRecord) -> str:
+        context = record.problem.context
+        return _join(
+            [
+                *numerical_answer_lines(record),
+                *numerical_problem_sections(record.problem),
+                *numerical_constants_section(record, self._numbers),
+                *numerical_method_section(record),
+                *table_sections(record.report.tables, context.rounding.significant_digits),
+                *verification_section(record.verification),
+                *limitations_section(context.card.limitations),
                 *environment_section(
                     record.environment,
                     f"catálogo {record.catalog_version}; "

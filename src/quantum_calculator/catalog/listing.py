@@ -1,12 +1,13 @@
 from quantum_calculator.catalog.card_catalog import HOMOLOGATED_CARDS
+from quantum_calculator.catalog.numerical_catalog import HOMOLOGATED_NUMERICAL_CARDS
 from quantum_calculator.catalog.statement_catalog import HOMOLOGATED_STATEMENT_CARDS
 from quantum_calculator.domain.cards import CatalogEntry, CatalogListing
 
-CATALOG_VERSION = "1.1.0"
+CATALOG_VERSION = "1.2.0"
 
 
 def catalog_entries() -> tuple[CatalogEntry, ...]:
-    return (*HOMOLOGATED_CARDS, *HOMOLOGATED_STATEMENT_CARDS)
+    return (*HOMOLOGATED_CARDS, *HOMOLOGATED_STATEMENT_CARDS, *HOMOLOGATED_NUMERICAL_CARDS)
 
 
 def catalog_listing() -> CatalogListing:
