@@ -60,6 +60,20 @@
       "pointer": "/statement",
       "excerpt": "(",
       "reason": "Quarenta parênteses aninhados passam do limite de 32 níveis."
+    },
+    {
+      "file": "nonlinear_equation.json",
+      "category": "unsupported_problem",
+      "code": "outside_coverage",
+      "pointer": "/statement",
+      "reason": "y' = -k*y^2 não é linear em y; a solução geral da ficha, uma exponencial, não vale para ela, e nenhum método para equação não linear está homologado."
+    },
+    {
+      "file": "candidate_for_nonlinear_equation.json",
+      "category": "unsupported_problem",
+      "code": "outside_coverage",
+      "pointer": "/statement",
+      "reason": "A revisão por substituição só está homologada para a equação linear; para y' = -k*y^2 a candidata não é aprovada nem reprovada."
     }
   ]
 }
