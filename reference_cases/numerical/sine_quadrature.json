@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "problem": "calculus.definite_integral.adaptive_quadrature",
+  "description": "Integral do seno de zero a pi; o valor exato é 2.",
+  "notation": "text",
+  "statement": "integral(sin(x), x, 0, pi)",
+  "symbols": {
+    "x": {
+      "role": "variable",
+      "domain": "real",
+      "unit": "1"
+    }
+  },
+  "numerics": {
+    "absolute_tolerance": "1e-12",
+    "relative_tolerance": "1e-12",
+    "subdivision_limit": 50
+  },
+  "requested": {
+    "significant_digits": 12
+  }
+}

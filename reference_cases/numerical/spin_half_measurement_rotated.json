@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0",
+  "problem": "quantum.finite_basis.projective_measurement",
+  "description": "O mesmo spin 1/2 positivo em x, medido em z, com o estado multiplicado pela fase global i e o cálculo feito na base girada de 3-4-5.",
+  "hypotheses": {
+    "state": "pure",
+    "measurement": "projective"
+  },
+  "state": {
+    "components": [
+      {
+        "real": 0,
+        "imaginary": 1
+      },
+      {
+        "real": 0,
+        "imaginary": 1
+      }
+    ],
+    "normalize": true
+  },
+  "observable": {
+    "matrix": [
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        -1
+      ]
+    ],
+    "unit": "1"
+  },
+  "basis": [
+    [
+      "0.6",
+      "0.8"
+    ],
+    [
+      "-0.8",
+      "0.6"
+    ]
+  ],
+  "numerics": {
+    "tolerance": "1e-12"
+  },
+  "requested": {
+    "significant_digits": 12
+  }
+}

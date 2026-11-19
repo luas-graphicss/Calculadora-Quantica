@@ -1,0 +1,506 @@
+{
+  "document": "numerical_run_record",
+  "schema_version": "1.2",
+  "input": {
+    "sha256": "5c31e16e0cb99d53f00c807e215195b5e155fba795b5dd1dba77a7ce96f0c042",
+    "schema_version": "1.0",
+    "description": "O mesmo poço de 1 nm com só 16 subintervalos: caso deliberadamente sub-resolvido, que não pode sair como malha convergida.",
+    "text": "{\n  \"schema_version\": \"1.0\",\n  \"problem\": \"quantum.infinite_square_well.discrete_spectrum\",\n  \"description\": \"O mesmo poço de 1 nm com só 16 subintervalos: caso deliberadamente sub-resolvido, que não pode sair como malha convergida.\",\n  \"hypotheses\": {\n    \"walls\": \"infinite\",\n    \"interior_potential\": \"zero\",\n    \"boundary_wavefunction\": \"zero\"\n  },\n  \"parameters\": {\n    \"mass\": {\n      \"constant\": \"electron_mass\"\n    },\n    \"width\": {\n      \"value\": 1,\n      \"unit\": \"nm\"\n    }\n  },\n  \"numerics\": {\n    \"subintervals\": 16,\n    \"levels\": 3\n  },\n  \"requested\": {\n    \"unit\": \"eV\",\n    \"significant_digits\": 10\n  }\n}\n"
+  },
+  "problem": {
+    "card": {
+      "identifier": "quantum.infinite_square_well.discrete_spectrum",
+      "version": "1.0.0",
+      "area": "stationary_schrodinger_1d",
+      "problem_type": "discrete_spectrum",
+      "title": "Níveis e autofunções do poço infinito por diferenças finitas",
+      "family": "well_spectrum"
+    },
+    "domain": [
+      "Partícula única, não relativística e sem spin, em uma dimensão espacial.",
+      "Massa e largura estritamente positivas; os primeiros níveis, até 32, em uma malha uniforme de até 16384 subintervalos."
+    ],
+    "hypotheses": [
+      {
+        "key": "walls",
+        "value": "infinite",
+        "statement": "As paredes do poço são infinitas: a partícula não sai do intervalo."
+      },
+      {
+        "key": "interior_potential",
+        "value": "zero",
+        "statement": "O potencial dentro do poço é nulo, o que põe o zero de energia no fundo do poço."
+      },
+      {
+        "key": "boundary_wavefunction",
+        "value": "zero",
+        "statement": "A função de onda se anula nas duas extremidades (Dirichlet homogênea)."
+      }
+    ],
+    "inputs": [
+      {
+        "name": "mass",
+        "label": "massa da partícula",
+        "value": "9.1093837139E-31 kg",
+        "origin": "constante electron_mass do catálogo"
+      },
+      {
+        "name": "width",
+        "label": "largura do poço",
+        "value": "1E-9 m",
+        "origin": "entrada: 1 nm"
+      }
+    ],
+    "resolution": [
+      {
+        "name": "subintervals",
+        "label": "subintervalos da malha uniforme",
+        "value": "16"
+      },
+      {
+        "name": "levels",
+        "label": "níveis pedidos, a partir do fundamental",
+        "value": "3"
+      }
+    ],
+    "estimate": {
+      "memory_bytes": 2304,
+      "operations": 9600
+    },
+    "rounding": {
+      "mode": "half_even",
+      "significant_digits": 10
+    }
+  },
+  "plan": {
+    "method": "finite_difference.tridiagonal_eigensolver",
+    "nature": "approximate",
+    "justification": "O Hamiltoniano é discretizado por diferenças centrais de segunda ordem nos nós internos de uma malha uniforme; os níveis pedidos saem das diagonais, sem matriz densa, e o erro de malha é estimado por refinamento.",
+    "budget": {
+      "wall_seconds": 30.0,
+      "cpu_seconds": 30,
+      "memory_bytes": 2147483648
+    }
+  },
+  "catalog": {
+    "version": "1.2.0"
+  },
+  "constants": {
+    "edition": "CODATA 2022",
+    "used": [
+      {
+        "identifier": "planck_constant",
+        "symbol": "h",
+        "name": "constante de Planck",
+        "value": {
+          "decimal": "6.62607015E-34",
+          "is_exact": true,
+          "numerator": "132521403",
+          "denominator": "200000000000000000000000000000000000000000",
+          "unit": "J s"
+        },
+        "exactness": "exact",
+        "standard_uncertainty": null,
+        "source": "https://physics.nist.gov/cgi-bin/cuu/Value?h"
+      },
+      {
+        "identifier": "electron_mass",
+        "symbol": "m_e",
+        "name": "massa do elétron",
+        "value": {
+          "decimal": "9.1093837139E-31",
+          "is_exact": true,
+          "numerator": "91093837139",
+          "denominator": "100000000000000000000000000000000000000000",
+          "unit": "kg"
+        },
+        "exactness": "measured",
+        "standard_uncertainty": {
+          "decimal": "2.8E-40",
+          "is_exact": true,
+          "numerator": "7",
+          "denominator": "25000000000000000000000000000000000000000",
+          "unit": "kg"
+        },
+        "source": "https://physics.nist.gov/cgi-bin/cuu/Value?me"
+      },
+      {
+        "identifier": "electron_volt",
+        "symbol": "eV",
+        "name": "elétron-volt em joules",
+        "value": {
+          "decimal": "1.602176634E-19",
+          "is_exact": true,
+          "numerator": "801088317",
+          "denominator": "5000000000000000000000000000",
+          "unit": "J"
+        },
+        "exactness": "exact",
+        "standard_uncertainty": null,
+        "source": "https://physics.nist.gov/cgi-bin/cuu/Value?evj"
+      }
+    ]
+  },
+  "units": {
+    "registry_version": "1.0.0"
+  },
+  "result": {
+    "nature": "approximate",
+    "answers": [
+      {
+        "name": "energy_1",
+        "symbol": "E_1",
+        "label": "energia do nível 1, contado a partir do fundamental",
+        "value": 0.37482361820656057,
+        "display": "0.3748236182",
+        "unit": "eV",
+        "estimate": {
+          "value": 0.0012003551203465402,
+          "display": "0.0012",
+          "origin": "erro de malha estimado por extrapolação de Richardson entre 8 e 16 subintervalos"
+        }
+      },
+      {
+        "name": "energy_2",
+        "symbol": "E_2",
+        "label": "energia do nível 2, contado a partir do fundamental",
+        "value": 1.4848902113820828,
+        "display": "1.484890211",
+        "unit": "eV",
+        "estimate": {
+          "value": 0.018838422843302633,
+          "display": "0.019",
+          "origin": "erro de malha estimado por extrapolação de Richardson entre 8 e 16 subintervalos"
+        }
+      },
+      {
+        "name": "energy_3",
+        "symbol": "E_3",
+        "label": "energia do nível 3, contado a partir do fundamental",
+        "value": 3.2875405428833413,
+        "display": "3.287540543",
+        "unit": "eV",
+        "estimate": {
+          "value": 0.09234174704387149,
+          "display": "0.092",
+          "origin": "erro de malha estimado por extrapolação de Richardson entre 8 e 16 subintervalos"
+        }
+      }
+    ],
+    "tables": [
+      {
+        "name": "eigenfunctions",
+        "title": "Autofunções normalizadas pela integral na malha, com os extremos nulos restaurados",
+        "rows": 17,
+        "columns": [
+          {
+            "name": "position",
+            "symbol": "x",
+            "unit": "m",
+            "values": [
+              0.0,
+              6.25e-11,
+              1.25e-10,
+              1.8750000000000002e-10,
+              2.5e-10,
+              3.125e-10,
+              3.7500000000000005e-10,
+              4.3750000000000004e-10,
+              5e-10,
+              5.625000000000001e-10,
+              6.25e-10,
+              6.875000000000001e-10,
+              7.500000000000001e-10,
+              8.125e-10,
+              8.750000000000001e-10,
+              9.375000000000001e-10,
+              1e-09
+            ]
+          },
+          {
+            "name": "psi_1",
+            "symbol": "psi_1(x)",
+            "unit": "m^-1/2",
+            "values": [
+              0.0,
+              8724.704435607728,
+              17114.123372625665,
+              24845.856146144564,
+              31622.776601683778,
+              37184.45148667772,
+              41317.148754319285,
+              43862.051166256315,
+              44721.3595499958,
+              43862.05116625631,
+              41317.14875431927,
+              37184.451486677724,
+              31622.776601683792,
+              24845.85614614457,
+              17114.123372625676,
+              8724.704435607733,
+              0.0
+            ]
+          },
+          {
+            "name": "psi_2",
+            "symbol": "psi_2(x)",
+            "unit": "m^-1/2",
+            "values": [
+              0.0,
+              17114.12337262568,
+              31622.7766016838,
+              41317.14875431929,
+              44721.359549995796,
+              41317.14875431927,
+              31622.776601683763,
+              17114.123372625647,
+              -2.8374070763083096e-11,
+              -17114.123372625698,
+              -31622.776601683807,
+              -41317.148754319285,
+              -44721.35954999579,
+              -41317.14875431928,
+              -31622.77660168379,
+              -17114.123372625672,
+              0.0
+            ]
+          },
+          {
+            "name": "psi_3",
+            "symbol": "psi_3(x)",
+            "unit": "m^-1/2",
+            "values": [
+              0.0,
+              24845.856146144575,
+              41317.14875431929,
+              43862.051166256315,
+              31622.77660168379,
+              8724.704435607722,
+              -17114.123372625683,
+              -37184.45148667774,
+              -44721.359549995796,
+              -37184.45148667774,
+              -17114.123372625683,
+              8724.704435607722,
+              31622.77660168379,
+              43862.051166256315,
+              41317.14875431929,
+              24845.856146144575,
+              0.0
+            ]
+          }
+        ]
+      },
+      {
+        "name": "refinement",
+        "title": "Energia de cada nível em cada malha do estudo de refinamento",
+        "rows": 9,
+        "columns": [
+          {
+            "name": "level",
+            "symbol": "nível",
+            "unit": "1",
+            "values": [
+              1.0,
+              1.0,
+              1.0,
+              2.0,
+              2.0,
+              2.0,
+              3.0,
+              3.0,
+              3.0
+            ]
+          },
+          {
+            "name": "subintervals",
+            "symbol": "N",
+            "unit": "1",
+            "values": [
+              4.0,
+              8.0,
+              16.0,
+              4.0,
+              8.0,
+              16.0,
+              4.0,
+              8.0,
+              16.0
+            ]
+          },
+          {
+            "name": "energy",
+            "symbol": "E",
+            "unit": "eV",
+            "values": [
+              0.35709373571304365,
+              0.37122255284552097,
+              0.37482361820656057,
+              1.219194275509947,
+              1.4283749428521748,
+              1.4848902113820828,
+              2.0812948153068502,
+              3.010515301751727,
+              3.2875405428833413
+            ]
+          }
+        ]
+      }
+    ],
+    "effective": [
+      {
+        "name": "length_scale",
+        "label": "escala de comprimento",
+        "value": "1e-09 m"
+      },
+      {
+        "name": "energy_scale",
+        "label": "escala de energia",
+        "value": "1.220852862830372e-20 J"
+      },
+      {
+        "name": "time_scale",
+        "label": "escala de tempo",
+        "value": "8.63799274878451e-15 s"
+      },
+      {
+        "name": "spacing",
+        "label": "espaçamento da malha",
+        "value": "6.25e-11 m"
+      },
+      {
+        "name": "unknowns",
+        "label": "incógnitas internas",
+        "value": "15"
+      },
+      {
+        "name": "eigensolver",
+        "label": "diagonalização",
+        "value": "scipy.linalg.eigh_tridiagonal sobre as diagonais, só os níveis 1 a 3; nenhuma matriz densa"
+      },
+      {
+        "name": "termination",
+        "label": "motivo de término",
+        "value": "os níveis pedidos convergiram no LAPACK"
+      }
+    ],
+    "warnings": []
+  },
+  "verification": {
+    "status": "inconclusive",
+    "checks": [
+      {
+        "identifier": "discrete_residual",
+        "kind": "numerical_evidence",
+        "status": "passed",
+        "statement": "Cada par relatado satisfaz o problema discreto: o resíduo ||H psi - E psi|| / ((||H||_inf + |E|) ||psi||) fica abaixo do limite. Isso confere o operador discreto, não a convergência da malha.",
+        "observed": "maior resíduo adimensional: 1.071e-16, dentro do limite 1.000e-10"
+      },
+      {
+        "identifier": "weighted_orthonormality",
+        "kind": "numerical_evidence",
+        "status": "passed",
+        "statement": "As autofunções relatadas são ortonormais com o peso da malha: a integral discreta de psi_i psi_j difere da identidade menos que o limite.",
+        "observed": "maior desvio da identidade: 3.197e-16, dentro do limite 1.000e-10"
+      },
+      {
+        "identifier": "dirichlet_boundary",
+        "kind": "consistency_test",
+        "status": "passed",
+        "statement": "As autofunções relatadas se anulam nos dois extremos do domínio.",
+        "observed": "maior valor nos extremos: 0.000e+00, dentro do limite 0.000e+00"
+      },
+      {
+        "identifier": "level_placement",
+        "kind": "numerical_evidence",
+        "status": "passed",
+        "statement": "Abaixo da energia relatada do nível k há exatamente k - 1 autovalores do operador discreto, contados pela inércia sem diagonalizar: nenhum nível foi pulado.",
+        "observed": "a contagem confirma os níveis 1 a 3"
+      },
+      {
+        "identifier": "mesh_refinement",
+        "kind": "numerical_evidence",
+        "status": "inconclusive",
+        "statement": "Dobrando a malha duas vezes, a diferença entre energias cai com ordem observada entre 1.8 e 2.2 em todos os níveis, o que indica o regime assintótico de segunda ordem.",
+        "observed": "ordem observada entre 1.746 e 1.972 com 4, 8 e 16 subintervalos: a malha não está no regime assintótico e não é declarada convergida"
+      },
+      {
+        "identifier": "closed_form_agreement",
+        "kind": "numerical_evidence",
+        "status": "passed",
+        "statement": "As energias discretas concordam com a expressão fechada do modelo dentro de duas vezes o erro de malha estimado.",
+        "observed": "maior diferença, em unidades do erro de malha estimado: 1.048e+00, dentro do limite 2.000e+00"
+      }
+    ],
+    "not_performed": [
+      {
+        "identifier": "domain_truncation",
+        "reason": "As paredes fazem parte do modelo: não há domínio a ampliar."
+      }
+    ],
+    "references": [
+      "D. J. Griffiths e D. F. Schroeter, Introduction to Quantum Mechanics, 3ª ed., Cambridge University Press, 2018, seções 2.2 e 2.3.",
+      "R. J. LeVeque, Finite Difference Methods for Ordinary and Partial Differential Equations, SIAM, 2007, capítulo 2."
+    ]
+  },
+  "limitations": [
+    "A resposta é aproximada: o erro de malha cai com o quadrado do espaçamento e só é declarado convergido quando o refinamento mostra a ordem esperada.",
+    "A expressão fechada do poço, da ficha quantum.infinite_square_well.energy_level, é usada só como referência independente na verificação.",
+    "Incertezas dos parâmetros não são propagadas por esta ficha: a incerteza experimental fica não avaliada."
+  ],
+  "environment": {
+    "package": {
+      "name": "quantum-calculator",
+      "version": "0.3.0"
+    },
+    "python": {
+      "implementation": "CPython",
+      "version": "3.12.15"
+    },
+    "platform": "Linux-6.18.56-x86_64-with-glibc2.34",
+    "dependencies": [
+      {
+        "name": "sympy",
+        "version": "1.14.0"
+      },
+      {
+        "name": "mpmath",
+        "version": "1.3.0"
+      },
+      {
+        "name": "numpy",
+        "version": "2.5.5"
+      },
+      {
+        "name": "scipy",
+        "version": "1.18.1"
+      }
+    ],
+    "linear_algebra": [
+      {
+        "consumer": "numpy",
+        "interface": "blas",
+        "name": "scipy-openblas",
+        "version": "0.3.34.237.2"
+      },
+      {
+        "consumer": "numpy",
+        "interface": "lapack",
+        "name": "scipy-openblas",
+        "version": "0.3.34.237.2"
+      },
+      {
+        "consumer": "scipy",
+        "interface": "blas",
+        "name": "scipy-openblas",
+        "version": "0.3.31.dev"
+      },
+      {
+        "consumer": "scipy",
+        "interface": "lapack",
+        "name": "scipy-openblas",
+        "version": "0.3.31.dev"
+      }
+    ]
+  }
+}

@@ -38,10 +38,10 @@ def decode_problem_document(source: SourceDocument, content: dict[str, object]) 
         schema_version=decode_schema_version(document, PROBLEM_SCHEMA_VERSION),
         card_identifier=document.text("problem", "identificador de uma ficha do catálogo"),
         description=document.optional_text("description", "texto livre que descreve o caso"),
-        hypotheses=_decode_hypotheses(
+        hypotheses=decode_hypotheses(
             document.nested("hypotheses", "objeto com as hipóteses confirmadas")
         ),
-        parameters=_decode_parameters(
+        parameters=decode_parameters(
             document.nested("parameters", "objeto com os parâmetros do problema")
         ),
         requested=_decode_requested(
@@ -59,14 +59,14 @@ def decode_problem_document(source: SourceDocument, content: dict[str, object]) 
     return spec
 
 
-def _decode_hypotheses(fields: ObjectReader) -> tuple[HypothesisInput, ...]:
+def decode_hypotheses(fields: ObjectReader) -> tuple[HypothesisInput, ...]:
     return tuple(
         HypothesisInput(key, fields.text(key, "texto com o valor confirmado da hipótese"))
         for key in fields.keys
     )
 
 
-def _decode_parameters(fields: ObjectReader) -> tuple[ParameterInput, ...]:
+def decode_parameters(fields: ObjectReader) -> tuple[ParameterInput, ...]:
     return tuple(ParameterInput(name, _decode_parameter(fields, name)) for name in fields.keys)
 
 

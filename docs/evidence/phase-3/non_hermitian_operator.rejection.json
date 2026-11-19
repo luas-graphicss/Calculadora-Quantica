@@ -1,0 +1,15 @@
+{
+  "document": "rejection",
+  "schema_version": "1.2",
+  "category": "invalid_input",
+  "diagnostics": [
+    {
+      "category": "invalid_input",
+      "code": "non_hermitian_operator",
+      "pointer": "/observable/matrix",
+      "message": "O observável difere do seu adjunto conjugado em até 1.0: só um operador hermitiano tem medição projetiva com resultados reais.",
+      "expected": "matriz igual à sua transposta conjugada",
+      "excerpt": null
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+Entrada recusada (invalid_input)
+  /initial_state [missing_field]
+    A ficha quantum.infinite_square_well.time_evolution exige o campo initial_state, que está ausente.
+    esperado: o campo initial_state, como no exemplo reference_cases/numerical/electron_box_1nm_beat.json

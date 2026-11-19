@@ -1,0 +1,4 @@
+Entrada recusada (invalid_input)
+  /conditions/1 [incompatible_condition]
+    A função y já tem condição inicial: uma equação de primeira ordem aceita uma só.
+    esperado: uma condição por função, todas no mesmo instante, como y(0) = 1

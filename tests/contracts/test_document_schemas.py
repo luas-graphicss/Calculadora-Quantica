@@ -7,6 +7,7 @@ from jsonschema import Draft202012Validator
 from quantum_calculator.domain.constants import ConstantExactness
 from quantum_calculator.domain.diagnostics import DiagnosticCategory, DiagnosticCode
 from quantum_calculator.domain.methods import ResultNature
+from quantum_calculator.domain.numerical.cards import NumericalFamily
 from quantum_calculator.domain.statements import (
     CardSelection,
     Notation,
@@ -20,6 +21,7 @@ from quantum_calculator.interfaces.serialization.encoding.common_sections import
 )
 from quantum_calculator.interfaces.serialization.schema_files import SCHEMA_NAMES, read_schema
 from support.cli import CliRunner
+from support.numerical_documents import ACCEPTED_FILES, REFUSALS
 
 ACCEPTED_CASES = ["electron_box_1nm.json", "electron_box_1nm_uncertainty.json"]
 STRUCTURALLY_DEFECTIVE_CASES = ["non_finite_width.json", "undeclared_covariance.json"]
@@ -104,6 +106,56 @@ def test_statement_the_decoder_refuses_for_its_form_also_fails_the_statement_sch
     assert _violations("statement", {**document, **defect}) != []
 
 
+@pytest.mark.parametrize("case", ACCEPTED_FILES)
+def test_numerical_reference_input_conforms_to_the_numerical_schema(
+    numerical_cases: Path, case: str
+) -> None:
+    document = json.loads((numerical_cases / case).read_text("utf-8"))
+
+    assert _violations("numerical", document) == []
+
+
+@pytest.mark.parametrize(
+    "defect",
+    [
+        {"numerics": "fine"},
+        {"notation": "mathml"},
+        {"statement": ""},
+        {"symbols": {"x": {"role": "variable", "domain": "real"}}},
+        {"state": {"components": []}},
+        {"basis": [[1, {"real": 1}]]},
+        {"equations": []},
+        {"tolerance": "1e-12"},
+    ],
+)
+def test_numerical_input_the_decoder_refuses_for_its_form_also_fails_the_numerical_schema(
+    numerical_cases: Path, defect: dict[str, object]
+) -> None:
+    document = json.loads((numerical_cases / "sine_quadrature.json").read_text("utf-8"))
+
+    assert _violations("numerical", {**document, **defect}) != []
+
+
+@pytest.mark.parametrize("command", ["validate", "solve"])
+@pytest.mark.parametrize("case", ACCEPTED_FILES)
+def test_numerical_json_output_conforms_to_the_output_schema(
+    run_cli: CliRunner, numerical_cases: Path, command: str, case: str
+) -> None:
+    result = run_cli(command, numerical_cases / case, "--format", "json")
+
+    assert _violations("output", json.loads(result.stdout)) == []
+
+
+@pytest.mark.parametrize("case", REFUSALS, ids=lambda case: case["file"])
+def test_every_numerical_refusal_document_conforms_to_the_output_schema(
+    run_cli: CliRunner, numerical_cases: Path, case: dict[str, str]
+) -> None:
+    result = run_cli("solve", numerical_cases / "rejected" / case["file"], "--format", "json")
+
+    assert result.stdout == ""
+    assert _violations("output", json.loads(result.stderr)) == []
+
+
 @pytest.mark.parametrize("command", ["validate", "solve"])
 @pytest.mark.parametrize("case", ACCEPTED_CASES)
 def test_json_output_conforms_to_the_output_schema(
@@ -178,6 +230,19 @@ def test_output_schema_enumerations_follow_the_domain_vocabulary() -> None:
     ]
 
 
+def test_numerical_schema_enumerations_follow_the_domain_vocabulary() -> None:
+    definitions = json.loads(read_schema("output"))["$defs"]
+    card = definitions["numerical_problem"]["properties"]["card"]["properties"]
+    symbol = json.loads(read_schema("numerical"))["$defs"]["symbol"]["properties"]
+
+    assert card["family"]["enum"] == [family.value for family in NumericalFamily]
+    assert definitions["numerical_result"]["properties"]["nature"]["enum"] == [
+        nature.value for nature in ResultNature
+    ]
+    assert symbol["role"]["enum"] == [role.value for role in SymbolRole]
+    assert symbol["domain"]["enum"] == [domain.value for domain in SymbolDomain]
+
+
 def test_statement_schema_enumerations_follow_the_domain_vocabulary() -> None:
     definitions = json.loads(read_schema("output"))["$defs"]
     symbol = definitions["statement_symbol"]["properties"]
@@ -201,6 +266,8 @@ def test_statement_schema_enumerations_follow_the_domain_vocabulary() -> None:
         "run_record",
         "statement_validation",
         "statement_run_record",
+        "numerical_validation",
+        "numerical_run_record",
         "catalog",
         "rejection",
     ],

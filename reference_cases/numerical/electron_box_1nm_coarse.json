@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0",
+  "problem": "quantum.infinite_square_well.discrete_spectrum",
+  "description": "O mesmo poço de 1 nm com só 16 subintervalos: caso deliberadamente sub-resolvido, que não pode sair como malha convergida.",
+  "hypotheses": {
+    "walls": "infinite",
+    "interior_potential": "zero",
+    "boundary_wavefunction": "zero"
+  },
+  "parameters": {
+    "mass": {
+      "constant": "electron_mass"
+    },
+    "width": {
+      "value": 1,
+      "unit": "nm"
+    }
+  },
+  "numerics": {
+    "subintervals": 16,
+    "levels": 3
+  },
+  "requested": {
+    "unit": "eV",
+    "significant_digits": 10
+  }
+}

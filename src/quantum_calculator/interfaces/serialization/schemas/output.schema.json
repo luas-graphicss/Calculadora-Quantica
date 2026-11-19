@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:quantum-calculator:schema:output:1.1",
+  "$id": "urn:quantum-calculator:schema:output:1.2",
   "title": "Documentos de saída da Calculadora Quântica",
   "oneOf": [
     {
@@ -14,6 +14,12 @@
     },
     {
       "$ref": "#/$defs/statement_run_record"
+    },
+    {
+      "$ref": "#/$defs/numerical_validation"
+    },
+    {
+      "$ref": "#/$defs/numerical_run_record"
     },
     {
       "$ref": "#/$defs/catalog"
@@ -740,7 +746,8 @@
         "package",
         "python",
         "platform",
-        "dependencies"
+        "dependencies",
+        "linear_algebra"
       ],
       "properties": {
         "package": {
@@ -788,6 +795,36 @@
               "version"
             ],
             "properties": {
+              "name": {
+                "$ref": "#/$defs/text"
+              },
+              "version": {
+                "$ref": "#/$defs/text"
+              }
+            }
+          }
+        },
+        "linear_algebra": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "consumer",
+              "interface",
+              "name",
+              "version"
+            ],
+            "properties": {
+              "consumer": {
+                "$ref": "#/$defs/text"
+              },
+              "interface": {
+                "enum": [
+                  "blas",
+                  "lapack"
+                ]
+              },
               "name": {
                 "$ref": "#/$defs/text"
               },
@@ -1153,6 +1190,345 @@
         }
       }
     },
+    "numerical_problem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "card",
+        "domain",
+        "hypotheses",
+        "inputs",
+        "resolution",
+        "estimate",
+        "rounding"
+      ],
+      "properties": {
+        "card": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "identifier",
+            "version",
+            "area",
+            "problem_type",
+            "title",
+            "family"
+          ],
+          "properties": {
+            "identifier": {
+              "$ref": "#/$defs/text"
+            },
+            "version": {
+              "type": "string",
+              "pattern": "^\\d+\\.\\d+\\.\\d+$"
+            },
+            "area": {
+              "$ref": "#/$defs/text"
+            },
+            "problem_type": {
+              "$ref": "#/$defs/text"
+            },
+            "title": {
+              "$ref": "#/$defs/text"
+            },
+            "family": {
+              "enum": [
+                "quadrature",
+                "initial_value",
+                "finite_basis",
+                "well_spectrum",
+                "oscillator_spectrum",
+                "well_evolution"
+              ]
+            }
+          }
+        },
+        "domain": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/text"
+          },
+          "minItems": 1
+        },
+        "hypotheses": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "key",
+              "value",
+              "statement"
+            ],
+            "properties": {
+              "key": {
+                "$ref": "#/$defs/text"
+              },
+              "value": {
+                "$ref": "#/$defs/text"
+              },
+              "statement": {
+                "$ref": "#/$defs/text"
+              }
+            }
+          }
+        },
+        "inputs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "label",
+              "value",
+              "origin"
+            ],
+            "properties": {
+              "name": {
+                "$ref": "#/$defs/text"
+              },
+              "label": {
+                "$ref": "#/$defs/text"
+              },
+              "value": {
+                "$ref": "#/$defs/text"
+              },
+              "origin": {
+                "$ref": "#/$defs/text"
+              }
+            }
+          }
+        },
+        "resolution": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "label",
+              "value"
+            ],
+            "properties": {
+              "name": {
+                "$ref": "#/$defs/text"
+              },
+              "label": {
+                "$ref": "#/$defs/text"
+              },
+              "value": {
+                "$ref": "#/$defs/text"
+              }
+            }
+          }
+        },
+        "estimate": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "memory_bytes",
+            "operations"
+          ],
+          "properties": {
+            "memory_bytes": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "operations": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "rounding": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mode",
+            "significant_digits"
+          ],
+          "properties": {
+            "mode": {
+              "const": "half_even"
+            },
+            "significant_digits": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 34
+            }
+          }
+        }
+      }
+    },
+    "numerical_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "nature",
+        "answers",
+        "tables",
+        "effective",
+        "warnings"
+      ],
+      "properties": {
+        "nature": {
+          "enum": [
+            "exact",
+            "approximate"
+          ]
+        },
+        "answers": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "symbol",
+              "label",
+              "value",
+              "display",
+              "unit",
+              "estimate"
+            ],
+            "properties": {
+              "name": {
+                "$ref": "#/$defs/text"
+              },
+              "symbol": {
+                "$ref": "#/$defs/text"
+              },
+              "label": {
+                "$ref": "#/$defs/text"
+              },
+              "value": {
+                "type": "number"
+              },
+              "display": {
+                "$ref": "#/$defs/decimal"
+              },
+              "unit": {
+                "$ref": "#/$defs/text"
+              },
+              "estimate": {
+                "oneOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "value",
+                      "display",
+                      "origin"
+                    ],
+                    "properties": {
+                      "value": {
+                        "type": "number"
+                      },
+                      "display": {
+                        "$ref": "#/$defs/decimal"
+                      },
+                      "origin": {
+                        "$ref": "#/$defs/text"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "tables": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "title",
+              "rows",
+              "columns"
+            ],
+            "properties": {
+              "name": {
+                "$ref": "#/$defs/text"
+              },
+              "title": {
+                "$ref": "#/$defs/text"
+              },
+              "rows": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "columns": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "name",
+                    "symbol",
+                    "unit",
+                    "values"
+                  ],
+                  "properties": {
+                    "name": {
+                      "$ref": "#/$defs/text"
+                    },
+                    "symbol": {
+                      "$ref": "#/$defs/text"
+                    },
+                    "unit": {
+                      "$ref": "#/$defs/text"
+                    },
+                    "values": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "effective": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "label",
+              "value"
+            ],
+            "properties": {
+              "name": {
+                "$ref": "#/$defs/text"
+              },
+              "label": {
+                "$ref": "#/$defs/text"
+              },
+              "value": {
+                "$ref": "#/$defs/text"
+              }
+            }
+          }
+        },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/text"
+          }
+        }
+      }
+    },
     "catalog_card": {
       "type": "object",
       "additionalProperties": false,
@@ -1243,7 +1619,8 @@
             "invalid_input",
             "unsupported_problem",
             "ambiguous_input",
-            "budget_exceeded"
+            "budget_exceeded",
+            "non_convergent"
           ]
         },
         "code": {
@@ -1301,7 +1678,16 @@
             "expression_too_deep",
             "expression_too_large",
             "time_budget_exceeded",
-            "memory_budget_exceeded"
+            "memory_budget_exceeded",
+            "invalid_shape",
+            "zero_state",
+            "state_not_normalized",
+            "non_hermitian_operator",
+            "basis_not_orthonormal",
+            "incompatible_condition",
+            "resource_limit_exceeded",
+            "method_not_converged",
+            "non_finite_result"
           ]
         },
         "pointer": {
@@ -1359,7 +1745,7 @@
           "const": "validation"
         },
         "schema_version": {
-          "const": "1.1"
+          "const": "1.2"
         },
         "input": {
           "$ref": "#/$defs/input"
@@ -1393,7 +1779,7 @@
           "const": "run_record"
         },
         "schema_version": {
-          "const": "1.1"
+          "const": "1.2"
         },
         "input": {
           "$ref": "#/$defs/input"
@@ -1467,7 +1853,7 @@
           "const": "statement_validation"
         },
         "schema_version": {
-          "const": "1.1"
+          "const": "1.2"
         },
         "input": {
           "$ref": "#/$defs/input"
@@ -1501,7 +1887,7 @@
           "const": "statement_run_record"
         },
         "schema_version": {
-          "const": "1.1"
+          "const": "1.2"
         },
         "input": {
           "$ref": "#/$defs/input"
@@ -1554,6 +1940,128 @@
         }
       }
     },
+    "numerical_validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "document",
+        "schema_version",
+        "input",
+        "problem",
+        "plan"
+      ],
+      "properties": {
+        "document": {
+          "const": "numerical_validation"
+        },
+        "schema_version": {
+          "const": "1.2"
+        },
+        "input": {
+          "$ref": "#/$defs/input"
+        },
+        "problem": {
+          "$ref": "#/$defs/numerical_problem"
+        },
+        "plan": {
+          "$ref": "#/$defs/statement_plan"
+        }
+      }
+    },
+    "numerical_run_record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "document",
+        "schema_version",
+        "input",
+        "problem",
+        "plan",
+        "catalog",
+        "constants",
+        "units",
+        "result",
+        "verification",
+        "limitations",
+        "environment"
+      ],
+      "properties": {
+        "document": {
+          "const": "numerical_run_record"
+        },
+        "schema_version": {
+          "const": "1.2"
+        },
+        "input": {
+          "$ref": "#/$defs/input"
+        },
+        "problem": {
+          "$ref": "#/$defs/numerical_problem"
+        },
+        "plan": {
+          "$ref": "#/$defs/statement_plan"
+        },
+        "catalog": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "version"
+          ],
+          "properties": {
+            "version": {
+              "type": "string",
+              "pattern": "^\\d+\\.\\d+\\.\\d+$"
+            }
+          }
+        },
+        "constants": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "edition",
+            "used"
+          ],
+          "properties": {
+            "edition": {
+              "$ref": "#/$defs/text"
+            },
+            "used": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/constant"
+              }
+            }
+          }
+        },
+        "units": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "registry_version"
+          ],
+          "properties": {
+            "registry_version": {
+              "$ref": "#/$defs/text"
+            }
+          }
+        },
+        "result": {
+          "$ref": "#/$defs/numerical_result"
+        },
+        "verification": {
+          "$ref": "#/$defs/verification"
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/text"
+          }
+        },
+        "environment": {
+          "$ref": "#/$defs/environment"
+        }
+      }
+    },
     "catalog": {
       "type": "object",
       "additionalProperties": false,
@@ -1568,7 +2076,7 @@
           "const": "catalog"
         },
         "schema_version": {
-          "const": "1.1"
+          "const": "1.2"
         },
         "version": {
           "type": "string",
@@ -1597,14 +2105,15 @@
           "const": "rejection"
         },
         "schema_version": {
-          "const": "1.1"
+          "const": "1.2"
         },
         "category": {
           "enum": [
             "invalid_input",
             "unsupported_problem",
             "ambiguous_input",
-            "budget_exceeded"
+            "budget_exceeded",
+            "non_convergent"
           ]
         },
         "diagnostics": {

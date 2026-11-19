@@ -1,0 +1,224 @@
+{
+  "document": "numerical_run_record",
+  "schema_version": "1.2",
+  "input": {
+    "sha256": "7b53f18e6094d3d0c8535046a22510a71927cc746c53a9bb6375dc233ef42be7",
+    "schema_version": "1.0",
+    "description": "Integral do seno de zero a pi; o valor exato é 2.",
+    "text": "{\n  \"schema_version\": \"1.0\",\n  \"problem\": \"calculus.definite_integral.adaptive_quadrature\",\n  \"description\": \"Integral do seno de zero a pi; o valor exato é 2.\",\n  \"notation\": \"text\",\n  \"statement\": \"integral(sin(x), x, 0, pi)\",\n  \"symbols\": {\n    \"x\": {\n      \"role\": \"variable\",\n      \"domain\": \"real\",\n      \"unit\": \"1\"\n    }\n  },\n  \"numerics\": {\n    \"absolute_tolerance\": \"1e-12\",\n    \"relative_tolerance\": \"1e-12\",\n    \"subdivision_limit\": 50\n  },\n  \"requested\": {\n    \"significant_digits\": 12\n  }\n}\n"
+  },
+  "problem": {
+    "card": {
+      "identifier": "calculus.definite_integral.adaptive_quadrature",
+      "version": "1.0.0",
+      "area": "differential_integral_calculus",
+      "problem_type": "numerical_definite_integral",
+      "title": "Aproximação de uma integral definida por quadratura adaptativa",
+      "family": "quadrature"
+    },
+    "domain": [
+      "Integrando real explícito, escrito com as operações e funções registradas, finito em todo o intervalo fechado.",
+      "Intervalo finito; todo parâmetro do integrando e dos limites tem valor numérico."
+    ],
+    "hypotheses": [],
+    "inputs": [
+      {
+        "name": "statement",
+        "label": "integral lida",
+        "value": "integral(sin(x), x, 0, pi)",
+        "origin": "entrada (text): integral(sin(x), x, 0, pi)"
+      },
+      {
+        "name": "interval",
+        "label": "intervalo de integração em unidades coerentes do SI",
+        "value": "de 0.0 a 3.141592653589793, adimensional",
+        "origin": "limites calculados com os valores dos parâmetros"
+      }
+    ],
+    "resolution": [
+      {
+        "name": "absolute_tolerance",
+        "label": "tolerância absoluta, na unidade coerente do SI do resultado",
+        "value": "1e-12"
+      },
+      {
+        "name": "relative_tolerance",
+        "label": "tolerância relativa",
+        "value": "1e-12"
+      },
+      {
+        "name": "subdivision_limit",
+        "label": "limite de subdivisões do intervalo",
+        "value": "50"
+      }
+    ],
+    "estimate": {
+      "memory_bytes": 3200,
+      "operations": 2100
+    },
+    "rounding": {
+      "mode": "half_even",
+      "significant_digits": 12
+    }
+  },
+  "plan": {
+    "method": "numerical.adaptive_quadrature",
+    "nature": "approximate",
+    "justification": "O QUADPACK subdivide o intervalo onde o integrando varia mais, com regras de Gauss-Kronrod, e devolve o valor e uma estimativa de erro; a resposta é aproximada, dentro das tolerâncias pedidas.",
+    "budget": {
+      "wall_seconds": 30.0,
+      "cpu_seconds": 30,
+      "memory_bytes": 2147483648
+    }
+  },
+  "catalog": {
+    "version": "1.2.0"
+  },
+  "constants": {
+    "edition": "CODATA 2022",
+    "used": []
+  },
+  "units": {
+    "registry_version": "1.0.0"
+  },
+  "result": {
+    "nature": "approximate",
+    "answers": [
+      {
+        "name": "integral",
+        "symbol": "I",
+        "label": "valor da integral",
+        "value": 2.0,
+        "display": "2.0",
+        "unit": "1",
+        "estimate": {
+          "value": 2.220446049250313e-14,
+          "display": "2.2E-14",
+          "origin": "estimativa de erro absoluto do integrador adaptativo"
+        }
+      }
+    ],
+    "tables": [],
+    "effective": [
+      {
+        "name": "absolute_tolerance",
+        "label": "tolerância absoluta",
+        "value": "1e-12"
+      },
+      {
+        "name": "relative_tolerance",
+        "label": "tolerância relativa",
+        "value": "1e-12"
+      },
+      {
+        "name": "subdivision_limit",
+        "label": "limite de subdivisões",
+        "value": "50"
+      },
+      {
+        "name": "evaluations",
+        "label": "avaliações do integrando",
+        "value": "21"
+      },
+      {
+        "name": "subintervals",
+        "label": "subintervalos usados",
+        "value": "1"
+      },
+      {
+        "name": "termination",
+        "label": "motivo de término",
+        "value": "tolerância pedida atingida (ier = 0)"
+      }
+    ],
+    "warnings": []
+  },
+  "verification": {
+    "status": "passed",
+    "checks": [
+      {
+        "identifier": "integrator_error_estimate",
+        "kind": "consistency_test",
+        "status": "passed",
+        "statement": "A estimativa de erro do integrador fica dentro da tolerância pedida, absoluta mais relativa ao valor.",
+        "observed": "estimativa do integrador 2.220e-14, dentro do limite 3.000e-12"
+      },
+      {
+        "identifier": "independent_quadrature",
+        "kind": "numerical_evidence",
+        "status": "passed",
+        "statement": "Uma regra composta de Gauss-Legendre, independente do integrador adaptativo, dá o mesmo valor dentro da tolerância pedida.",
+        "observed": "diferença para a regra de 128 painéis e ordem 20: 0.000e+00, dentro do limite 3.000e-12"
+      }
+    ],
+    "not_performed": [
+      {
+        "identifier": "closed_form_primitive",
+        "reason": "Esta ficha só aproxima: nenhuma primitiva foi procurada. A ficha calculus.definite_integral dá o valor exato quando há primitiva coberta."
+      }
+    ],
+    "references": [
+      "R. Piessens, E. de Doncker-Kapenga, C. W. Überhuber e D. K. Kahaner, QUADPACK: A Subroutine Package for Automatic Integration, Springer, 1983."
+    ]
+  },
+  "limitations": [
+    "A resposta é aproximada. A estimativa do integrador não é uma cota demonstrada nem uma incerteza experimental.",
+    "Um integrando não finito no intervalo ou que o limite de subdivisões não resolve termina sem resposta aprovada; integrais impróprias não são cobertas.",
+    "A tolerância absoluta vale na unidade coerente do SI do resultado."
+  ],
+  "environment": {
+    "package": {
+      "name": "quantum-calculator",
+      "version": "0.3.0"
+    },
+    "python": {
+      "implementation": "CPython",
+      "version": "3.12.15"
+    },
+    "platform": "Linux-6.18.56-x86_64-with-glibc2.34",
+    "dependencies": [
+      {
+        "name": "sympy",
+        "version": "1.14.0"
+      },
+      {
+        "name": "mpmath",
+        "version": "1.3.0"
+      },
+      {
+        "name": "numpy",
+        "version": "2.5.5"
+      },
+      {
+        "name": "scipy",
+        "version": "1.18.1"
+      }
+    ],
+    "linear_algebra": [
+      {
+        "consumer": "numpy",
+        "interface": "blas",
+        "name": "scipy-openblas",
+        "version": "0.3.34.237.2"
+      },
+      {
+        "consumer": "numpy",
+        "interface": "lapack",
+        "name": "scipy-openblas",
+        "version": "0.3.34.237.2"
+      },
+      {
+        "consumer": "scipy",
+        "interface": "blas",
+        "name": "scipy-openblas",
+        "version": "0.3.31.dev"
+      },
+      {
+        "consumer": "scipy",
+        "interface": "lapack",
+        "name": "scipy-openblas",
+        "version": "0.3.31.dev"
+      }
+    ]
+  }
+}

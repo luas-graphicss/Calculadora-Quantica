@@ -1,4 +1,4 @@
-Catálogo 1.1.0: 7 fichas homologadas
+Catálogo 1.2.0: 13 fichas homologadas
 
 quantum.infinite_square_well.energy_level 1.0.0
   Nível de energia de uma partícula em um poço infinito unidimensional
@@ -71,3 +71,69 @@ ode.first_order_linear.candidate_review 1.0.0
   limitação: Equações não lineares, de ordem maior, com coeficientes variáveis ou sistemas ficam fora desta ficha.
   limitação: Concordância em pontos amostrados não é relatada como prova: sem demonstração, o resultado é inconclusivo.
   exemplo: reference_cases/symbolic/decay_candidate_correct.json
+
+calculus.definite_integral.adaptive_quadrature 1.0.0
+  Aproximação de uma integral definida por quadratura adaptativa
+  área: differential_integral_calculus; tipo: numerical_definite_integral
+  método: numerical.adaptive_quadrature (approximate)
+  domínio: Integrando real explícito, escrito com as operações e funções registradas, finito em todo o intervalo fechado.
+  domínio: Intervalo finito; todo parâmetro do integrando e dos limites tem valor numérico.
+  limitação: A resposta é aproximada. A estimativa do integrador não é uma cota demonstrada nem uma incerteza experimental.
+  limitação: Um integrando não finito no intervalo ou que o limite de subdivisões não resolve termina sem resposta aprovada; integrais impróprias não são cobertas.
+  limitação: A tolerância absoluta vale na unidade coerente do SI do resultado.
+  exemplo: reference_cases/numerical/sine_quadrature.json
+
+ode.initial_value.explicit_runge_kutta 1.0.0
+  Trajetória de um problema de valor inicial explícito e não rígido
+  área: ordinary_differential_equations; tipo: numerical_initial_value_problem
+  método: numerical.dop853 (approximate)
+  domínio: Uma equação de primeira ordem por função incógnita, na forma y' = f(t, y, ...), com lado direito explícito e suave; sistemas de até oito componentes.
+  domínio: Uma condição inicial por função, todas no mesmo instante, e todo parâmetro com valor numérico.
+  limitação: A rigidez não é diagnosticada nem tratada: um problema rígido esgota o passo ou o orçamento e termina sem resposta aprovada.
+  limitação: As tolerâncias controlam o erro local de cada passo; o erro acumulado é conferido por refinamento, não demonstrado.
+  limitação: A tolerância absoluta vale na unidade coerente do SI de cada componente.
+  exemplo: reference_cases/numerical/decay_trajectory.json
+
+quantum.finite_basis.projective_measurement 1.0.0
+  Medição projetiva de um observável em um estado puro de base finita
+  área: finite_basis_quantum_mechanics; tipo: projective_measurement
+  método: numerical.hermitian_eigendecomposition (approximate)
+  domínio: Estado puro dado por até 16 amplitudes complexas em uma base ortonormal.
+  domínio: Observável hermitiano dado pela matriz na mesma base; uma mudança para outra base ortonormal é opcional.
+  limitação: Estados mistos, medições generalizadas e evolução temporal ficam fora desta ficha.
+  limitação: Autovalores mais próximos que a tolerância são tratados como um único subespaço.
+  limitação: As amplitudes entram como números: uma raiz quadrada vem como decimal ou com a normalização pedida, que fica registrada.
+  exemplo: reference_cases/numerical/spin_half_measurement.json
+
+quantum.infinite_square_well.discrete_spectrum 1.0.0
+  Níveis e autofunções do poço infinito por diferenças finitas
+  área: stationary_schrodinger_1d; tipo: discrete_spectrum
+  método: finite_difference.tridiagonal_eigensolver (approximate)
+  domínio: Partícula única, não relativística e sem spin, em uma dimensão espacial.
+  domínio: Massa e largura estritamente positivas; os primeiros níveis, até 32, em uma malha uniforme de até 16384 subintervalos.
+  limitação: A resposta é aproximada: o erro de malha cai com o quadrado do espaçamento e só é declarado convergido quando o refinamento mostra a ordem esperada.
+  limitação: A expressão fechada do poço, da ficha quantum.infinite_square_well.energy_level, é usada só como referência independente na verificação.
+  limitação: Incertezas dos parâmetros não são propagadas por esta ficha: a incerteza experimental fica não avaliada.
+  exemplo: reference_cases/numerical/electron_box_1nm_discrete.json
+
+quantum.harmonic_oscillator.truncated_spectrum 1.0.0
+  Níveis e autofunções do oscilador harmônico em domínio truncado
+  área: stationary_schrodinger_1d; tipo: truncated_spectrum
+  método: finite_difference.tridiagonal_eigensolver (approximate)
+  domínio: Partícula única, não relativística e sem spin, em uma dimensão espacial.
+  domínio: Massa e quantum de energia hbar omega estritamente positivos; domínio simétrico de meia largura dada em comprimentos do oscilador, sqrt(hbar / (m omega)).
+  limitação: A resposta é aproximada: o erro de malha cai com o quadrado do espaçamento e só é declarado convergido quando o refinamento mostra a ordem esperada.
+  limitação: Ampliar o domínio e refinar a malha são experimentos separados: o primeiro mede o corte do domínio, o segundo o erro de discretização.
+  limitação: Incertezas dos parâmetros não são propagadas por esta ficha: a incerteza experimental fica não avaliada.
+  exemplo: reference_cases/numerical/harmonic_oscillator_1ev.json
+
+quantum.infinite_square_well.time_evolution 1.0.0
+  Evolução de uma superposição de estados do poço infinito por Crank-Nicolson
+  área: time_dependent_schrodinger_1d; tipo: time_evolution
+  método: finite_difference.crank_nicolson (approximate)
+  domínio: Partícula única, não relativística e sem spin, em uma dimensão espacial.
+  domínio: Estado inicial dado por até 16 coeficientes complexos sobre os primeiros modos discretos do poço; duração positiva dividida em passos iguais.
+  limitação: A resposta é aproximada. A verificação mede o erro temporal contra a evolução exata dos modos discretos; o erro da malha não é avaliado aqui.
+  limitação: Norma e fase estáveis em uma animação não comprovam precisão temporal: valem as checagens de norma, de fase e de ordem.
+  limitação: Só os observáveis dos instantes salvos e a densidade final são guardados.
+  exemplo: reference_cases/numerical/electron_box_1nm_beat.json

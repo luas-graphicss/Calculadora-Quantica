@@ -1,22 +1,38 @@
+from quantum_calculator.domain.execution import ExecutionBudget
+from quantum_calculator.domain.methods import MethodDescription
+from quantum_calculator.domain.numerical.spec import NumericalSpec
 from quantum_calculator.domain.problem_spec import ProblemSpec
 from quantum_calculator.domain.run_record import EnvironmentManifest
 from quantum_calculator.domain.statements import StatementSpec
 from quantum_calculator.domain.verification import VerificationReport
 from quantum_calculator.interfaces.serialization.encoding.exact_values import JsonObject
 
-OUTPUT_SCHEMA_VERSION = "1.1"
+OUTPUT_SCHEMA_VERSION = "1.2"
 
 
 def document_header(document: str) -> JsonObject:
     return {"document": document, "schema_version": OUTPUT_SCHEMA_VERSION}
 
 
-def encode_input(spec: ProblemSpec | StatementSpec) -> JsonObject:
+def encode_input(spec: ProblemSpec | StatementSpec | NumericalSpec) -> JsonObject:
     return {
         "sha256": spec.source.sha256,
         "schema_version": spec.schema_version,
         "description": spec.description,
         "text": spec.source.text,
+    }
+
+
+def encode_budgeted_plan(method: MethodDescription, budget: ExecutionBudget) -> JsonObject:
+    return {
+        "method": method.identifier,
+        "nature": method.nature.value,
+        "justification": method.justification,
+        "budget": {
+            "wall_seconds": budget.wall_seconds,
+            "cpu_seconds": budget.cpu_seconds,
+            "memory_bytes": budget.memory_bytes,
+        },
     }
 
 
@@ -52,5 +68,14 @@ def encode_environment(manifest: EnvironmentManifest) -> JsonObject:
         "dependencies": [
             {"name": dependency.name, "version": dependency.version}
             for dependency in manifest.dependencies
+        ],
+        "linear_algebra": [
+            {
+                "consumer": library.consumer,
+                "interface": library.interface,
+                "name": library.name,
+                "version": library.version,
+            }
+            for library in manifest.linear_algebra
         ],
     }

@@ -1,0 +1,4 @@
+Entrada recusada (non_convergent)
+  / [method_not_converged]
+    O método QUADPACK QAGS não convergiu: a integral provavelmente diverge ou converge devagar demais. Nenhuma resposta foi aprovada.
+    esperado: um problema que o método homologado resolva dentro das tolerâncias pedidas

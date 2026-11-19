@@ -1,8 +1,17 @@
 import json
 
+from quantum_calculator.adapters.units.codata_2022 import Codata2022Constants
+from quantum_calculator.catalog.card_catalog import HOMOLOGATED_CARDS
 from quantum_calculator.catalog.listing import CATALOG_VERSION, catalog_entries
+from quantum_calculator.catalog.numerical_catalog import HOMOLOGATED_NUMERICAL_CARDS
+from quantum_calculator.catalog.statement_catalog import HOMOLOGATED_STATEMENT_CARDS
 from quantum_calculator.domain.methods import ResultNature
 from quantum_calculator.interfaces.cli.exit_codes import ExitCode
+from quantum_calculator.method_registry import (
+    numerical_methods,
+    problem_methods,
+    statement_methods,
+)
 from support.cli import CliRunner
 
 
@@ -35,7 +44,17 @@ def test_catalog_document_versions_each_card_by_area_type_domain_and_method(
     assert all(card["method"]["identifier"] and card["limitations"] for card in cards)
 
 
-def test_no_method_awaiting_homologation_is_listed_as_available(run_cli: CliRunner) -> None:
+def test_every_listed_method_is_homologated_and_says_whether_it_approximates(
+    run_cli: CliRunner, constants: Codata2022Constants
+) -> None:
     cards = json.loads(run_cli("catalog", "--format", "json").stdout)["cards"]
 
-    assert {card["method"]["nature"] for card in cards} == {ResultNature.EXACT.value}
+    homologated = {*problem_methods(constants), *statement_methods(), *numerical_methods()}
+    natures = {card["identifier"]: card["method"]["nature"] for card in cards}
+    assert {card["method"]["identifier"] for card in cards} == homologated
+    assert {natures[card.identifier] for card in HOMOLOGATED_NUMERICAL_CARDS} == {
+        ResultNature.APPROXIMATE.value
+    }
+    assert {
+        natures[card.identifier] for card in (*HOMOLOGATED_CARDS, *HOMOLOGATED_STATEMENT_CARDS)
+    } == {ResultNature.EXACT.value}

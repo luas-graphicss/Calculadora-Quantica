@@ -15,8 +15,8 @@ def build_parser(version: str) -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="qcalc",
         description=(
-            "Calculadora Quântica: resolve um problema descrito em JSON, por ficha ou por "
-            "enunciado digitado, e mostra como conferir a resposta."
+            "Calculadora Quântica: resolve um problema descrito em JSON, por ficha, por "
+            "enunciado digitado ou por método numérico, e mostra como conferir a resposta."
         ),
     )
     parser.add_argument("--version", action="version", version=f"qcalc {version}")
@@ -48,7 +48,7 @@ def _add_problem_command(command: argparse.ArgumentParser) -> None:
         default=DEFAULT_WALL_SECONDS,
         metavar="SEGUNDOS",
         help=(
-            "tempo de relógio máximo do cálculo simbólico, até "
+            "tempo de relógio máximo do cálculo simbólico ou numérico, até "
             f"{MAX_WALL_SECONDS:g} (padrão: {DEFAULT_WALL_SECONDS:g})"
         ),
     )

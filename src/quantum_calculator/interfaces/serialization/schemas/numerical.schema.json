@@ -1,0 +1,400 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:quantum-calculator:schema:numerical:1.0",
+  "title": "Problema numérico da Calculadora Quântica: integral, trajetória, base finita, espectro ou evolução",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "problem",
+    "numerics"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "problem": {
+      "$ref": "#/$defs/text"
+    },
+    "description": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/text"
+        }
+      ]
+    },
+    "hypotheses": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/text"
+          }
+        }
+      ]
+    },
+    "parameters": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/quantity"
+              },
+              {
+                "$ref": "#/$defs/constant"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "notation": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "enum": [
+            "text",
+            "latex"
+          ]
+        }
+      ]
+    },
+    "symbols": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/symbol"
+          }
+        }
+      ]
+    },
+    "statement": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/notated"
+        }
+      ]
+    },
+    "equations": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 8,
+          "items": {
+            "$ref": "#/$defs/notated"
+          }
+        }
+      ]
+    },
+    "conditions": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 8,
+          "items": {
+            "$ref": "#/$defs/notated"
+          }
+        }
+      ]
+    },
+    "state": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "components"
+          ],
+          "properties": {
+            "components": {
+              "$ref": "#/$defs/vector"
+            },
+            "normalize": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "boolean"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "observable": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "matrix",
+            "unit"
+          ],
+          "properties": {
+            "matrix": {
+              "$ref": "#/$defs/matrix"
+            },
+            "unit": {
+              "$ref": "#/$defs/text"
+            }
+          }
+        }
+      ]
+    },
+    "basis": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/matrix"
+        }
+      ]
+    },
+    "initial_state": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "coefficients"
+          ],
+          "properties": {
+            "coefficients": {
+              "$ref": "#/$defs/vector"
+            },
+            "normalize": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "boolean"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "numerics": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/number"
+      }
+    },
+    "requested": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "unit": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "#/$defs/text"
+                }
+              ]
+            },
+            "significant_digits": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "#/$defs/number"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "notated": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "number": {
+      "oneOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "^[+-]?(\\d+(\\.\\d*)?|\\.\\d+)([eE][+-]?\\d+)?$|^[+-]?\\d+/\\d+$"
+        }
+      ]
+    },
+    "quantity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "value",
+        "unit"
+      ],
+      "properties": {
+        "value": {
+          "$ref": "#/$defs/number"
+        },
+        "unit": {
+          "$ref": "#/$defs/text"
+        }
+      }
+    },
+    "constant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "constant"
+      ],
+      "properties": {
+        "constant": {
+          "$ref": "#/$defs/text"
+        }
+      }
+    },
+    "symbol": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "role",
+        "domain",
+        "unit"
+      ],
+      "properties": {
+        "role": {
+          "enum": [
+            "variable",
+            "parameter",
+            "function"
+          ]
+        },
+        "domain": {
+          "enum": [
+            "real",
+            "positive",
+            "negative",
+            "nonnegative",
+            "nonzero"
+          ]
+        },
+        "unit": {
+          "$ref": "#/$defs/text"
+        },
+        "argument": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/text"
+            }
+          ]
+        },
+        "value": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/number"
+            }
+          ]
+        }
+      }
+    },
+    "complex": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/number"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "real",
+            "imaginary"
+          ],
+          "properties": {
+            "real": {
+              "$ref": "#/$defs/number"
+            },
+            "imaginary": {
+              "$ref": "#/$defs/number"
+            }
+          }
+        }
+      ]
+    },
+    "vector": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 16,
+      "items": {
+        "$ref": "#/$defs/complex"
+      }
+    },
+    "matrix": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 16,
+      "items": {
+        "$ref": "#/$defs/vector"
+      }
+    }
+  }
+}

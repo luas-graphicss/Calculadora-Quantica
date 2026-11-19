@@ -1,3 +1,4 @@
+from quantum_calculator.domain.constants import PhysicalConstant
 from quantum_calculator.domain.rounding import ROUNDING_MODE, render_decimal
 from quantum_calculator.domain.run_record import RunRecord
 from quantum_calculator.interfaces.cli.rendering.text.formatting import QuantityFormatter, section
@@ -21,8 +22,16 @@ def answer_lines(record: RunRecord) -> list[str]:
 
 
 def constants_section(record: RunRecord, numbers: QuantityFormatter) -> list[str]:
+    return section(
+        f"Constantes ({record.constants_edition})", constant_lines(record.constants, numbers)
+    )
+
+
+def constant_lines(
+    constants: tuple[PhysicalConstant, ...], numbers: QuantityFormatter
+) -> list[str]:
     lines = []
-    for constant in record.constants:
+    for constant in constants:
         uncertainty = constant.standard_uncertainty
         nature = (
             "exata"
@@ -31,7 +40,7 @@ def constants_section(record: RunRecord, numbers: QuantityFormatter) -> list[str
         )
         value = numbers.quantity(constant.value)
         lines.append(f"{constant.symbol} = {value}; {nature}; {constant.source}")
-    return section(f"Constantes ({record.constants_edition})", lines)
+    return lines
 
 
 def calculation_section(record: RunRecord, numbers: QuantityFormatter) -> list[str]:

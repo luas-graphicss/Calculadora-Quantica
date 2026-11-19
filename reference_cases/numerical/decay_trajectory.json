@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0",
+  "problem": "ode.initial_value.explicit_runge_kutta",
+  "description": "Decaimento exponencial: quantidade inicial adimensional 1, taxa de 1 por segundo, de 0 a 5 s em 51 instantes.",
+  "notation": "text",
+  "symbols": {
+    "t": {
+      "role": "variable",
+      "domain": "real",
+      "unit": "s"
+    },
+    "k": {
+      "role": "parameter",
+      "domain": "positive",
+      "unit": "1/s",
+      "value": 1
+    },
+    "y": {
+      "role": "function",
+      "domain": "real",
+      "unit": "1",
+      "argument": "t"
+    }
+  },
+  "equations": [
+    "y' = -k*y"
+  ],
+  "conditions": [
+    "y(0) = 1"
+  ],
+  "numerics": {
+    "end": 5,
+    "samples": 51,
+    "relative_tolerance": "1e-10",
+    "absolute_tolerance": "1e-12"
+  },
+  "requested": {
+    "significant_digits": 12
+  }
+}

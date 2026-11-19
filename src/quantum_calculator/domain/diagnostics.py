@@ -7,6 +7,7 @@ class DiagnosticCategory(StrEnum):
     UNSUPPORTED_PROBLEM = "unsupported_problem"
     AMBIGUOUS_INPUT = "ambiguous_input"
     BUDGET_EXCEEDED = "budget_exceeded"
+    NON_CONVERGENT = "non_convergent"
 
 
 class DiagnosticCode(StrEnum):
@@ -64,6 +65,15 @@ class DiagnosticCode(StrEnum):
     EXPRESSION_TOO_LARGE = "expression_too_large"
     TIME_BUDGET_EXCEEDED = "time_budget_exceeded"
     MEMORY_BUDGET_EXCEEDED = "memory_budget_exceeded"
+    INVALID_SHAPE = "invalid_shape"
+    ZERO_STATE = "zero_state"
+    STATE_NOT_NORMALIZED = "state_not_normalized"
+    NON_HERMITIAN_OPERATOR = "non_hermitian_operator"
+    BASIS_NOT_ORTHONORMAL = "basis_not_orthonormal"
+    INCOMPATIBLE_CONDITION = "incompatible_condition"
+    RESOURCE_LIMIT_EXCEEDED = "resource_limit_exceeded"
+    METHOD_NOT_CONVERGED = "method_not_converged"
+    NON_FINITE_RESULT = "non_finite_result"
 
 
 _CATEGORY_BY_CODE = {
@@ -99,8 +109,13 @@ _CATEGORY_BY_CODE = {
             DiagnosticCode.EXPRESSION_TOO_LARGE,
             DiagnosticCode.TIME_BUDGET_EXCEEDED,
             DiagnosticCode.MEMORY_BUDGET_EXCEEDED,
+            DiagnosticCode.RESOURCE_LIMIT_EXCEEDED,
         ),
         DiagnosticCategory.BUDGET_EXCEEDED,
+    ),
+    **dict.fromkeys(
+        (DiagnosticCode.METHOD_NOT_CONVERGED, DiagnosticCode.NON_FINITE_RESULT),
+        DiagnosticCategory.NON_CONVERGENT,
     ),
 }
 
@@ -109,6 +124,7 @@ _MOST_ACTIONABLE_FIRST = (
     DiagnosticCategory.BUDGET_EXCEEDED,
     DiagnosticCategory.AMBIGUOUS_INPUT,
     DiagnosticCategory.UNSUPPORTED_PROBLEM,
+    DiagnosticCategory.NON_CONVERGENT,
 )
 
 _QUOTED_TEXT_LIMIT = 64

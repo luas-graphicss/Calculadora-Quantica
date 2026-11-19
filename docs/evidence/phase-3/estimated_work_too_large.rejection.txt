@@ -1,0 +1,4 @@
+Entrada recusada (budget_exceeded)
+  /numerics [resource_limit_exceeded]
+    O pedido estima 3670592 bytes de memória e 360783806464 operações elementares, acima do perfil homologado. Nada foi alocado.
+    esperado: um pedido de até 268435456 bytes e 2000000000 operações estimadas

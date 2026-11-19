@@ -5,6 +5,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+import pytest
+
 from support.processes import has_child_running, session_is_empty, wait_until
 
 
@@ -55,10 +57,38 @@ def test_statement_is_solved_from_another_working_directory(
     assert json.loads(solved.stdout)["result"]["answer"]["text"] == "integral(x^2, x, 0, 1) = 1/3"
 
 
-def test_interrupt_cancels_the_calculation_and_leaves_no_process_behind(
-    symbolic_cases: Path, tmp_path: Path
+def test_numerical_problem_is_solved_from_another_working_directory(
+    numerical_cases: Path, tmp_path: Path
 ) -> None:
-    case = str(symbolic_cases / "product_rule.json")
+    case = str(numerical_cases / "electron_box_1nm_discrete.json")
+
+    solved = _run(["solve", case, "--format", "json"], tmp_path)
+
+    ground, *_ = json.loads(solved.stdout)["result"]["answers"]
+    assert solved.returncode == 0
+    assert solved.stderr == ""
+    assert (ground["name"], ground["display"], ground["unit"]) == ("energy_1", "0.3760289823", "eV")
+
+
+def test_method_that_does_not_converge_sets_its_own_exit_code(
+    numerical_cases: Path, tmp_path: Path
+) -> None:
+    case = str(numerical_cases / "rejected" / "blow_up_trajectory.json")
+
+    completed = _run(["solve", case, "--format", "json"], tmp_path)
+
+    assert completed.returncode == 9
+    assert completed.stdout == ""
+    assert json.loads(completed.stderr)["category"] == "non_convergent"
+
+
+@pytest.mark.parametrize(
+    "case", ["symbolic/product_rule.json", "numerical/electron_box_1nm_beat.json"]
+)
+def test_interrupt_cancels_the_calculation_and_leaves_no_process_behind(
+    repository_root: Path, tmp_path: Path, case: str
+) -> None:
+    case = str(repository_root / "reference_cases" / case)
     with subprocess.Popen(
         [sys.executable, "-m", "quantum_calculator", "solve", case],
         stdout=subprocess.PIPE,

@@ -1,4 +1,6 @@
 import re
+from dataclasses import dataclass
+from fractions import Fraction
 
 from quantum_calculator.domain.diagnostics import quote_user_text
 from quantum_calculator.domain.dimensions import DIMENSIONLESS, Dimension
@@ -18,28 +20,47 @@ class UnitExpressionError(ValueError):
     pass
 
 
+@dataclass(frozen=True, slots=True)
+class UnitMeasure:
+    dimension: Dimension
+    si_factor: Fraction
+
+    def __mul__(self, other: "UnitMeasure") -> "UnitMeasure":
+        return UnitMeasure(self.dimension * other.dimension, self.si_factor * other.si_factor)
+
+    def __truediv__(self, other: "UnitMeasure") -> "UnitMeasure":
+        return UnitMeasure(self.dimension / other.dimension, self.si_factor / other.si_factor)
+
+
+_COHERENT = UnitMeasure(DIMENSIONLESS, Fraction(1))
+
+
 def dimension_of_unit(expression: str, units: UnitRegistry) -> Dimension:
+    return measure_of_unit(expression, units).dimension
+
+
+def measure_of_unit(expression: str, units: UnitRegistry) -> UnitMeasure:
     numerator, division, denominator = expression.partition(_DIVISION)
     if _DIVISION in denominator:
         raise UnitExpressionError("há mais de uma barra de divisão")
-    dimension = _product(numerator, units)
+    measure = _product(numerator, units)
     if not division:
-        return dimension
-    return dimension / _product(denominator, units)
+        return measure
+    return measure / _product(denominator, units)
 
 
-def _product(factors: str, units: UnitRegistry) -> Dimension:
+def _product(factors: str, units: UnitRegistry) -> UnitMeasure:
     names = factors.split()
     if not names:
         raise UnitExpressionError("falta uma unidade de um dos lados da barra")
-    dimension = DIMENSIONLESS
+    measure = _COHERENT
     for name in names:
         if name != _UNITY:
-            dimension = dimension * _factor(name, units)
-    return dimension
+            measure = measure * _factor(name, units)
+    return measure
 
 
-def _factor(text: str, units: UnitRegistry) -> Dimension:
+def _factor(text: str, units: UnitRegistry) -> UnitMeasure:
     match = _FACTOR.fullmatch(text)
     if match is None:
         raise UnitExpressionError(f"{quote_user_text(text)} não é uma unidade com expoente inteiro")
@@ -48,4 +69,5 @@ def _factor(text: str, units: UnitRegistry) -> Dimension:
         raise UnitExpressionError(
             f"a unidade {quote_user_text(match['symbol'])} não consta do registro"
         )
-    return unit.dimension ** int(match["exponent"] or _UNITY)
+    exponent = int(match["exponent"] or _UNITY)
+    return UnitMeasure(unit.dimension**exponent, unit.si_factor**exponent)

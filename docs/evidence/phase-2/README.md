@@ -49,6 +49,8 @@ Os arquivos foram gerados em Amazon Linux 2023 (kernel 6.18, glibc 2.34) com CPy
 
 A saída mudou de formato nesta fase: o esquema de saída passou a 1.1, com os documentos de enunciado e de catálogo e o campo `excerpt` nas recusas. Por isso a evidência da fase 1 foi regenerada pelo mesmo procedimento.
 
+Na fase 3 o esquema de saída passou a 1.2 e o catálogo a 1.2.0, com as fichas numéricas. Os arquivos daqui foram regenerados pelo mesmo procedimento, com o pacote 0.3.0; `suite_report.txt` continua sendo o retrato do encerramento da fase 2.
+
 ## Critérios de aceite
 
 - Todo item do corpus recebe a classificação prevista. `tests/contracts/test_notation_corpus.py` confere classificação, árvore, ficha, código, campo e trecho pelo validador; `tests/integration/test_cli_statement_refusals.py` confere a classificação e o código de saída pelo CLI.
@@ -56,4 +58,4 @@ A saída mudou de formato nesta fase: o esquema de saída passou a 1.1, com os d
 - Cancelamento e excesso de orçamento deixam o cálculo seguinte utilizável: `tests/unit/adapters/test_process_executor.py`, `tests/unit/application/test_solve_statement.py` e, com um SIGINT de verdade no grupo do processo, `tests/e2e/test_module_entry_point.py`.
 - A entrada nunca é executada como programa: `tests/contracts/test_dependency_direction.py` recusa qualquer referência a `eval`, `exec`, `sympify` ou `parse_expr` e mantém o SymPy fora de `domain` e `notation`.
 
-Nenhum método numérico foi homologado nesta fase. Uma integral sem primitiva em forma fechada é recusada, sem alternativa aproximada.
+Nenhum método numérico foi homologado nesta fase. Uma integral sem primitiva em forma fechada é recusada pela ficha simbólica; a aproximação entrou na fase 3, em ficha própria.

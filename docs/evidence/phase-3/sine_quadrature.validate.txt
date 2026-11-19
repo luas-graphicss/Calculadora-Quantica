@@ -1,0 +1,29 @@
+Problema numérico válido: calculus.definite_integral.adaptive_quadrature 1.0.0
+plano: numerical.adaptive_quadrature, resultado approximate, 12 algarismos significativos, arredondamento half_even; limites: 30 s de relógio, 30 s de CPU e 2048 MiB de memória
+
+Problema
+  ficha: calculus.definite_integral.adaptive_quadrature 1.0.0
+  Aproximação de uma integral definida por quadratura adaptativa
+  área: differential_integral_calculus; tipo: numerical_definite_integral
+  domínio: Integrando real explícito, escrito com as operações e funções registradas, finito em todo o intervalo fechado.
+  domínio: Intervalo finito; todo parâmetro do integrando e dos limites tem valor numérico.
+  descrição: Integral do seno de zero a pi; o valor exato é 2.
+  entrada (sha256): 7b53f18e6094d3d0c8535046a22510a71927cc746c53a9bb6375dc233ef42be7
+
+Entradas interpretadas
+  integral lida (statement): integral(sin(x), x, 0, pi); entrada (text): integral(sin(x), x, 0, pi)
+  intervalo de integração em unidades coerentes do SI (interval): de 0.0 a 3.141592653589793, adimensional; limites calculados com os valores dos parâmetros
+
+Resolução pedida
+  tolerância absoluta, na unidade coerente do SI do resultado (absolute_tolerance): 1e-12
+  tolerância relativa (relative_tolerance): 1e-12
+  limite de subdivisões do intervalo (subdivision_limit): 50
+
+Estimativa antes de alocar
+  memória: 3200 bytes; operações elementares: 2100
+  perfil homologado: até 268435456 bytes e 2000000000 operações
+
+Limitações
+  A resposta é aproximada. A estimativa do integrador não é uma cota demonstrada nem uma incerteza experimental.
+  Um integrando não finito no intervalo ou que o limite de subdivisões não resolve termina sem resposta aprovada; integrais impróprias não são cobertas.
+  A tolerância absoluta vale na unidade coerente do SI do resultado.

@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0",
+  "problem": "quantum.infinite_square_well.time_evolution",
+  "description": "Superposição igualmente ponderada dos dois primeiros estados do elétron no poço de 1 nm, evoluída por um período de batimento do poço contínuo, 8 m L^2 / (3 h), em 1024 passos.",
+  "hypotheses": {
+    "walls": "infinite",
+    "interior_potential": "zero",
+    "boundary_wavefunction": "zero",
+    "hamiltonian": "time_independent"
+  },
+  "parameters": {
+    "mass": {
+      "constant": "electron_mass"
+    },
+    "width": {
+      "value": 1,
+      "unit": "nm"
+    },
+    "duration": {
+      "value": "3.666077985",
+      "unit": "fs"
+    }
+  },
+  "initial_state": {
+    "coefficients": [
+      1,
+      1
+    ],
+    "normalize": true
+  },
+  "numerics": {
+    "subintervals": 16384,
+    "steps": 1048576,
+    "samples": 9
+  },
+  "requested": {
+    "significant_digits": 10
+  }
+}

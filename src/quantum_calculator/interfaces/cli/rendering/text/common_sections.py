@@ -24,6 +24,10 @@ def environment_section(environment: EnvironmentManifest, versions: str) -> list
     dependencies = "; ".join(
         f"{dependency.name} {dependency.version}" for dependency in environment.dependencies
     )
+    linear_algebra = "; ".join(
+        f"{library.consumer} {library.interface} {library.name} {library.version}"
+        for library in environment.linear_algebra
+    )
     return section(
         "Ambiente",
         [
@@ -31,6 +35,7 @@ def environment_section(environment: EnvironmentManifest, versions: str) -> list
             f"{environment.python_implementation} {environment.python_version}; "
             f"{environment.platform}",
             dependencies,
+            f"álgebra linear: {linear_algebra}",
             versions,
         ],
     )

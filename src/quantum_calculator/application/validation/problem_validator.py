@@ -30,10 +30,11 @@ class ProblemValidator:
     def validate(self, spec: ProblemSpec) -> ValidatedProblem:
         card = self._find_card(spec)
         diagnostics: list[Diagnostic] = []
-        hypotheses = confirm_hypotheses(card, spec, diagnostics)
-        quantities = self._binder.bind_quantities(card, spec, diagnostics)
-        counts = self._binder.bind_counts(card, spec, diagnostics)
-        reject_unknown_parameters(card, spec, diagnostics)
+        hypotheses = confirm_hypotheses(card.hypotheses, spec.hypotheses, diagnostics)
+        quantities = self._binder.bind_quantities(card.quantities, spec.parameters, diagnostics)
+        counts = self._binder.bind_counts(card.counts, spec.parameters, diagnostics)
+        known = (*(rule.name for rule in card.quantities), *(rule.name for rule in card.counts))
+        reject_unknown_parameters(known, spec.parameters, diagnostics)
         output = bind_output(card, spec, self._resolver, diagnostics)
         uncertainty = bind_uncertainty(card, spec, self._resolver, diagnostics)
         if diagnostics or output is None:

@@ -1,6 +1,6 @@
 {
   "document": "run_record",
-  "schema_version": "1.1",
+  "schema_version": "1.2",
   "input": {
     "sha256": "359bed25ad0841ada4f08b544b8ec609a8306f159dde9e54d97768e4eaaadb01",
     "schema_version": "1.0",
@@ -377,7 +377,7 @@
   "environment": {
     "package": {
       "name": "quantum-calculator",
-      "version": "0.2.0"
+      "version": "0.3.0"
     },
     "python": {
       "implementation": "CPython",
@@ -392,6 +392,40 @@
       {
         "name": "mpmath",
         "version": "1.3.0"
+      },
+      {
+        "name": "numpy",
+        "version": "2.5.5"
+      },
+      {
+        "name": "scipy",
+        "version": "1.18.1"
+      }
+    ],
+    "linear_algebra": [
+      {
+        "consumer": "numpy",
+        "interface": "blas",
+        "name": "scipy-openblas",
+        "version": "0.3.34.237.2"
+      },
+      {
+        "consumer": "numpy",
+        "interface": "lapack",
+        "name": "scipy-openblas",
+        "version": "0.3.34.237.2"
+      },
+      {
+        "consumer": "scipy",
+        "interface": "blas",
+        "name": "scipy-openblas",
+        "version": "0.3.31.dev"
+      },
+      {
+        "consumer": "scipy",
+        "interface": "lapack",
+        "name": "scipy-openblas",
+        "version": "0.3.31.dev"
       }
     ]
   }

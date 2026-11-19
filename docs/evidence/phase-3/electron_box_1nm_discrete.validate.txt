@@ -1,0 +1,33 @@
+Problema numérico válido: quantum.infinite_square_well.discrete_spectrum 1.0.0
+plano: finite_difference.tridiagonal_eigensolver, resultado approximate, 10 algarismos significativos, arredondamento half_even; limites: 30 s de relógio, 30 s de CPU e 2048 MiB de memória
+
+Problema
+  ficha: quantum.infinite_square_well.discrete_spectrum 1.0.0
+  Níveis e autofunções do poço infinito por diferenças finitas
+  área: stationary_schrodinger_1d; tipo: discrete_spectrum
+  domínio: Partícula única, não relativística e sem spin, em uma dimensão espacial.
+  domínio: Massa e largura estritamente positivas; os primeiros níveis, até 32, em uma malha uniforme de até 16384 subintervalos.
+  descrição: Elétron de massa livre em um poço infinito de 1 nm: três primeiros níveis por diferenças finitas, com 512 subintervalos.
+  entrada (sha256): 9cb31b3df0349f23848b1cf9d43d2d909fa44df135a9af1e8738e59bb8b4768f
+
+Hipóteses
+  confirmada: walls = infinite. As paredes do poço são infinitas: a partícula não sai do intervalo.
+  confirmada: interior_potential = zero. O potencial dentro do poço é nulo, o que põe o zero de energia no fundo do poço.
+  confirmada: boundary_wavefunction = zero. A função de onda se anula nas duas extremidades (Dirichlet homogênea).
+
+Entradas interpretadas
+  massa da partícula (mass): 9.1093837139E-31 kg; constante electron_mass do catálogo
+  largura do poço (width): 1E-9 m; entrada: 1 nm
+
+Resolução pedida
+  subintervalos da malha uniforme (subintervals): 512
+  níveis pedidos, a partir do fundamental (levels): 3
+
+Estimativa antes de alocar
+  memória: 73728 bytes; operações elementares: 307200
+  perfil homologado: até 268435456 bytes e 2000000000 operações
+
+Limitações
+  A resposta é aproximada: o erro de malha cai com o quadrado do espaçamento e só é declarado convergido quando o refinamento mostra a ordem esperada.
+  A expressão fechada do poço, da ficha quantum.infinite_square_well.energy_level, é usada só como referência independente na verificação.
+  Incertezas dos parâmetros não são propagadas por esta ficha: a incerteza experimental fica não avaliada.

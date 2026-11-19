@@ -1,6 +1,6 @@
 from importlib import resources
 
-SCHEMA_NAMES = ("problem", "statement", "output")
+SCHEMA_NAMES = ("problem", "statement", "numerical", "output")
 _PACKAGE = "quantum_calculator.interfaces.serialization.schemas"
 
 

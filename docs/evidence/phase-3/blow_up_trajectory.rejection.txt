@@ -1,0 +1,4 @@
+Entrada recusada (non_convergent)
+  / [method_not_converged]
+    O método DOP853 não convergiu: o passo adaptativo ficou menor que o espaçamento entre números representáveis antes do fim do intervalo. Nenhuma resposta foi aprovada.
+    esperado: um problema que o método homologado resolva dentro das tolerâncias pedidas
